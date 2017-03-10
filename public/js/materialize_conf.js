@@ -1,6 +1,9 @@
 $( document ).ready(function() {
 
-  $(".dropdown-button").dropdown({ hover: false });
+  $(".dropdown-button").dropdown({
+    hover: false,
+    belowOrigin: true
+  });
 
 
   <!-- Datepicker Script -->
@@ -9,4 +12,7 @@ $( document ).ready(function() {
     selectYears: 15, // Creates a dropdown of 15 years to control year
     format: 'yyyy-mm-dd'
   });
+
+  $('.carousel.carousel-slider').carousel({fullWidth: true});
+
 });

@@ -9,13 +9,17 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    {{--<link href="{{ asset('css/') }}" rel="stylesheet">--}}
 
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ asset('css/materialize.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="{{ asset('css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="{{ asset('css/custom.css') }}" type="text/css" rel="stylesheet"/>
+
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 
     <!-- Scripts -->
     <script>
@@ -26,7 +30,7 @@
 
 </head>
 <body>
-<nav class="light-blue lighten-1" role="navigation">
+<nav class="light-blue lighten-1 nav-extended" role="navigation">
     <div class="nav-wrapper container">
 
 
@@ -101,29 +105,12 @@
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
+
+    @yield('expanded-navbar')
 </nav>
 
 <main>
-<div class="container">
-    <div class="section">
-
-
-        <!--   Icon Section   -->
-        <div class="row">
-
-
-
-                @yield('content')
-
-
-
-        </div>
-
-    </div>
-    <br><br>
-
-
-</div>
+            @yield('content')
 </main>
 
 <footer class="page-footer #0d47a1 blue darken-4">
@@ -166,10 +153,10 @@
 <!--  Scripts-->
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="{{ asset('js/app.js') }}"></script>
-<script src="{{ asset('js/materialize_conf.js') }}"></script>
+{{--<script src="{{ asset('js/app.js') }}"></script>--}}
+{{--<script src="{{ asset('js/init.js') }}"></script>--}}
 <script src="{{ asset('js/materialize.js') }}"></script>
-<script src="{{ asset('js/init.js') }}"></script>
+<script src="{{ asset('js/materialize_conf.js') }}"></script>
 
 
 </body>

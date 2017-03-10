@@ -17,4 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home','HomeController@index');
+Route::get('/profile','ProfileController@index')->name('profile.show');
+Route::get('/timeline','TimelineController@index')->name('timeline.show');
+Route::get('/audio/','AudioController@index')->name('audio.index');
+Route::post('/audio/add','AudioController@add')->name('audio.add');

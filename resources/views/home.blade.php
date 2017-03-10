@@ -1,15 +1,24 @@
 @extends('layouts.app')
 
-@section('content')
-    <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
-            <span class="card-title">Welcome</span>
-            <p>You're logged in.</p>
-        </div>
-        <div class="card-action">
-            <a href="#">This is a link</a>
-            <a href="#">This is a link</a>
-        </div>
+@section('expanded-navbar')
+    <div class="flex-container nav-content .center-align">
+
+        <ul class="tabs tabs-transparent row">
+            <li class="flex-item valign tab"><a href="#test1">Search</a></li>
+            <li class="flex-item valign tab"><a class="active" href="#timeline">Timeline</a></li>
+            <li class="flex-item valign tab"><a href="{{ route('profile.show') }}">Profile</a></li>
+        </ul>
+
     </div>
+@endsection
+
+
+@section('content')
+
+
+
+
+
+
 
 @endsection

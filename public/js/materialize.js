@@ -1596,9 +1596,7 @@ if (jQuery) {
     }
   };
 
-  $(document).ready(function(){
-    $('ul.tabs').tabs();
-  });
+
 }( jQuery ));
 ;(function ($) {
     $.fn.tooltip = function (options) {

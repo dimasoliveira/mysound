@@ -27,10 +27,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function profile(){
+      return $this->hasOne(Profile::class);
+    }
 
-  public function profile(){
-    return $this->hasOne(Profile::class);
-  }
-
+    public function audio(){
+      return $this->hasMany(Profile::class);
+    }
 
 }

@@ -3,6 +3,7 @@ body {
     min-height: 100vh;
     flex-direction: column;
     background: #fff;
+    margin: 0;
 }
 
 main {
@@ -30,4 +31,54 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
+}
+html, body {
+    height: 100%;
+}
+
+.flex-container {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.row {
+    width: auto;
+}
+
+.card .card-image img {
+    border-radius: 2px 2px 0 0;
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+#profile-page-header .card-image {
+    height: 250px;
+}
+
+html { overflow-y: scroll; }
+
+img.responsive-img, video.responsive-video {
+    max-width: 100%;
+    height: auto;
+}
+
+#profile-page-header .card-profile-image {
+    width: 110px;
+    position: absolute;
+    top: 190px;
+    z-index: 1;
+    left: 40px;
+    cursor: pointer;
+    margin: 0;
 }
