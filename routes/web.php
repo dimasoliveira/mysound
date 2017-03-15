@@ -20,5 +20,8 @@ Auth::routes();
 Route::get('/home','HomeController@index');
 Route::get('/profile','ProfileController@index')->name('profile.show');
 Route::get('/timeline','TimelineController@index')->name('timeline.show');
-Route::get('/audio/','AudioController@index')->name('audio.index');
-Route::post('/audio/add','AudioController@add')->name('audio.add');
+Route::get('/myaudio/','AudioController@index')->name('audio.index');
+Route::get('/myaudio/add','AudioController@addIndex')->name('audio.add');
+Route::post('/myaudio/add','AudioController@add')->name('audio.add');
+
+

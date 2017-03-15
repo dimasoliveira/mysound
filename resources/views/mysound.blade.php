@@ -20,10 +20,17 @@
 
     <div class="row">
         <div class="col s12 m6">
+            @foreach($audio_posts as $audio_post)
             <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                     <div class="player">
                         <div class="player__audio-info">
+                            {{ $audio_post->title }}<br>
+                            {{ $audio_post->artist }}<br>
+                            {{ $audio_post->album }}<br>
+                            {{ $audio_post->year }}<br>
+                            {{ $audio_post->title }}<br>
+
                             <div>
                                 Played
                                 <span class="player__time-elapsed">-</span> of
@@ -46,6 +53,7 @@
                     <a href="#">This is a link</a>
                 </div>
             </div>
+                @endforeach
         </div>
     </div>
 

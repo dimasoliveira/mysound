@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Audio;
+use App\MP3File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class AudioController extends Controller
 {
@@ -10,26 +16,79 @@ class AudioController extends Controller
   public function index()
   {
 
-    return view('forms.add_audio');
+    $audio_posts = Audio::all();
+
+
+    return view('mysound', compact('audio_posts'));
   }
+
+  public function addIndex()
+    {
+
+      return view('forms.add_audio');
+    }
+
 
   public function add(Request $request)
   {
-    dd($request);
-    return view('forms.add_audio');
-  }
 
-  protected function validator(array $data)
-  {
-    return Validator::make($data, [
+    $this->validate($request, [
       'title' => 'required|max:255',
       'artist' => 'required|max:255',
       'album' => 'nullable|max:255',
       'genre' => 'required|max:255',
-      'file' => 'required|max:255',
-      'year' => 'nullable|max:255',
-
+      'audio' => 'required|mimes:mpga',
+      'year' => 'nullable|digits:4',
     ]);
+
+    $extension = Input::file('audio')->getClientOriginalExtension();
+
+    if($extension == 'mp3'){
+
+      $audio_data = new MP3File($request->audio);
+
+      $request->length = $audio_data->getDuration();
+      $request->bitrate = $audio_data->getMP3BitRate();
+
+      if ($request->explicit == "on")
+        {
+          $request->explicit = 1;
+        }
+      else{
+        $request->explicit = 0;
+      }
+
+      if (file_exists(request()->file('audio'))){
+
+        $request->audio = request()->file('audio')->store('audio');
+
+      }
+      else{
+        return Redirect::back()->withErrors(['msg', 'Bestandformaat klopt niet, selecteer een mp3 bestand']);
+      }
+
+
+      Audio::create([
+          'audio' => $request->audio,
+          'title' => $request->title,
+          'artist' => $request->artist,
+          'album' => $request->album,
+          'genre' => $request->genre,
+          'explicit' => $request->explicit,
+          'year' => $request->year,
+          'length' => $request->length,
+          'bitrate' => $request->bitrate,
+          'user_id' => Auth::user()->id,
+        ]
+      );
+      return redirect()->back()->with('message', 'IT WORKS!');
+    }
+
+    else{
+
+      return Redirect::back()->withErrors(['msg', 'Bestandformaat klopt niet, selecteer een mp3 bestand']);
+    }
+
   }
 
 

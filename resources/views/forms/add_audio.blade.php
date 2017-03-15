@@ -11,28 +11,31 @@
 
         <center>
 
+            @if(session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session()->get('message') }}
+                </div>
+            @endif
+
             <div class="section"></div>
 
             <div class="container">
                 <div class="z-depth-1 lighten-4 grey row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
 
                     {!! Form::open(['route'=>'audio.add', 'files' => true , 'class' => 'form-horizontal col s12']) !!}
-                    {{--<form class="2" role="form" method="POST" action="{{ route('audio.add') }}" files="true">--}}
+
                         {{ csrf_field() }}
-                        <div class="row">
-                            <div class="col s12">
-                            </div>
-                        </div>
+
 
 
                         <div class="row">
                             <div class="input-field col s12 form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                                <input id="title" type="text" class="form-control" name="title" value="{{ old('title') }}" required>
+                                <input id="title" type="text" class="form-control" name="title" value="{{ old('title') }}" >
 
                                 <label for="title">Title *</label>
 
                                 @if ($errors->has('title'))
-                                    <span class="help-block">
+                                    <span class="left help-block red-text">
                                     <strong>{{ $errors->first('title') }}</strong>
                                     </span>
                                 @endif
@@ -41,11 +44,11 @@
 
                         <div class="row">
                             <div class="input-field col s12 form-group{{ $errors->has('artist') ? ' has-error' : '' }}">
-                                <input id="artist" type="text" class="form-control" name="artist" value="{{ old('artist') }}" required>
+                                <input id="artist" type="text" class="form-control" name="artist" value="{{ old('artist') }}" >
                                 <label for="artist">Artist *</label>
 
                                 @if ($errors->has('artist'))
-                                    <span class="help-block">
+                                    <span class="left help-block red-text">
                                     <strong>{{ $errors->first('artist') }}</strong>
                                     </span>
                                 @endif
@@ -54,11 +57,11 @@
 
                         <div class="row">
                             <div class="input-field col s12 form-group{{ $errors->has('album') ? ' has-error' : '' }}">
-                                <input id="album" type="text" class="form-control" name="album" value="{{ old('album') }}" required>
-                                <label for="album">Album *</label>
+                                <input id="album" type="text" class="form-control" name="album" value="{{ old('album') }}" >
+                                <label for="album">Album</label>
 
                                 @if ($errors->has('album'))
-                                    <span class="help-block">
+                                    <span class="left help-block red-text">
                                     <strong>{{ $errors->first('album') }}</strong>
                                     </span>
                                 @endif
@@ -71,7 +74,7 @@
                                 <label for="genre">Genre </label>
 
                                 @if ($errors->has('genre'))
-                                    <span class="help-block">
+                                    <span class="left help-block red-text">
                                     <strong>{{ $errors->first('genre') }}</strong>
                                     </span>
                                 @endif
@@ -82,7 +85,7 @@
                                 <label for="year">Year </label>
 
                                 @if ($errors->has('year'))
-                                    <span class="help-block">
+                                    <span class="left help-block red-text">
                                     <strong>{{ $errors->first('year') }}</strong>
                                     </span>
                                 @endif
@@ -94,12 +97,17 @@
                         <div class="row">
                             <div class="file-field input-field">
                                 <div class="btn waves-effect blue">
-                                    <span>File</span>
-                                    <input id="file" name="file" type="file" required>
+                                    <span>Audio</span>
+                                    <input id="audio" name="audio" type="file" >
                                 </div>
                                 <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text">
+                                    <input class="file-path validate" type="text" placeholder="We only support MP3 files at the moment" value="{{ old('audio') }}">
                                 </div>
+                                @if ($errors->has('audio'))
+                                    <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('audio') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
@@ -118,7 +126,7 @@
 
 
                             <p class="right">
-                                <input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" name="explicit">
+                                <input type="checkbox" class="filled-in" id="filled-in-box" name="explicit">
                                 <label for="filled-in-box">Explicit</label>
                             </p>
 

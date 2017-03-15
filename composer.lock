@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "87866044c72471a90d056ed36fb173a2",
-    "content-hash": "268487659450ea5b0c04cd44f7cb2b39",
+    "hash": "c6bb5d64e8663e9eceed1df38518639b",
+    "content-hash": "7c579824edc183633af0fc674dd50bc0",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -785,6 +785,46 @@
                 "php"
             ],
             "time": "2017-03-05 18:23:57"
+        },
+        {
+            "name": "overtrue/laravel-follow",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overtrue/laravel-follow.git",
+                "reference": "5d49bfce854ef093d02a44668fa184054cb52167"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/overtrue/laravel-follow/zipball/5d49bfce854ef093d02a44668fa184054cb52167",
+                "reference": "5d49bfce854ef093d02a44668fa184054cb52167",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "laravel/framework": "~5.1",
+                "phpunit/phpunit": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Overtrue\\LaravelFollow\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "overtrue",
+                    "email": "i@overtrue.me"
+                }
+            ],
+            "description": "Laravel 5 User Based System",
+            "time": "2017-01-02 07:26:09"
         },
         {
             "name": "paragonie/random_compat",

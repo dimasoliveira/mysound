@@ -12,3 +12,99 @@
 .icon-block .material-icons {
 	font-size: inherit;
 }
+
+.player
+{
+    display: inline-block;
+    width: 300px;
+    padding: 5px;
+    background-color: #E3E3E3;
+    border: 1px solid #000000;
+}
+
+.player span
+{
+    font-weight: bold;
+}
+
+.button
+{
+    text-indent: 200%;
+    white-space: nowrap;
+    overflow: hidden;
+    border: none;
+    padding: 0;
+    background: rgba(255,255,255,0);
+    cursor: pointer;
+    vertical-align: bottom;
+}
+
+.button--small
+{
+    width: 19px;
+    height: 19px;
+}
+
+.button--large
+{
+    width: 48px;
+    height: 48px;
+}
+
+.player__audio-info
+{
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #000000;
+}
+
+.player__audio-info div + div
+{
+    margin-top: 10px;
+}
+
+.player__volume-info
+{
+    display: inline-block;
+    width: 1.5em;
+}
+
+.player__play
+{
+    background-image: url("http://i60.tinypic.com/14mbep2.png");
+}
+
+.player__play.is-playing
+{
+    background-image: url("http://i57.tinypic.com/idyhd2.png");
+}
+
+.player__stop
+{
+    background-image: url("http://i61.tinypic.com/35mehdz.png");
+}
+
+.player__previous
+{
+    background-image: url("http://i60.tinypic.com/sdihc5.png");
+}
+
+.player__next
+{
+    background-image: url("http://i57.tinypic.com/2s1nm77.png");
+}
+
+.player__volume-down
+{
+    background-image: url("http://i60.tinypic.com/331nom0.png");
+}
+
+.player__volume-up
+{
+    background-image: url("http://i60.tinypic.com/ekkc1t.png");
+}
+
+small
+{
+    display: block;
+    margin-top: 20px;
+}
