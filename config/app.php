@@ -164,7 +164,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Overtrue\LaravelFollow\FollowServiceProvider::class,
-
+        Spatie\Activitylog\ActivitylogServiceProvider::class,
         /*
          * Package Service Providers...
          */

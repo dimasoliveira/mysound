@@ -2,14 +2,16 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
+//use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Overtrue\LaravelFollow\FollowTrait;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    //use Notifiable;
+
     use FollowTrait;
+
 
     /**
      * The attributes that are mass assignable.
@@ -34,7 +36,8 @@ class User extends Authenticatable
     }
 
     public function audio(){
-      return $this->hasMany(Profile::class);
+      return $this->hasMany(Audio::class);
     }
+
 
 }

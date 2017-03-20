@@ -19,7 +19,6 @@ class CreateAudioTable extends Migration
             $table->string('title');
             $table->string('artist');
             $table->string('album');
-            $table->string('genre');
             $table->boolean('explicit');
             $table->boolean('private');
             $table->string('year');
