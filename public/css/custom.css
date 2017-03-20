@@ -82,3 +82,13 @@ img.responsive-img, video.responsive-video {
     cursor: pointer;
     margin: 0;
 }
+.sm2-bar-ui {
+    font-size: 16px;
+}
+.sm2-bar-ui .sm2-main-controls,
+.sm2-bar-ui .sm2-playlist-drawer {
+    background-color: #ffffff;
+}
+.sm2-bar-ui .sm2-inline-texture {
+    background: transparent;
+}

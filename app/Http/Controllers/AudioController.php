@@ -30,6 +30,7 @@ class AudioController extends Controller {
 
   public function add(Request $request) {
 
+
     $this->validate($request, [
       'title' => 'required|max:255',
       'artist' => 'required|max:255',
@@ -59,15 +60,13 @@ class AudioController extends Controller {
 
         $request->audio = request()->file('audio')->store('public/audio');
 
-        dd($request->audio);
-        if (file_exists($request->audio)) {
+        //if (file_exists($request->audio)){
 
           Audio::create([
               'audio' => $request->audio,
               'title' => $request->title,
               'artist' => $request->artist,
               'album' => $request->album,
-              'genre' => $request->genre,
               'explicit' => $request->explicit,
               'year' => $request->year,
               'length' => $request->length,
@@ -75,11 +74,11 @@ class AudioController extends Controller {
               'user_id' => Auth::user()->id,
             ]
           );
-        }
 
-        else{
-          return redirect()->back()->with('message', 'MP3 Bestand niet gevonden');
-        }
+
+//        }else{
+//          return redirect()->back()->with('message', 'MP3 Bestand niet gevonden');
+//        }
       }
       else {
         return redirect()->back()->with('message', 'Er is iets fout gegaan 2');

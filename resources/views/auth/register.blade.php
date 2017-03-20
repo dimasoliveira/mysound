@@ -119,7 +119,7 @@
                 </form>
             </div>
         </div>
-        <a href="{{ route("register") }}">Already have an account? <b>Login</b></a>
+        <a href="{{ route("login") }}">Already have an account? <b>Login</b></a>
     </center>
 
     <div class="section"></div>
