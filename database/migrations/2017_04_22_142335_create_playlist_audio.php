@@ -17,7 +17,7 @@ class CreatePlaylistAudio extends Migration
           $table->integer('audio_id')->unsigned();
           $table->foreign('audio_id')->references('audio_id')->on('audio')->onDelete('cascade');
           $table->integer('playlist_id')->unsigned();
-          $table->foreign('playlist_id')->references('genre_id')->on('genres');
+          $table->foreign('playlist_id')->references('playlist_id')->on('playlists');
           $table->timestamps();
         });
     }
