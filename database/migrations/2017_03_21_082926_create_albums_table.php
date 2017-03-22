@@ -1,10 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-
-class CreateFollowersTable extends Migration
+class CreateAlbumsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateFollowersTable extends Migration
      */
     public function up()
     {
-        Schema::create('followers', function (Blueprint $table) {
-            $table->increments('followers_id');
+        Schema::create('albums', function (Blueprint $table) {
+            $table->increments('album_id');
+            $table->string('name');
+            $table->string('artist');
+            $table->string('coverart')->nullable();
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('user_id')->on('users');
-            $table->unsignedInteger('follow_id');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateFollowersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('followers');
+        Schema::dropIfExists('albums');
     }
 }

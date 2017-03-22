@@ -1,10 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-
-class CreateFollowersTable extends Migration
+class CreateLikesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateFollowersTable extends Migration
      */
     public function up()
     {
-        Schema::create('followers', function (Blueprint $table) {
-            $table->increments('followers_id');
+        Schema::create('likes', function (Blueprint $table) {
+            $table->unsignedInteger('audio_id');
             $table->unsignedInteger('user_id');
+            $table->foreign('audio_id')->references('audio_id')->on('audio');
             $table->foreign('user_id')->references('user_id')->on('users');
-            $table->unsignedInteger('follow_id');
+            $table->boolean('like');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateFollowersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('followers');
+        Schema::dropIfExists('likes');
     }
 }
