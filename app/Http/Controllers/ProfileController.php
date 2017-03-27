@@ -11,10 +11,15 @@ class ProfileController extends Controller
 {
     public function index(){
 
-      $user = User::$manyMethods;
-      dd($user);
-      $user->followers();
+      $user = User::findOrfail(1);
 
-      return view('profile');
+
+//      $user = User::findOrfail(1);
+//      $user->follow(3);
+//      $user->follow(4);
+//      $user->follow(5);
+//      dd($user->followers);
+
+      return view('profile',compact('user'));
     }
 }

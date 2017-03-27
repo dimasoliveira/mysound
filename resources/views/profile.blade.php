@@ -34,7 +34,7 @@
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s3 offset-s2">
-                                    <h4 class="card-title grey-text text-darken-4">{{ Auth::user()->profile->firstname }} {{ Auth::user()->profile->lastname }}</h4>
+                                    <h4 class="card-title grey-text text-darken-4">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</h4>
                                     <p class="medium-small grey-text">{{ Auth::user()->username }}</p>
                                 </div>
                                 <div class="col s2 center-align">

@@ -11,13 +11,18 @@ class Audio extends Model
    *
    * @var array
    */
+  protected $primaryKey = 'audio_id';
 
   protected $fillable = [
-    'audio', 'title', 'artist', 'album', 'genre',
+    'filename', 'title', 'artist','album_id',
     'explicit', 'year', 'length', 'bitrate', 'user_id',
   ];
 
   public function user(){
     return $this->belongsTo(User::class);
   }
+  public function album(){
+    return $this->belongsTo(Album::class);
+  }
+
 }

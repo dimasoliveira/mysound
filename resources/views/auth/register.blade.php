@@ -26,7 +26,7 @@
                             <label for="username">Username *</label>
 
                             @if ($errors->has('username'))
-                                <span class="help-block">
+                                <span style="float: left; color: red" class="help-block">
                     <strong>{{ $errors->first('username') }}</strong>
                     </span>
                             @endif
@@ -40,7 +40,7 @@
                             <label for="firstname">Firstname *</label>
 
                             @if ($errors->has('firstname'))
-                                <span class="help-block">
+                                <span style="float: left; color: red" class="help-block">
                     <strong>{{ $errors->first('firstname') }}</strong>
                     </span>
                             @endif
@@ -54,7 +54,7 @@
                             <label for="lastname">Lastname *</label>
 
                             @if ($errors->has('lastname'))
-                                <span class="help-block">
+                                <span style="float: left; color: red" class="help-block">
                     <strong>{{ $errors->first('lastname') }}</strong>
                     </span>
                             @endif
@@ -68,7 +68,7 @@
 
 
                             @if ($errors->has('birthdate'))
-                                <span class="help-block">
+                                <span style="float: left; color: red" class="help-block">
                     <strong>{{ $errors->first('birthdate') }}</strong>
                     </span>
                             @endif
@@ -81,7 +81,7 @@
                             <label for="email">Email-address *</label>
 
                             @if ($errors->has('email'))
-                                <span class="help-block">
+                                <span style="float: left; color: red" class="help-block">
                     <strong>{{ $errors->first('email') }}</strong>
                     </span>
                             @endif
@@ -96,7 +96,7 @@
 
 
                             @if ($errors->has('password'))
-                                <span class="help-block">
+                                <span style="float: left; color: red" class="help-block">
                                     <strong>{{ $errors->first('password') }}</strong>
                                 </span>
                             @endif

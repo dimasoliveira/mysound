@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use DB;
 use App\Profile;
+use App\Role;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -64,34 +66,20 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return User
      */
-//    protected function create(array $data)
-//    {
-//        return User::create([
-//            'username' => $data['username'],
-//            'email' => $data['email'],
-//            'password' => bcrypt($data['password']),
-//        ]);
-//    }
+
 
     public function create(array $data)
     {
 
-
       $user = User::create([
         'username' => $data['username'],
-        'email' => $data['email'],
-        'password' => bcrypt($data['password']),
-      ]);
-
-      $user->profile = Profile::create([
         'firstname' => ucfirst(strtolower($data['firstname'])),
         'lastname' => ucfirst(strtolower($data['lastname'])),
+        'email' => $data['email'],
+        'password' => bcrypt($data['password']),
         'birthdate' => $data['birthdate'],
-        'user_id' => $user->id
+        'role_id' => \DB::table('roles')->where('role_name', 'user')->value('role_id'),
       ]);
-
-
-
 
       return $user;
     }

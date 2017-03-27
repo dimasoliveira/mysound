@@ -12,14 +12,15 @@ class User extends Authenticatable
 
     use FollowTrait;
 
-
+    protected $primaryKey = 'user_id';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password',
+        'username','email','password','firstname',
+        'lastname','birthdate','role_id',
     ];
 
     /**
@@ -31,13 +32,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function profile(){
-      return $this->hasOne(Profile::class);
-    }
-
     public function audio(){
       return $this->hasMany(Audio::class);
     }
 
+    public function album(){
+      return $this->hasMany(Album::class);
+    }
 
 }

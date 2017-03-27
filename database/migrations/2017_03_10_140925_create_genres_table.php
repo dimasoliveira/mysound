@@ -15,7 +15,7 @@ class CreateGenresTable extends Migration
     {
         Schema::create('genres', function (Blueprint $table) {
             $table->increments('genre_id');
-            $table->text('genre_name');
+            $table->text('genre_name',25);
             $table->timestamps();
         });
     }

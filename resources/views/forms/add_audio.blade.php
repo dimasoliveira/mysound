@@ -98,14 +98,14 @@
                             <div class="file-field input-field">
                                 <div class="btn waves-effect blue">
                                     <span>Audio</span>
-                                    <input id="audio" name="audio" type="file" >
+                                    <input id="filename" name="filename" type="file" >
                                 </div>
                                 <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text" placeholder="We only support MP3 files at the moment" value="{{ old('audio') }}">
+                                    <input class="file-path validate" type="text" placeholder="We only support MP3 files at the moment" value="{{ old('filename') }}">
                                 </div>
-                                @if ($errors->has('audio'))
+                                @if ($errors->has('filename'))
                                     <span class="left help-block red-text">
-                                    <strong>{{ $errors->first('audio') }}</strong>
+                                    <strong>{{ $errors->first('filename') }}</strong>
                                     </span>
                                 @endif
                             </div>

@@ -142,18 +142,18 @@
 
 }
 
-.sm2-bar-ui.textured.dark-text .sm2-inline-texture {
+.sm2-bar-ui.textured.dark-text .sm2-bar-ui.textured.blue-text .sm2-inline-texture {
  /* dark text + textured case: use light wood background (for example.) */
  /* background-image: url(../image/patterns/wood_pattern.png); */
 }
 
-.sm2-bar-ui.textured.dark-text .sm2-playlist-wrapper {
+.sm2-bar-ui.textured.dark-text .sm2-bar-ui.textured.blue-text .sm2-playlist-wrapper {
  /* dark text + textured case: ditch 10% dark on playlist body. */
  background-color: transparent;
 }
 
-.sm2-bar-ui.textured.dark-text .sm2-playlist-wrapper ul li:hover a,
-.sm2-bar-ui.textured.dark-text .sm2-playlist-wrapper ul li.selected a {
+.sm2-bar-ui.textured.dark-text .sm2-bar-ui.textured.blue-text .sm2-playlist-wrapper ul li:hover a,
+.sm2-bar-ui.textured.dark-text .sm2-bar-ui.textured.blue-text .sm2-playlist-wrapper ul li.selected a {
  /* dark + textured case: dark highlights */
  background-color: rgba(0,0,0,0.1);
  background-image: url(../image/black-10.png);
@@ -204,6 +204,12 @@
 .sm2-bar-ui.dark-text .bd a {
  color: #000;
 }
+
+.sm2-bar-ui.blue-text,
+.sm2-bar-ui.blue-text .bd a {
+ color: #29B6F6;
+}
+
 
 .sm2-bar-ui.dark-text .sm2-inline-button {
  /* Warning/disclaimer: SVG might be fuzzy when inverted on Chrome, losing resolution on hi-DPI displays. */

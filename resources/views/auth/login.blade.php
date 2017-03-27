@@ -26,7 +26,7 @@
                                     <label for="email">Enter your email</label>
 
                                     @if ($errors->has('email'))
-                                        <span class="help-block">
+                                        <span style="float: left; color: red" class="help-block">
                             <strong>{{ $errors->first('email') }}</strong>
                             </span>
                                     @endif
@@ -41,13 +41,13 @@
                                     <label for="password">Enter your password</label>
 
                                     @if ($errors->has('password'))
-                                        <span class="help-block">
+                                        <span style="float: left; color: red" class="help-block">
                             <strong>{{ $errors->first('password') }}</strong>
                             </span>
                                     @endif
 
 
-                                <p style="float: left;">
+                                <p  style="float: left;">
                                     <input type="checkbox" class="filled-in" name="remember" {{ old('remember') ? 'checked' : '' }} id="filled-in-box">
                                     <label for="filled-in-box">Remember Me</label>
                                 </p>

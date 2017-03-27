@@ -16,12 +16,16 @@
     <script type="text/javascript" src="{{ asset('js/soundmanager2.js') }}"></script>
     <script src="{{ asset('js/bar-ui.js') }}"></script>
     <link href="{{ asset('css/bar-ui.css') }}" type="text/css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="{{ asset('js/initialize.js') }}"></script>
+
     <link href="{{ asset('css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="{{ asset('css/custom.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('css/player.css') }}" type="text/css" rel="stylesheet"/>
 
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    {{--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>--}}
 
     <script>
       soundManager.setup({
@@ -171,6 +175,7 @@
 {{--<script src="{{ asset('js/init.js') }}"></script>--}}
 <script src="{{ asset('js/materialize.js') }}"></script>
 <script src="{{ asset('js/materialize_conf.js') }}"></script>
+<script src="{{ asset('js/postinit.js') }}"></script>
 
 </body>
 </html>
