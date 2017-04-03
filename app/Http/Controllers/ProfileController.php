@@ -11,6 +11,11 @@ use Overtrue\LaravelFollow\FollowTrait;
 
 class ProfileController extends Controller
 {
+    public function __construct()
+    {
+      $this->middleware('auth');
+    }
+
     public function index($slug){
 
       if ($slug == Auth::user()->slug)

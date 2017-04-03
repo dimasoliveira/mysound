@@ -9,11 +9,13 @@ use App\Album;
 
 class AlbumController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('auth');
+  }
+
   public function getAll() {
 
-    if (Auth::guest()) {
-      return redirect()->route('login');
-    }
 
     $albums = Album::all()->where('user_id', Auth::user()->id);
 
@@ -21,10 +23,6 @@ class AlbumController extends Controller
   }
 
   public function getAlbum($slug) {
-
-    if (Auth::guest()) {
-      return redirect()->route('login');
-    }
 
     //$id =\DB::table('albums')->where('user_id', Auth::user()->id)->where('name', $id)->value('id');
 

@@ -6,6 +6,7 @@ use App\Album;
 use App\Audio;
 use App\MP3File;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -14,11 +15,14 @@ use Illuminate\Support\Facades\Storage;
 
 class AudioController extends Controller {
 
+  public function __construct()
+  {
+    $this->middleware('auth');
+  }
+
   public function index() {
 
-    if (Auth::guest()){
-      return redirect()->route('login');
-    }
+
 
 //    dd($audio = Audio::findOrfail(1));
 
@@ -34,17 +38,17 @@ class AudioController extends Controller {
 
   public function addForm() {
 
-    if (Auth::guest()) {
-      return redirect()->route('login');
-    }
+
+
     return view('forms.add_audio');
   }
 
   public function add(Request $request) {
 
-    //dd($request);
 
-      $this->validate($request, [
+
+
+    $this->validate($request, [
         'title' => 'required|max:255',
         'artist' => 'required|max:255',
         'album' => 'nullable|max:255',
@@ -54,10 +58,6 @@ class AudioController extends Controller {
       ]);
 
       $extension = Input::file('filename')->getClientOriginalExtension();
-
-    if (Auth::guest()) {
-      return redirect()->route('login');
-    }
 
       if ($extension == 'mp3') {
 
@@ -72,6 +72,22 @@ class AudioController extends Controller {
         else {
           $request->explicit = 0;
         }
+
+        if ($request->private == "on") {
+          $request->private = 1;
+        }
+        else {
+          $request->private = 0;
+        }
+
+        if ($request->published == "on") {
+          $request->published = 1;
+        }
+        else {
+          $request->published = 0;
+        }
+
+
 
         if (file_exists(request()->file('filename'))) {
 
@@ -96,11 +112,14 @@ class AudioController extends Controller {
                 $album_id =\DB::getPdo()->lastInsertId();
                 }
 
+
           Audio::create([
               'filename' => $request->filename,
               'title' => $request->title,
               'artist' => $request->artist,
               'album_id' => $album_id,
+              'private' => $request->private,
+              'published' => $request->published,
               'explicit' => $request->explicit,
               'year' => $request->year,
               'length' => $request->length,
@@ -108,8 +127,6 @@ class AudioController extends Controller {
               'user_id' => Auth::user()->id,
             ]
           );
-
-
 
 //        }else{
 //          return redirect()->back()->with('message', 'MP3 Bestand niet gevonden');

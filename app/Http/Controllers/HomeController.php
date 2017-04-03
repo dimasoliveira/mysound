@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Audio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -24,6 +26,17 @@ class HomeController extends Controller
     public function index()
     {
 
-        return view('home');
+        foreach (Auth::user()->followings as $following){
+          $followinglist[] = $following->id;
+
+        }
+      $followinglist[] = Auth::user()->id;
+
+     // dd($followings = Auth::user()->followings);
+        $posts = Audio::whereIn('user_id',$followinglist)->where('published', 1)->orderBy('created_at','desc')->get();
+        //Audio::orderBy('created_at','asc')->whereIn('user_id',$followinglist)->get();
+        //dd(Audio::all()->whereIn('user_id',$followinglist)->where('published', 1));
+
+        return view('home',compact('posts'));
     }
 }

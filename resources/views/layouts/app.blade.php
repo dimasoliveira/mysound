@@ -141,6 +141,165 @@
             @yield('content')
 </main>
 
+<!-- Modal Trigger -->
+<a class="waves-effect waves-light btn" href="#modal1">Modal</a>
+
+<!-- Modal Structure -->
+
+<div id="modal1" class="modal bottom-sheet modal-content z-depth-1 lighten-4 grey row col s12" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+
+    <div class="col s10">
+<center>
+    {!! Form::open(['route'=>'myaudio.add', 'files' => true , 'class' => 'form-horizontal col s12']) !!}
+
+    {{ csrf_field() }}
+    <div class="row">
+        <div class="input-field col s12 form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+            <input id="title" type="text" class="form-control" name="title" value="{{ old('title') }}" >
+
+            <label for="title">Title *</label>
+
+            @if ($errors->has('title'))
+                <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('title') }}</strong>
+                                    </span>
+            @endif
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s12 form-group{{ $errors->has('artist') ? ' has-error' : '' }}">
+            <input id="artist" type="text" class="form-control" name="artist" value="{{ old('artist') }}" >
+            <label for="artist">Artist *</label>
+
+            @if ($errors->has('artist'))
+                <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('artist') }}</strong>
+                                    </span>
+            @endif
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s12 form-group{{ $errors->has('album') ? ' has-error' : '' }}">
+            <input id="album" type="text" class="form-control" name="album" value="{{ old('album') }}" >
+            <label for="album">Album</label>
+
+            @if ($errors->has('album'))
+                <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('album') }}</strong>
+                                    </span>
+            @endif
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s12 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
+            <div class="autocomplete" id="multiple">
+                <div class="ac-users ac-appender"></div>
+                <div class="ac-input">
+                    <input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}" placeholder="Please input some letters" data-activates="genre_dropdown" data-beloworigin="true" autocomplete="off"><ul id="genre_dropdown" class="dropdown-content ac-dropdown" style="width: 1280px; position: absolute; top: 45px; left: 11.25px; opacity: 1; display: none;"></ul>
+                    <input type="hidden" class="validate" value=""></div>
+
+                <input type="hidden" name="multipleHidden">
+            </div>
+            <label class="active" for="genre">Genre: </label>
+        </div>
+        @if ($errors->has('genre'))
+            <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('genre') }}</strong>
+                                    </span>
+        @endif
+    </div>
+
+    <div class="row">
+        <div class="input-field col s6 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
+            <input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}">
+            <label for="genre">Genre </label>
+
+            @if ($errors->has('genre'))
+                <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('genre') }}</strong>
+                                    </span>
+            @endif
+        </div>
+
+        <div class="input-field col s6 form-group{{ $errors->has('year') ? ' has-error' : '' }}">
+            <input id="year" type="text" class="form-control" name="year" value="{{ old('year') }}">
+            <label for="year">Year </label>
+
+            @if ($errors->has('year'))
+                <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('year') }}</strong>
+                                    </span>
+            @endif
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="file-field input-field">
+            <div class="btn waves-effect blue">
+                <span>Audio</span>
+                <input id="filename" name="filename" type="file" >
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="We only support MP3 files at the moment" value="{{ old('filename') }}">
+            </div>
+            @if ($errors->has('filename'))
+                <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('filename') }}</strong>
+                                    </span>
+            @endif
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="file-field input-field">
+
+            <p class="left">
+                <input title="published" type="checkbox" class="filled-in" id="published" name="published">
+                <label for="published">Delen met anderen</label>
+            </p>
+
+            <p class="right">
+                <input title="explicit" type="checkbox" class="filled-in" id="explicit" name="explicit">
+                <label for="explicit">Explicit</label>
+            </p>
+
+        </div>
+
+
+    </div>
+    <div class="row">
+        <div class="file-field input-field">
+
+            <p class="left">
+                <input title="private" type="checkbox" class="filled-in" id="private" name="private">
+                <label for="private">Toevoegen aan Mijn Audio</label>
+            </p>
+
+
+
+        </div>
+    </div>
+</center>
+    </div>
+
+
+    {{ Form::close() }}
+
+
+
+<div class="modal-footer">
+
+    <button type="submit" name="btn_login" class="col s12 btn btn-large waves-effect blue modal-action modal-close">Upload</button>
+</div>
+</div>
+
+
+
 <footer class="page-footer #0d47a1 blue darken-4">
     <div class="container">
         <div class="row">

@@ -217,26 +217,34 @@
                     <div class="row">
                         <div class="file-field input-field">
 
-                            <div class='switch left'>
-                                <label>Toevoegen aan
-                                    <input type="checkbox" class="filled-in" id="filled-in-box" name="explicit">
-                                    <label for="filled-in-box">Mijn Audio</label>
-                                    <input type="checkbox" class="filled-in" id="filled-in-box" name="explicit">
-                                    <label for="filled-in-box">Publiceren</label>
-                                </label>
-                            </div>
-
+                            <p class="left">
+                                <input title="published" type="checkbox" class="filled-in" id="published" name="published">
+                                <label for="published">Delen met anderen</label>
+                            </p>
 
                             <p class="right">
-                                <input type="checkbox" class="filled-in" id="filled-in-box" name="explicit">
-                                <label for="filled-in-box">Explicit</label>
+                                <input title="explicit" type="checkbox" class="filled-in" id="explicit" name="explicit">
+                                <label for="explicit">Explicit</label>
                             </p>
 
                         </div>
 
 
                     </div>
+                    <div class="row">
+                        <div class="file-field input-field">
 
+                            <p class="left">
+                                <input title="private" type="checkbox" class="filled-in" id="private" name="private">
+                                <label for="private">Toevoegen aan Mijn Audio</label>
+                            </p>
+
+
+
+                        </div>
+
+
+                    </div>
 
 
 

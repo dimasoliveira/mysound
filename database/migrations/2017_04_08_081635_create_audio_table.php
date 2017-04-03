@@ -21,6 +21,7 @@ class CreateAudioTable extends Migration
             $table->tinyInteger('tracknumber')->nullable();
             $table->boolean('explicit');
             $table->boolean('private');
+            $table->boolean('published');
             $table->integer('year')->nullable();
             $table->integer('length');
             $table->integer('bitrate');

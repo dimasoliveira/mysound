@@ -13,7 +13,7 @@ class Audio extends Model
    */
 
   protected $fillable = [
-    'filename', 'title', 'artist','album_id',
+    'filename', 'title', 'artist','album_id', 'published', 'private',
     'explicit', 'year', 'length', 'bitrate', 'user_id',
   ];
 
