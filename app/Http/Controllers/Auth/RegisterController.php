@@ -78,7 +78,7 @@ class RegisterController extends Controller
         'email' => $data['email'],
         'password' => bcrypt($data['password']),
         'birthdate' => $data['birthdate'],
-        'role_id' => \DB::table('roles')->where('role_name', 'user')->value('role_id'),
+        'role_id' => \DB::table('roles')->where('name', 'user')->value('id'),
       ]);
 
       return $user;

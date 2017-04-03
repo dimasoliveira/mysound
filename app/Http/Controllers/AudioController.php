@@ -20,17 +20,16 @@ class AudioController extends Controller {
       return redirect()->route('login');
     }
 
-    dd($audio = Audio::findOrfail(1));
+//    dd($audio = Audio::findOrfail(1));
 
-//      $audio_posts = Audio::all();
-//
-//      foreach ($audio_posts as $audio_post) {
-//
-//        dd($audio_post->album);
-//        $audio_post->audio = Storage::url($audio_post->audio);
-//      }
-//
-//      return view('mysound', compact('audio_posts'));
+      $audio_posts = Audio::all()->where('user_id', Auth::user()->id);
+
+      foreach ($audio_posts as $audio_post) {
+
+        $audio_post->filename = Storage::url($audio_post->filename);
+      }
+
+      return view('myaudio.recent', compact('audio_posts'));
   }
 
   public function addForm() {
@@ -42,6 +41,8 @@ class AudioController extends Controller {
   }
 
   public function add(Request $request) {
+
+    //dd($request);
 
       $this->validate($request, [
         'title' => 'required|max:255',
@@ -82,14 +83,14 @@ class AudioController extends Controller {
           //\DB::table('albums')->where('role_name', 'user')->value('role_id');
 
           //check if album exists
-          $album_id = \DB::table('albums')->where('name', $request->album)->value('album_id');
+          $album_id = \DB::table('albums')->where('name', $request->album)->value('id');
 
           //if not, create the album and pass the album id
             if ($album_id === null) {
 
              Album::create([
                   'name' => $request->album,
-                  'user_id' => Auth::user()->user_id,
+                  'user_id' => Auth::user()->id,
                 ]);
 
                 $album_id =\DB::getPdo()->lastInsertId();
@@ -104,7 +105,7 @@ class AudioController extends Controller {
               'year' => $request->year,
               'length' => $request->length,
               'bitrate' => $request->bitrate,
-              'user_id' => Auth::user()->user_id,
+              'user_id' => Auth::user()->id,
             ]
           );
 
@@ -134,21 +135,5 @@ class AudioController extends Controller {
 
   }
 
-  public function getAlbums() {
-
-    if (Auth::guest()) {
-      return redirect()->route('login');
-    }
-
-    $audio_posts = Audio::all();
-
-    foreach ($audio_posts as $audio_post) {
-      $audio_post->audio = Storage::url($audio_post->audio);
-    }
-
-
-
-    return view('mysound', compact('audio_posts'));
-  }
 
 }

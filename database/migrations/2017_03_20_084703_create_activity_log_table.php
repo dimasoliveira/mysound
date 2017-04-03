@@ -11,11 +11,11 @@ class CreateActivityLogTable extends Migration
     public function up()
     {
         Schema::create('activity_log', function (Blueprint $table) {
-            $table->increments('log_id');
+            $table->increments('id');
             $table->string('log_name')->nullable();
             $table->string('description');
             $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('subject_id')->nullable();
             $table->string('subject_type')->nullable();
             $table->integer('causer_id')->nullable();

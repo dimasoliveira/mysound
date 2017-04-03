@@ -3,10 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Cviebrock\EloquentSluggable\Sluggable;
 class Album extends Model
 {
-  protected $primaryKey = 'album_id';
+  use Sluggable;
 
   protected $fillable = [
     'name', 'artist', 'coverart', 'user_id',
@@ -19,4 +19,14 @@ class Album extends Model
   public function audio(){
     return $this->hasMany(Audio::class);
   }
+
+  public function sluggable()
+  {
+    return [
+      'slug' => [
+        'source' => 'name'
+      ]
+    ];
+  }
+
 }

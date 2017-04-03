@@ -4633,7 +4633,7 @@ small {
   color: #fff;
   position: absolute;
   bottom: 0;
-  left: 0;
+  /*left: 0; uitgeschakeld omdat menuknop in albumcard niet naar rechts wou*/
   max-width: 100%;
   padding: 24px;
 }

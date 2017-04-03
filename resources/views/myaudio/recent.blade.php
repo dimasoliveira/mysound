@@ -5,8 +5,8 @@
 
         <ul class="tabs tabs-transparent row">
             <li class="flex-item valign tab"><a href="#test1">Playlists</a></li>
-            <li class="flex-item valign tab"><a class="active" href="#timeline">Recent</a></li>
-            <li class="flex-item valign tab"><a href="{{ route('profile.show') }}">Albums</a></li>
+            <li class="flex-item valign tab"><a class="active" href="{{ route('myaudio.index') }}">Recent</a></li>
+            <li class="flex-item valign tab"><a href="{{ route('myaudio.albums') }}">Albums</a></li>
         </ul>
 
     </div>
@@ -15,7 +15,8 @@
 
 @section('content')
         <div class="container">
-    <div class="row">
+            <a style="float: right;margin-top: 10px" class="btn-floating btn-large waves-effect waves-light blue" href="{{route('myaudio.add')}}"><i class="material-icons">add</i></a>
+            <div class="row">
 
                 @foreach($audio_posts as $audio_post)
           <div class="col s3 m3">
@@ -83,7 +84,7 @@
 
                               <div class="sm2-playlist-wrapper">
                                   <ul class="sm2-playlist-bd">
-                                      <li><a href="{{ asset($audio_post->audio) }}">{{ $audio_post->title }}</a></li>
+                                      <li><a href="{{ asset($audio_post->filename) }}">{{ $audio_post->title }}</a></li>
                                   </ul>
                               </div>
 
@@ -106,13 +107,13 @@
                   <div class="card-reveal">
                       <span class="card-title grey-text text-darken-4">{{ $audio_post->title }}<i class="material-icons right">close</i></span>
                       <p>Artist: {{ $audio_post->artist }}</p>
-                      <p>Album: </p>
+                      <p>Album: {{ $audio_post->album->name }}</p>
                       <p>Year: {{ $audio_post->year }}</p>
                   </div>
               </div>
         </div>
 
-            <a class="gsm2-playable-link playing" data-source="{{ $audio_post->audio }}">klikhier</a>
+            <a class="gsm2-playable-link playing" data-source="{{ $audio_post->filename }}">klikhier</a>
             <div class="sm2-bar-ui flat dark-text full-width fixed">
 
                 <div class="bd sm2-main-controls">
@@ -224,7 +225,6 @@
         @endforeach
 
     </div>
-            <a style="float: right" class="btn-floating btn-large waves-effect waves-light blue" href="{{route('audio.add')}}"><i class="material-icons">add</i></a>
 </div>
 
 @endsection

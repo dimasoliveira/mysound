@@ -14,7 +14,7 @@ class CreateAudioTable extends Migration
     public function up()
     {
         Schema::create('audio', function (Blueprint $table) {
-            $table->increments('audio_id');
+            $table->increments('id');
             $table->string('filename');
             $table->string('title',50);
             $table->string('artist',50);
@@ -26,9 +26,9 @@ class CreateAudioTable extends Migration
             $table->integer('bitrate');
             $table->string('coverart')->nullable();
             $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedInteger('album_id');
-            $table->foreign('album_id')->references('album_id')->on('albums');
+            $table->foreign('album_id')->references('id')->on('albums');
             $table->timestamps();
         });
     }

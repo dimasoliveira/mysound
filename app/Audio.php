@@ -11,7 +11,6 @@ class Audio extends Model
    *
    * @var array
    */
-  protected $primaryKey = 'audio_id';
 
   protected $fillable = [
     'filename', 'title', 'artist','album_id',

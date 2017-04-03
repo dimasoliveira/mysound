@@ -18,10 +18,13 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home','HomeController@index');
-Route::get('/profile','ProfileController@index')->name('profile.show');
+Route::get('/profile/{slug}','ProfileController@index')->name('profile.show');
+Route::post('/profile/{slug}', 'ProfileController@follow_request')->name('follow.request');
 Route::get('/timeline','TimelineController@index')->name('timeline.show');
-Route::get('/myaudio/','AudioController@index')->name('audio.index');
-Route::get('/myaudio/add','AudioController@addForm')->name('audio.add');
-Route::post('/myaudio/add','AudioController@add')->name('audio.add');
-Route::get('/myaudio/albums','AudioController@getAlbums')->name('audio.albums');
+Route::get('/myaudio/','AudioController@index')->name('myaudio.index');
+Route::get('/myaudio/add','AudioController@addForm')->name('myaudio.add');
+Route::post('/myaudio/add','AudioController@add')->name('myaudio.add');
+Route::get('/myaudio/albums','AlbumController@getAll')->name('myaudio.albums');
+Route::get('/myaudio/albums/{slug}','AlbumController@getAlbum')->name('myaudio.album.show');
+
 

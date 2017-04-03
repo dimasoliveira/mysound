@@ -6,7 +6,7 @@
         <ul class="tabs tabs-transparent row">
             <li class="flex-item valign tab"><a href="#test1">Search</a></li>
             <li class="flex-item valign tab"><a target="_self" href="{{ route('timeline.show') }}">Timeline</a></li>
-            <li class="flex-item valign tab"><a class="active" href="{{ route('profile.show') }}">Profile</a></li>
+            <li class="flex-item valign tab"><a class="active" href="{{ route('profile.show', Auth::user()->slug) }}">Profile</a></li>
         </ul>
 
     </div>
@@ -33,26 +33,32 @@
                         </figure>
                         <div class="card-content">
                             <div class="row">
-                                <div class="col s3 offset-s2">
-                                    <h4 class="card-title grey-text text-darken-4">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</h4>
-                                    <p class="medium-small grey-text">{{ Auth::user()->username }}</p>
+                                <div class="col s2 offset-s2">
+                                    <h4 class="card-title grey-text text-darken-4">{{ $user->firstname }} {{ $user->lastname }}</h4>
+                                    <p class="medium-small grey-text">{{ $user->username }}</p>
                                 </div>
                                 <div class="col s2 center-align">
-                                    <h4 class="card-title grey-text text-darken-4">543</h4>
+                                    <h4 class="card-title grey-text text-darken-4">{{ count($user->followers) }}</h4>
                                     <p class="medium-small grey-text">Followers</p>
                                 </div>
                                 <div class="col s2 center-align">
-                                    <h4 class="card-title grey-text text-darken-4">79</h4>
+                                    <h4 class="card-title grey-text text-darken-4">{{ count($user->followings) }}</h4>
                                     <p class="medium-small grey-text">Following</p>
                                 </div>
                                 <div class="col s2 center-align">
-                                    <h4 class="card-title grey-text text-darken-4">30</h4>
+                                    <h4 class="card-title grey-text text-darken-4">0</h4>
                                     <p class="medium-small grey-text">Posts</p>
                                 </div>
-                                <div class="col s1 right-align">
-                                    <a class="btn-floating activator waves-effect waves-light darken-2 right">
-                                        <i class="mdi-action-perm-identity"></i>
-                                    </a>
+                                <div class="col s2 right-align">
+                                    @if ($user->id !== Auth::user()->id)
+                                            {!! Form::open(['route'=> ['follow.request',$user->slug],'method' => 'POST']) !!}
+                                        @if (Auth::user()->isFollowing($user->id))
+                                            {{ Form::submit('Unfollow',['class'=> 'waves-effect waves-light btn']) }}
+                                        @else
+                                            {{ Form::submit('Follow', ['class'=> 'waves-effect waves-light btn']) }}
+                                        @endif
+                                            {{ Form::close() }}
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -70,9 +76,6 @@
                             <p><i class="mdi-device-airplanemode-on cyan-text text-darken-2"></i> BAR - AUS</p>
                         </div>
                     </div>
-
-
-
 
                 </div>
 

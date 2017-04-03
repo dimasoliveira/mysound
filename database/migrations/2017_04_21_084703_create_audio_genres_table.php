@@ -12,9 +12,9 @@ class CreateAudioGenresTable extends Migration
     {
         Schema::create('audio_genres', function (Blueprint $table) {
             $table->integer('audio_id')->unsigned();
-            $table->foreign('audio_id')->references('audio_id')->on('audio');
+            $table->foreign('audio_id')->references('id')->on('audio');
             $table->integer('genre_id')->unsigned();
-            $table->foreign('genre_id')->references('genre_id')->on('genres');
+            $table->foreign('genre_id')->references('id')->on('genres');
             $table->timestamps();
         });
     }

@@ -165,6 +165,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Overtrue\LaravelFollow\FollowServiceProvider::class,
         Spatie\Activitylog\ActivitylogServiceProvider::class,
+        Cviebrock\EloquentSluggable\ServiceProvider::class,
         /*
          * Package Service Providers...
          */

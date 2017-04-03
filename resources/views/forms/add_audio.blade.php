@@ -2,27 +2,111 @@
 
 @section('expanded-navbar')
 
-
 @endsection
 
 @section('content')
 
+<style>
+        .autocomplete {
+            display: -ms-flexbox;
+            display: flex;
+        }
+        .autocomplete .ac-users {
+            padding-top: 10px;
+        }
+        .autocomplete .ac-users .chip {
+            -ms-flex: auto;
+            flex: auto;
+            margin-bottom: 10px;
+            margin-right: 10px;
+        }
+        .autocomplete .ac-users .chip:last-child {
+            margin-right: 5px;
+        }
+        .autocomplete .ac-dropdown .ac-hover {
+            background: #eee;
+        }
+        .autocomplete .ac-input {
+            -ms-flex: 1;
+            flex: 1;
+            min-width: 150px;
+            padding-top: 0.6rem;
+        }
+        .autocomplete .ac-input input {
+            height: 2.4rem;
+        }
+    </style>
 
 
-        <center>
 
-            @if(session()->has('message'))
-                <div class="alert alert-success">
+    <script src="https://icefox0801.github.io/materialize-autocomplete/jquery.materialize-autocomplete.js"></script>
+
+    <script>
+      $(function () {
+
+        var autocomplete = $('#genre').materialize_autocomplete({
+            limit: 20,
+            multiple: {
+              enable: true,
+              maxSize: 10,
+              onExist: function (item) { /* ... */ },
+              onExceed: function (maxSize, item) { /* ... */ }
+            },
+            appender: {
+              el: '.ac-users'
+            },
+            dropdown: {
+              el: '#genre_dropdown'
+          },
+            getData: function (value, callback) {
+              // ...
+              console.log(value);
+
+              callback(value,  [
+                {'id': 1, 'text': 'Abe'},
+                {'id': 2, 'text': 'Ari'},
+                {'id': 3, 'text': 'Baz'}
+
+                ]);
+            }
+          });
+
+        autocomplete.getData = getData;
+      });
+
+
+    </script>
+
+    <center>
+
+        @if(session()->has('message'))
+            <div class="alert alert-success">
+
+                <div style="width: 30%;background-color: rgba(0,238,0,0.66);color:white;" class="chip">
                     {{ session()->get('message') }}
+                    <i class="close material-icons">close</i>
                 </div>
-            @endif
 
+                {{--<script>--}}
+                {{--var $toastContent = $('<span>{{ session()->get('message') }}</span>');--}}
+                {{--Materialize.toast($toastContent, 5000);--}}
+                {{--</script>--}}
+
+            </div>
+        @endif
             <div class="section"></div>
 
             <div class="container">
+
+
+
+
+
                 <div class="z-depth-1 lighten-4 grey row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
 
-                    {!! Form::open(['route'=>'audio.add', 'files' => true , 'class' => 'form-horizontal col s12']) !!}
+
+
+                    {!! Form::open(['route'=>'myaudio.add', 'files' => true , 'class' => 'form-horizontal col s12']) !!}
 
                         {{ csrf_field() }}
 
@@ -67,6 +151,25 @@
                                 @endif
                             </div>
                         </div>
+
+                    <div class="row">
+                        <div class="input-field col s12 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
+                            <div class="autocomplete" id="multiple">
+                                <div class="ac-users ac-appender"></div>
+                                <div class="ac-input">
+                                    <input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}" placeholder="Please input some letters" data-activates="genre_dropdown" data-beloworigin="true" autocomplete="off"><ul id="genre_dropdown" class="dropdown-content ac-dropdown" style="width: 1280px; position: absolute; top: 45px; left: 11.25px; opacity: 1; display: none;"></ul>
+                                    <input type="hidden" class="validate" value=""></div>
+
+                                <input type="hidden" name="multipleHidden">
+                            </div>
+                            <label class="active" for="genre">Genre: </label>
+                        </div>
+                        @if ($errors->has('genre'))
+                            <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('genre') }}</strong>
+                                    </span>
+                        @endif
+                    </div>
 
                         <div class="row">
                             <div class="input-field col s6 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
@@ -115,12 +218,11 @@
                         <div class="file-field input-field">
 
                             <div class='switch left'>
-                                <label>
-                                    Public
-                                    <input name='private' type='hidden' value='0'>
-                                    <input name='private' type='checkbox' checked value='1'>
-                                    <span class='lever'></span>
-                                    Private
+                                <label>Toevoegen aan
+                                    <input type="checkbox" class="filled-in" id="filled-in-box" name="explicit">
+                                    <label for="filled-in-box">Mijn Audio</label>
+                                    <input type="checkbox" class="filled-in" id="filled-in-box" name="explicit">
+                                    <label for="filled-in-box">Publiceren</label>
                                 </label>
                             </div>
 
@@ -161,8 +263,6 @@
 
         <div class="section"></div>
         <div class="section"></div>
-
-
 
 
 @endsection

@@ -3,6 +3,7 @@
 namespace App;
 
 //use Illuminate\Notifications\Notifiable;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Overtrue\LaravelFollow\FollowTrait;
 
@@ -11,8 +12,7 @@ class User extends Authenticatable
     //use Notifiable;
 
     use FollowTrait;
-
-    protected $primaryKey = 'user_id';
+    use Sluggable;
     /**
      * The attributes that are mass assignable.
      *
@@ -39,5 +39,14 @@ class User extends Authenticatable
     public function album(){
       return $this->hasMany(Album::class);
     }
+
+  public function sluggable()
+  {
+    return [
+      'slug' => [
+        'source' => 'username'
+      ]
+    ];
+  }
 
 }

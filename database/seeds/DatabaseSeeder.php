@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Role;
 use App\Genre;
+use App\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,11 +16,21 @@ class DatabaseSeeder extends Seeder
     {
 
       Role::create([
-        'role_name'=> 'admin',
+        'name'=> 'admin',
       ]);
 
       Role::create([
-        'role_name'=> 'user',
+        'name'=> 'user',
+      ]);
+
+      User::create([
+        'username' => 'dimas1998',
+        'firstname' => 'Dimas',
+        'lastname' => 'Oliveira',
+        'email' => 'd.oliveira@live.nl',
+        'password' => bcrypt('password'),
+        'birthdate' => '3-2-1998',
+        'role_id' => 1,
       ]);
 
       $genres = [ "Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge","Hip-Hop","Jazz",
@@ -41,7 +52,7 @@ class DatabaseSeeder extends Seeder
 
       foreach($genres as $genre) {
         Genre::create([
-          'genre_name' => $genre,
+          'name' => $genre,
         ]);
       }
     }
