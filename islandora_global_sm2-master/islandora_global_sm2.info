@@ -1,0 +1,6 @@
+name = Islandora global SoundManager2 Player
+description = "A window-wide audio player that can play all tracks visible in the window. Replaces islandora_audiojs_global."
+dependencies[] = libraries
+core = 7.x
+version = 7.x-dev
+package = Islandora Awesome
