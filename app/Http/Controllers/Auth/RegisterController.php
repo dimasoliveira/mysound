@@ -30,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/timeline';
 
     /**
      * Create a new controller instance.
@@ -70,7 +70,6 @@ class RegisterController extends Controller
 
     public function create(array $data)
     {
-
       $user = User::create([
         'username' => $data['username'],
         'firstname' => ucfirst(strtolower($data['firstname'])),
@@ -78,8 +77,9 @@ class RegisterController extends Controller
         'email' => $data['email'],
         'password' => bcrypt($data['password']),
         'birthdate' => $data['birthdate'],
-        'role_id' => \DB::table('roles')->where('name', 'user')->value('id'),
       ]);
+
+      $user->attachRole(Role::where('name','user')->first()->id);
 
       return $user;
     }

@@ -19,7 +19,6 @@
                         </div>
                     </div>
 
-
                     <div class="row">
                         <div class="input-field col s12 form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                             <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
@@ -32,7 +31,6 @@
                             @endif
                         </div>
                     </div>
-
 
                     <div class="row">
                         <div class="input-field col s6 form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
@@ -127,3 +125,6 @@
 </main>
 
 @endsection
+
+
+

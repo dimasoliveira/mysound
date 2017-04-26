@@ -75,20 +75,19 @@ img.responsive-img, video.responsive-video {
 
 #profile-page-header .card-profile-image {
     width: 110px;
-    position: absolute;
-    top: 190px;
     z-index: 1;
-    left: 40px;
     cursor: pointer;
     margin: 0;
 }
+
 .sm2-bar-ui {
     font-size: 16px;
 }
 .sm2-bar-ui .sm2-main-controls,
 .sm2-bar-ui .sm2-playlist-drawer {
-    background-color: #ffffff;
+    background-color: #2288cc;
 }
 .sm2-bar-ui .sm2-inline-texture {
     background: transparent;
 }
+

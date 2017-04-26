@@ -15,8 +15,7 @@
 
 
 @section('content')
-    <a style="float: right;margin: 20px" class="btn-floating btn-large waves-effect waves-light blue" href="{{route('myaudio.add')}}"><i class="material-icons">add</i></a>
-        <div class="container">
+    <div class="container">
 
     <div class="row">
 
@@ -58,8 +57,6 @@
                   </div>
               </div>
         </div>
-
-            {{--<a class="gsm2-playable-link playing" data-source="{{ $audio_post->filename }}">klikhier</a>--}}
 
         @endforeach
 

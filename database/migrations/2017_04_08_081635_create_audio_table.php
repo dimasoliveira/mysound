@@ -20,12 +20,12 @@ class CreateAudioTable extends Migration
             $table->string('artist',50);
             $table->tinyInteger('tracknumber')->nullable();
             $table->boolean('explicit');
-            $table->boolean('private');
             $table->boolean('published');
             $table->integer('year')->nullable();
+            $table->string('genre',50);
             $table->integer('length');
             $table->integer('bitrate');
-            $table->string('coverart')->nullable();
+            $table->string('coverart');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedInteger('album_id');

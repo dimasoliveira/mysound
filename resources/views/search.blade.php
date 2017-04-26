@@ -48,7 +48,7 @@
                                 <div class="card-image waves-effect waves-block waves-light">
                                     <p class="z-depth-2 card-title activator" style="font-size: 15px!important; color: white;background-color: rgba(0,0,0,0.18);width: 100%;padding-top: 0;padding-bottom: 0">{{ $result->title }}<br>{{ $result->artist }} </p>
                                     <span id="play-{{ $result->id }}" style="right: 0!important; bottom:0; margin: 10px; padding: 0;" class="card-title btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
-                                    <img class="activator" src="{{ $result->coverart }}" style="height: auto;width: 100%">
+                                    <img class="activator" src="{{ Storage::url($result->coverart) }}" style="height: auto;width: 100%">
                                 </div>
                                 <div class="card-content" style="padding: 0;line-height: 0;">
                                 </div>
@@ -77,7 +77,7 @@
     @foreach($user_results as $result)
         <div class="row">
             <div class="col s12 m12">
-                <div class="card blue-grey darken-1"> {{ $result->username }}
+                <div class="card blue-grey darken-1"> {{ Storage::url($result->username) }}
                 </div>
             </div>
         </div>
@@ -93,7 +93,7 @@
     @foreach($audio_results as $result)
 
       $("#play-{{ $result->id }}").click(function(){
-      $(".sm2-playlist-bd").html('<ul class="sm2-playlist-bd"><li><a href="{{ $result->filename }}"><b>{{ $result->artist }}</b> - {{ $result->title }} @if($result->explicit)<span class="label">Explicit</span>@endif</a></li></ul>');
+      $(".sm2-playlist-bd").html('<ul class="sm2-playlist-bd"><li><a href="{{ Storage::url($result->filename) }}"><b>{{ $result->artist }}</b> - {{ $result->title }} @if($result->explicit)<span class="label">Explicit</span>@endif</a></li></ul>');
       window.sm2BarPlayers[0].playlistController.playItemByOffset();
     });
 

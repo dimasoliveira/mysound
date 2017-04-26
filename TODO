@@ -1,0 +1,56 @@
+---------------------------------------------------------------
+F U N C T I O N A L I T E I T
+---------------------------------------------------------------
+Playlists maken
+Return messages bij succes toevoegen muziek en andere dingen etc.
+---------------------------------------------------------------
+C R E A T E ,   E D I T ,   D E L E T E
+---------------------------------------------------------------
+Album edit
+Album wijzigen fixen
+Album cover/genres merge/conflict
+Multi-input/autocomplete voor invoer genres
+
+---------------------------------------------------------------
+A D M I N
+---------------------------------------------------------------
+Admin/beheerder kant maken
+
+----------------------------------------------------------------
+U P L O A D
+----------------------------------------------------------------
+Profielfoto upload
+Popup window voor toevoegen en wijzigen en muziek automatisch
+openen als er validation errors zijn
+
+----------------------------------------------------------------
+L A Y O U T
+----------------------------------------------------------------
+Home page maken
+Profiel view
+Mobile/tablet layout maken
+Audio edit view verbeteren
+Kleine veranderingen aan album detail pagina
+Popup window voor toevoegen muziek
+
+----------------------------------------------------------------
+B I J   G E N O E G   T I J D
+----------------------------------------------------------------
+Audio liken
+Banner upload
+Muziek door laten spelen als je naar andere pagina gaat
+Autocomplete album input bij audio toevoegen
+
+Soundmanager Improvements:
+    Muziek doorlaten spelen bij het toevoegen van nieuwe muziek aan de SMPlaylist
+    SMPlaylist gelijk laten refreshen na toevoegen muziek
+    Huidige Soundmanager playlist in session opslaan
+    Huidige Soundmanager playlist opslaan als echte playlist
+----------------------------------------------------------------
+A F G E R O N D
+----------------------------------------------------------------
+Tracklist nummer input**
+Muziek streamen naar bottombar**
+Search voor audio**
+Audio delete**
+Album auto delete wanneer er geen nummers aanzitten**

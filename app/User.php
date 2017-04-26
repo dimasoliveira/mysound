@@ -5,13 +5,16 @@ namespace App;
 //use Illuminate\Notifications\Notifiable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Overtrue\LaravelFollow\FollowTrait;
+use Illuminate\Support\Facades\Auth;
+use Overtrue\LaravelFollow\CanFollow;
+use Overtrue\LaravelFollow\CanBeFollowed;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
     //use Notifiable;
-
-    use FollowTrait;
+    use CanFollow, CanBeFollowed;
+    use EntrustUserTrait;
     use Sluggable;
     /**
      * The attributes that are mass assignable.
@@ -22,6 +25,17 @@ class User extends Authenticatable
         'username','email','password','firstname',
         'lastname','birthdate','role_id',
     ];
+
+    public function isAdmin()
+    {
+
+      dd(Auth::user()->hasRole('admin'));
+      if (Auth::user()->hasRole('admin')){
+
+        return true;
+    }
+      return false;
+    }
 
     /**
      * The attributes that should be hidden for arrays.
@@ -40,13 +54,17 @@ class User extends Authenticatable
       return $this->hasMany(Album::class);
     }
 
-  public function sluggable()
-  {
-    return [
-      'slug' => [
-        'source' => 'username'
-      ]
-    ];
-  }
+    public function role(){
+      return $this->belongsTo(Role::class);
+    }
+
+    public function sluggable()
+    {
+      return [
+        'slug' => [
+          'source' => 'username'
+        ]
+      ];
+    }
 
 }
