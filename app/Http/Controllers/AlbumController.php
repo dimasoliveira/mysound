@@ -67,19 +67,22 @@ class AlbumController extends Controller
 
   public function update(Request $request, $slug){
 
-    $album = Album::where('slug', $slug)->where('user_id', Auth::user()->id)->first();
+    $current_album = Album::where('slug', $slug)->where('user_id', Auth::user()->id)->first();
     $duplicate_album = Album::where('name', $request->album_name)->where('user_id', Auth::user()->id)->first();
 
     if (is_null($duplicate_album)){
-      $album->slug = null;
-      $album->update(['name' => $request->album_name]);
+      $current_album->slug = null;
+      $current_album->update(['name' => $request->album_name]);
+
+      return redirect()->intended(route('myaudio.album.show',$current_album->slug));
     }
 
     else{
-      foreach ($album->audio as $song){
+      foreach ($current_album->audio as $song){
         $song->update(['album_id' => $duplicate_album->id]);
-      }
 
+      }
+      return redirect()->intended(route('myaudio.album.show',$duplicate_album->slug));
 }
 
     // Als ingevoerde albumnaam al bestaat
@@ -93,7 +96,6 @@ class AlbumController extends Controller
 //    $album->save();
 
 
-    return redirect()->intended(route('myaudio.album.show',$duplicate_album->slug));
 
   }
 }

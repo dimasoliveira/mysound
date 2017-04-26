@@ -16,13 +16,7 @@
             <div class="card-image">
                 <img src="https://d2qqvwdwi4u972.cloudfront.net/static/img/default_album.png">
 
-                <h6>Genre: <i>{{implode(', ',$album->genres )}}</i></h6>
-                @if (count($album->year) === 1)
-                    <h6>Year: <i>{{ implode(', ',$album->year) }}</i></h6>
 
-                @elseif(count($album->year) > 1)
-                    <h6>Year: <i>{{ min($album->year).' - '. max($album->year)}}</i></h6>
-                @endif
                 <div>
 
 
@@ -44,28 +38,39 @@
 
 
                     {!!  Form::open(['route' => ['myaudio.album.update', $album->slug],'id' => 'albumNameForm','class' => 'form-horizontal col s12 hidden', 'style' => 'display:none'])  !!}
-                        <div class="input-field form-group{{ $errors->has('album_name') ? ' has-error' : '' }}">
-
-                            <input id="album_name" type="text" class="form-control col s5" name="album_name" value="{{ $album->name }}">
-                            <a type="submit" class="right btn-floating waves-effect waves-light blue col s5 ">
-                                <i id="test" onclick="albumNameEditForm()" class="small material-icons">save</i>
-                            </a>
+                    <div class="row" style="margin-bottom: 0;">
+                        <div class="input-field col s12 {{ $errors->has('album_name') ? ' has-error' : '' }}">
+                                <input id="album_name" type="text" class="form-control col s5" name="album_name" value="{{ $album->name }}" style="font-size: 2.28rem;padding-left: 0;">
 
 
-                        @if ($errors->has('album_name'))
-                                <span class="left help-block red-text">
-                                    <strong>{{ $errors->first('album_name') }}</strong>
-                                    </span>
-                            @endif
 
-                        </div>
+                            @if ($errors->has('album_name'))
+                                    <span class="left help-block red-text">
+                                        <strong>{{ $errors->first('album_name') }}</strong>
+                                        </span>
+                                @endif
 
-                    {{ Form::submit() }}
+                            <button id="test" type="submit" class="right btn-floating waves-effect waves-light blue">
+                                <i class="small material-icons">save</i>
+                            </button>
+
+                            </div>
+
+                    </div>
+
+
                     {{ Form::close() }}
 
                     <h6>
                         {{implode(', ',$album->artist )}}
-                        </h6>
+                    </h6>
+
+                        @if (count($album->year) === 1)
+                        <i>{{ implode(', ',$album->year) }} •</i>
+                        @elseif(count($album->year) > 1)
+                        <i>{{ min($album->year).' - '. max($album->year)}} •</i>
+                        @endif
+                        <i>{{implode(', ',$album->genres )}}</i>
 
                     <div class="row">
 
