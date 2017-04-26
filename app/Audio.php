@@ -13,8 +13,9 @@ class Audio extends Model
    */
 
   protected $fillable = [
-    'filename', 'title', 'artist','album_id', 'published', 'private',
-    'explicit', 'year', 'length', 'bitrate', 'user_id',
+    'filename', 'title', 'artist','album_id', 'published', 'coverart',
+    'tracknumber','explicit', 'year', 'length', 'bitrate', 'user_id',
+    'genre',
   ];
 
   public function user(){
@@ -24,4 +25,17 @@ class Audio extends Model
     return $this->belongsTo(Album::class);
   }
 
+  public function saveAsMP3($request){
+
+
+    Storage::move($request->filename, dirname($request->filename).'/'.basename($request->filename,".mpga").'.mp3');
+
+    $request->filename = dirname($request->filename).'/'.basename($request->filename,".mpga").'.mp3';
+
+    return $request->filename;
+  }
+
+//  public function audio_genre(){
+//    return $this->hasMany(Audio_Genres::class);
+//  }
 }
