@@ -61,6 +61,7 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
+
         //REDIRECT TO LOGIN BY TOKENMISMATCH
         if ($exception instanceof TokenMismatchException){
           return redirect('auth/login');

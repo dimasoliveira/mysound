@@ -31,9 +31,18 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
     Route::delete('/admin/users/{id}','Admin\UsersController@destroy')->name('admin.users.destroy');
   });
 
-  Route::group(['middleware' => ['permission:role-edit']], function () {
-    Route::get('/admin/role/add','Admin\RoleController@create')->name('admin.role.add');
+  Route::group(['middleware' => ['permission:role-create']], function () {
+    Route::get('/admin/role/add','Admin\RoleController@create')->name('admin.role.create');
     Route::post('/admin/role/add','Admin\RoleController@store')->name('admin.role.store');
+  });
+
+  Route::group(['middleware' => ['permission:role-edit']], function () {
+    Route::get('/admin/role/{role}/edit','Admin\RoleController@edit')->name('admin.role.edit');
+    Route::post('/admin/role/{role}/edit','Admin\RoleController@update')->name('admin.role.update');
+  });
+
+  Route::group(['middleware' => ['permission:role-delete']], function () {
+    Route::delete('/admin/role/{role}/destroy','Admin\RoleController@destroy')->name('admin.role.destroy');
   });
 
 });

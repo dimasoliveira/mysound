@@ -18,22 +18,13 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header">
+                    <a href="{{ route('admin.role.create') }}" class="btn btn-primary waves-effect right" role="button">Add Role</a>
                     <h2>
-                        USER TABLE
+                        ROLE TABLE
                     </h2>
-                    <ul class="header-dropdown m-r--5">
-                        <li class="dropdown">
-                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            <ul class="dropdown-menu pull-right">
-                                <li><a href="javascript:void(0);">Action</a></li>
-                                <li><a href="javascript:void(0);">Another action</a></li>
-                                <li><a href="javascript:void(0);">Something else here</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+
                 </div>
+
                 <div class="body">
                     <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                         <thead>
@@ -62,16 +53,18 @@
                         <tbody>
 
                         @foreach($roles as $role)
+
                         <tr>
                             <td>{{ $role->name }}</td>
                             <td>{{ $role->display_name }}</td>
                             <td>{{ $role->description }}</td>
-                            <td>{{ $role->created_at }}</td>
-                            <td>{{ $role->updated_at }}</td>
-                            <td></td>
+                            <td>{{ date_format($role->created_at ,"d-m-Y") }}</td>
+                            <td>{{ date_format($role->updated_at ,"d-m-Y") }}</td>
 
-                            {{--<td><a href="{{ route('admin.users.edit',$user->id) }}" class="waves-effect waves-light btn blue"><i class="small material-icons">mode_edit</i></a></td>--}}
+                            <td><a href="{{ route('admin.role.edit',$role->id) }}">Edit</a></td>
+
                         </tr>
+
                             @endforeach
                         </tbody>
                     </table>

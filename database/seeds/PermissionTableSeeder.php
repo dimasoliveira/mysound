@@ -100,8 +100,6 @@ class PermissionTableSeeder extends Seeder
       $showLogs->description  = 'access to the logs from the behavior and activity of the users';
       $showLogs->save();
 
-
-
       $superadmin->attachPermissions([$uploadAudio, $editAudio, $deleteAudio, $editUser, $deleteUser, $showLogs, $editRole, $createRole, $followUser]);
       $admin->attachPermissions([$uploadAudio, $editAudio, $deleteAudio, $editUser, $deleteUser, $showLogs, $editRole,$createRole,$followUser]);
       $user->attachPermissions([$uploadAudio, $followUser, $editAudio, $deleteAudio]);

@@ -17,12 +17,7 @@ use Illuminate\Support\Facades\Storage;
 
 class AudioController extends Controller {
 
-
-
-
   public function index() {
-
-//    dd(Auth::user()->can('audio-edit'));
 
     $audio_posts = Audio::orderBy('created_at', 'desc')
       ->where('user_id', Auth::user()->id)
@@ -33,7 +28,6 @@ class AudioController extends Controller {
 
   public function create() {
 
-    //Auth::user()->can('permission-name');
     return view('forms.add_audio');
   }
 
@@ -138,8 +132,7 @@ class AudioController extends Controller {
 
   public function edit(Audio $audio) {
 
-
-      // Checkt in de AuthServiceProfider of de user eigenaar is van dit bestand, of een superadmin
+      // Checkt in de AuthServiceProvider of de user eigenaar is van deze $audio, of een superadmin
       $this->authorize('audio-edit',$audio);
 
       return view('forms.edit_audio', compact('audio'));
@@ -156,8 +149,6 @@ class AudioController extends Controller {
       'year' => 'nullable|digits:4',
       'tracknumber' => 'nullable|max:99',
     ]);
-      //->validate();
-
 
     if ($validator->fails()) {
       return redirect()
@@ -165,7 +156,6 @@ class AudioController extends Controller {
         ->withErrors($validator)
         ->with('validation-error', $request->id)
         ->withInput();
-
     }
 
     if ($request->explicit == "on") {
@@ -229,7 +219,6 @@ class AudioController extends Controller {
 
   public function destroy($id)
   {
-
     $audio = Audio::findOrFail($id);
 
     if (Storage::exists($audio->filename)){

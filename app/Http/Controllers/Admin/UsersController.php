@@ -15,7 +15,7 @@ class UsersController extends Controller
 
     $users = User::all();
 
-    return view('admin.users', compact('users'));
+    return view('admin.users.index', compact('users'));
   }
 
   public function edit($id){
@@ -23,7 +23,7 @@ class UsersController extends Controller
     $user = User::findOrFail($id);
     // View oproepen
 
-    return view('admin.users_show', compact('user'));
+    return view('admin.users.edit', compact('user'));
   }
 
   public function store(Request $request, $id){

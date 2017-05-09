@@ -65,7 +65,7 @@
                             <td>{{ $user->lastname }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->birthdate }}</td>
-                            <td><a href="{{ route('admin.users.edit',$user->id) }}" class="waves-effect waves-light btn blue"><i class="small material-icons">mode_edit</i></a></td>
+                            <td><a href="{{ route('admin.users.edit',$user->id) }}">Edit</a></td>
                         </tr>
                             @endforeach
                         </tbody>

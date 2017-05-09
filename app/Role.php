@@ -10,5 +10,7 @@ class Role extends EntrustRole
     'name','display_name','description',
   ];
 
-
+  public function permissions(){
+    return $this->belongsToMany(Permission::class);
+  }
 }

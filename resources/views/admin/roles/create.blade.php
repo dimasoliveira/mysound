@@ -26,17 +26,9 @@
                         <div class="header">
 
                             <div class="block-header">
-                                <h2>Add new role: <b></b></h2>
+                                <h2>You're <b>adding</b> a <b>new role</b></h2>
                             </div>
 
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="large material-icons">more_vert</i>
-                                    </a>
-
-                                </li>
-                            </ul>
                         </div>
 
 
@@ -91,13 +83,22 @@
 
                                     <div class="form-group">
                                         @foreach($permissions as $permission)
+                                            <div>
                                             <input id="{{ $permission->id }}" type="checkbox" class="form-control filled-in" name="permissions[]" value="{{ $permission->id }}">
-                                            <label for="{{ $permission->id }}">{{ $permission->display_name }}</label><br>
+                                                <label for="{{ $permission->id }}">{{ $permission->display_name }} <b>({{ $permission->name }})</b></label>
+                                            </div>
                                         @endforeach
+                                            @if ($errors->has('permissions'))
+                                                <span style="float: left; color: red" class="help-block">
+                                                <strong>{{ $errors->first('permissions') }}</strong>
+                                                </span>
+                                            @endif
                                     </div>
 
 
-                                    {{ Form::submit('Save') }}
+                                    {{ Form::submit('Save', ['class' => 'btn btn-success waves-effect right']) }}
+
+
                                 </div>
 
 

@@ -64,7 +64,7 @@
 
 
     {!! Form::open(['method' => 'DELETE','route' => ['admin.users.destroy', $user->id]]) !!}
-                                            {{  Form::submit('Yes', ['class' => 'btn btn-default'])}}
+                                        {{  Form::submit('Yes', ['class' => 'btn btn-danger waves-effect'])}}
 
                                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
 
