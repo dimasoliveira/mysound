@@ -1,20 +1,18 @@
 ---------------------------------------------------------------
 F U N C T I O N A L I T E I T
 ---------------------------------------------------------------
-Playlists maken
-Return messages bij succes toevoegen muziek en andere dingen etc.
+Dropdown audio toevoegen aan playlist
+
+
 ---------------------------------------------------------------
 C R E A T E ,   E D I T ,   D E L E T E
 ---------------------------------------------------------------
-Album edit
-Album wijzigen fixen
-Album cover/genres merge/conflict
-Multi-input/autocomplete voor invoer genres
 
 ---------------------------------------------------------------
 A D M I N
 ---------------------------------------------------------------
 Admin/beheerder kant maken
+Aanpasbare limiet aan totale tijdsduur van audio die een user kan toevoegen
 
 ----------------------------------------------------------------
 U P L O A D
@@ -36,16 +34,20 @@ Popup window voor toevoegen muziek
 ----------------------------------------------------------------
 B I J   G E N O E G   T I J D
 ----------------------------------------------------------------
+Default cover art nietmeer invoeren, nullable maken en img tag backgroundimage met default coverart geven
 Audio liken
 Banner upload
 Muziek door laten spelen als je naar andere pagina gaat
 Autocomplete album input bij audio toevoegen
+Dropdown op Albumsview is niet volledig zichtbaar
+Audio en Coverart input leeg bij return van validator
 
 Soundmanager Improvements:
     Muziek doorlaten spelen bij het toevoegen van nieuwe muziek aan de SMPlaylist
     SMPlaylist gelijk laten refreshen na toevoegen muziek
     Huidige Soundmanager playlist in session opslaan
     Huidige Soundmanager playlist opslaan als echte playlist
+    Audio uit SMPlaylist verwijderen
 ----------------------------------------------------------------
 A F G E R O N D
 ----------------------------------------------------------------
@@ -54,3 +56,7 @@ Muziek streamen naar bottombar**
 Search voor audio**
 Audio delete**
 Album auto delete wanneer er geen nummers aanzitten**
+Return Toasts messages bij succes toevoegen muziek en andere dingen fixen**
+Album edit**
+Album wijzigen fixen**
+Multi-input/autocomplete voor invoer genres**  TIJDELIJK GEFIXT

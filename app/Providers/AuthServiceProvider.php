@@ -27,8 +27,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('update-audio', function (User $user, Audio $audio) {
-          return $user->id == $audio->user_id;
+        Gate::define('audio-edit', function (User $user,Audio $audio) {
+
+          return $user->id == $audio->user_id || $user->hasRole('superadmin');
         });
 
     }

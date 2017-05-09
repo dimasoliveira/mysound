@@ -25,8 +25,11 @@
 
                 <div class="z-depth-1 lighten-4 grey row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
 
-                    {!!  Form::open(['class' => 'form-horizontal col s12', 'files' => true], ['route' => ['myaudio.update', $audio->id]])  !!}
+                    {{--{!!  Form::open(['class' => 'form-horizontal col s12', 'files' => true], ['route' => ['myaudio.update', $audio->id]])  !!}--}}
 
+                    //FORM RETURNEN MET OUDE INPUT DATA
+
+                    {{ Form::model($audio,  ['route' => ['myaudio.update', $audio->id],'files' => true]) }}
 
 
                     <div class="row">

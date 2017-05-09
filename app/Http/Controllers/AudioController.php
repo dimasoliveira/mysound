@@ -16,14 +16,13 @@ use Illuminate\Support\Facades\Storage;
 
 
 class AudioController extends Controller {
-  public function __construct() {
-    $this->middleware('auth');
-  }
+
+
+
 
   public function index() {
 
-    //dd(Gate::allows('update-audio'));
-
+//    dd(Auth::user()->can('audio-edit'));
 
     $audio_posts = Audio::orderBy('created_at', 'desc')
       ->where('user_id', Auth::user()->id)
@@ -34,13 +33,12 @@ class AudioController extends Controller {
 
   public function create() {
 
+    //Auth::user()->can('permission-name');
     return view('forms.add_audio');
   }
 
   public function store(Request $request) {
 
-
-    //dd($request->tracknumber);
     $this->validate($request, [
       'title' => 'required|max:255',
       'artist' => 'required|max:50',
@@ -52,7 +50,9 @@ class AudioController extends Controller {
       'tracknumber' => 'nullable|max:99',
     ]);
 
-    if (Input::file('filename')->getClientOriginalExtension() == 'mp3') {
+    if (!Input::file('filename')->getClientOriginalExtension() == 'mp3') {
+        return redirect()->back()->with('message', 'Bestandformaat is geen mp3')->withInput();
+      }
 
       $audio_data = new MP3File($request->filename);
 
@@ -131,36 +131,23 @@ class AudioController extends Controller {
       }
       else {
         return redirect()
-          ->back()
-          ->with('message', 'Er is helaas iets fout gegaan, probeer het opnieuw');
+          ->back()->with('message', 'Er is helaas iets fout gegaan, probeer het opnieuw')->withInput();
       }
-
-      return redirect()
-        ->back()
-        ->with('message', 'Bestand succesvol toegevoegd');
-    }
-
-    else {
-      return redirect()
-        ->back()
-        ->with('message', 'Bestandformaat is geen mp3');
-    }
+      return redirect()->back()->with('message', 'File succesfully edited')->withInput();
   }
 
-  public function edit($id) {
+  public function edit(Audio $audio) {
 
-    $audio = Audio::findOrfail($id);
-    $this->authorize('update-audio',$audio);
 
-    return view('forms.edit_audio', compact('audio'));
+      // Checkt in de AuthServiceProfider of de user eigenaar is van dit bestand, of een superadmin
+      $this->authorize('audio-edit',$audio);
+
+      return view('forms.edit_audio', compact('audio'));
   }
 
-  public function update(Request $request) {
+  public function update(Request $request,Audio $audio) {
 
-//    dd($request);
-    $old_audio = Audio::find($request->id);
-
-    $this->validate($request, [
+    $validator = Validator::make($request->all(), [
       'title' => 'required|max:255',
       'artist' => 'required|max:50',
       'album' => 'nullable|max:50',
@@ -169,6 +156,17 @@ class AudioController extends Controller {
       'year' => 'nullable|digits:4',
       'tracknumber' => 'nullable|max:99',
     ]);
+      //->validate();
+
+
+    if ($validator->fails()) {
+      return redirect()
+        ->back()
+        ->withErrors($validator)
+        ->with('validation-error', $request->id)
+        ->withInput();
+
+    }
 
     if ($request->explicit == "on") {
       $request->explicit = 1;
@@ -188,13 +186,13 @@ class AudioController extends Controller {
 
       $request->coverart = request()->file('coverart')->store('public/coverarts');
 
-      if (Storage::exists($old_audio->coverart) && Storage::exists($request->coverart) && $old_audio->coverart !== "/defaults/coverart.png"){
-        Storage::delete($old_audio->coverart);
+      if (Storage::exists($audio->coverart) && Storage::exists($request->coverart) && $audio->coverart !== "/defaults/coverart.png"){
+        Storage::delete($audio->coverart);
       }
 
     }
     else {
-      $request->coverart = $old_audio->coverart;
+      $request->coverart = $audio->coverart;
     }
 
     $request->album_id = \DB::table('albums')
@@ -213,24 +211,20 @@ class AudioController extends Controller {
       $request->album_id = \DB::getPdo()->lastInsertId();
     }
 
-    $old_audio->title = $request->title;
-    $old_audio->artist = $request->artist;
-    $old_audio->album_id = $request->album_id;
-    $old_audio->tracknumber = $request->tracknumber;
-    $old_audio->explicit = $request->explicit;
-    $old_audio->published = $request->published;
-    $old_audio->year = $request->year;
-    $old_audio->coverart = $request->coverart;
-    $old_audio->genre = $request->genre;
-    $old_audio->save();
-
-//        }else{
-//          return redirect()->back()->with('message', 'MP3 Bestand niet gevonden');
-//        }
+      $audio->title = $request->title;
+      $audio->artist = $request->artist;
+      $audio->album_id = $request->album_id;
+      $audio->tracknumber = $request->tracknumber;
+      $audio->explicit = $request->explicit;
+      $audio->published = $request->published;
+      $audio->year = $request->year;
+      $audio->coverart = $request->coverart;
+      $audio->genre = $request->genre;
+      $audio->save();
 
     return redirect()
       ->back()
-      ->with('message', 'Bestand succesvol toegevoegd');
+      ->with('message', 'File succesfully edited');
   }
 
   public function destroy($id)
@@ -249,8 +243,14 @@ class AudioController extends Controller {
 
         $audio->delete();
       }
-    }
 
-    return redirect()->route('myaudio.index');
+      return redirect()
+        ->back()
+        ->with('message', 'Bestand succesvol verwijderd');
+    }
+    return redirect()
+      ->back()
+      ->with('message', 'Er is iets fout gegaan, probeer het nogmaals');
+
   }
 }

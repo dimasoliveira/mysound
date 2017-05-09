@@ -25,8 +25,11 @@ class Audio extends Model
     return $this->belongsTo(Album::class);
   }
 
-  public function saveAsMP3($request){
+  public function playlist(){
+    return $this->belongsToMany(Playlist::class,'audio_playlists');
+  }
 
+  public function saveAsMP3($request){
 
     Storage::move($request->filename, dirname($request->filename).'/'.basename($request->filename,".mpga").'.mp3');
 

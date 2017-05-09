@@ -38,34 +38,39 @@
                     <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                         <thead>
                         <tr>
-                            <th>Username</th>
-                            <th>Firstname</th>
-                            <th>Lastname</th>
-                            <th>Email</th>
-                            <th>Birthdate</th>
+                            <th>Name</th>
+                            <th>Display name</th>
+                            <th>Discription</th>
+                            <th>Created at</th>
+                            <th>Updated at</th>
                             <th></th>
+
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
-                            <th>Username</th>
-                            <th>Firstname</th>
-                            <th>Lastname</th>
-                            <th>Email</th>
-                            <th>Birthdate</th>
+                            <th>Name</th>
+                            <th>Display name</th>
+                            <th>Discription</th>
+                            <th>Created at</th>
+                            <th>Updated at</th>
                             <th></th>
+
+                            {{--<th></th>--}}
                         </tr>
                         </tfoot>
                         <tbody>
 
-                        @foreach($users as $user)
+                        @foreach($roles as $role)
                         <tr>
-                            <td>{{ $user->username }}</td>
-                            <td>{{ $user->firstname }}</td>
-                            <td>{{ $user->lastname }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->birthdate }}</td>
-                            <td><a href="{{ route('admin.users.edit',$user->id) }}" class="waves-effect waves-light btn blue"><i class="small material-icons">mode_edit</i></a></td>
+                            <td>{{ $role->name }}</td>
+                            <td>{{ $role->display_name }}</td>
+                            <td>{{ $role->description }}</td>
+                            <td>{{ $role->created_at }}</td>
+                            <td>{{ $role->updated_at }}</td>
+                            <td></td>
+
+                            {{--<td><a href="{{ route('admin.users.edit',$user->id) }}" class="waves-effect waves-light btn blue"><i class="small material-icons">mode_edit</i></a></td>--}}
                         </tr>
                             @endforeach
                         </tbody>

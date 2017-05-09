@@ -19,8 +19,9 @@ class AudioGenres extends Model
   public function audio(){
     return $this->belongsTo(Audio::class);
   }
-  public function genre(){
-    return $this->belongsTo(Genre::class);
-  }
+//  public function genre(){
+//    return $this->belongsTo(Genre::class);
+//
+//  }
 
 }

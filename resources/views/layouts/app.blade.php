@@ -26,7 +26,7 @@
     {{--<link rel="stylesheet" href="css/bar-ui.css" />--}}
 
 
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    {{--<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>--}}
     <script type="text/javascript" src="https://rawgit.com/scottschiller/SoundManager2/master/script/soundmanager2-jsmin.js"></script>
     {{--<script type="text/javascript" src="{{ asset('js/soundmanager2.js') }}"></script>--}}
     <script type="text/javascript" src="https://rawgit.com/scottschiller/SoundManager2/master/demo/bar-ui/script/bar-ui.js"></script>
@@ -45,17 +45,20 @@
     <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 
-    <script>
-      soundManager.setup({
-        url: '{{ asset('swf/') }}',
-        flashVersion: 9, // optional: shiny features (default = 8)
-        // optional: ignore Flash where possible, use 100% HTML5 mode
-        // preferFlash: false,
-        onready: function() {
-          // Ready to use; soundManager.createSound() etc. can now be called.
-        }
-      });
-    </script>
+    <script src="{{ asset('js/materialize.js') }}"></script>
+    <script src="{{ asset('js/materialize_conf.js') }}"></script>
+
+    {{--<script>--}}
+      {{--soundManager.setup({--}}
+        {{--url: '{{ asset('swf/') }}',--}}
+        {{--flashVersion: 9, // optional: shiny features (default = 8)--}}
+        {{--// optional: ignore Flash where possible, use 100% HTML5 mode--}}
+        {{--// preferFlash: false,--}}
+        {{--onready: function() {--}}
+          {{--// Ready to use; soundManager.createSound() etc. can now be called.--}}
+        {{--}--}}
+      {{--});--}}
+    {{--</script>--}}
 
     <!-- Scripts -->
     <script>
@@ -458,15 +461,27 @@
         </div>
     </div>
 </footer>
-<!--  Scripts-->
-<script src="{{ asset('js/materialize.js') }}"></script>
-<script src="{{ asset('js/materialize_conf.js') }}"></script>
-{{--<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>--}}
-{{--<script src="{{ asset('js/app.js') }}"></script>--}}
-{{--<script src="{{ asset('js/init.js') }}"></script>--}}
-{{--<script src="{{ asset('js/materialize.js') }}"></script>--}}
-{{--<script src="{{ asset('js/materialize_conf.js') }}"></script>--}}
-{{--<script src="{{ asset('js/postinit.js') }}"></script>--}}
 
 </body>
+<script>
+
+  $(function () {
+
+    $(".playable-link").click(function(){
+
+      if ($(this).data('explicit')){
+        var explicit = '<span class="label">E</span>';
+      }
+      else {
+        var explicit = ''
+      }
+      var music_item = '<li><a href="'+ $(this).data('filename')+'"><b>'+ $(this).data('artist')+'</b> - '+$(this).data('title')+explicit+'</a></li>';
+
+        $(".sm2-playlist-bd").html(music_item);
+
+      window.sm2BarPlayers[0].playlistController.playItemByOffset();
+    });
+
+  });
+</script>
 </html>

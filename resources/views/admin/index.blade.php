@@ -69,7 +69,7 @@
         <div class="navbar-header">
             <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
             <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" href="../../index.html">MySound - Adminpanel</a>
+            <a class="navbar-brand" href="../../index.html"><b>MySound</b> - Adminpanel</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -308,14 +308,21 @@
                 </li>
 
                 <li>
-                    <a href="../../index.html">
+                    <a href="{{ route('admin.users') }}">
                         <i class="material-icons">contacts</i>
                         <span>Users</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('') }}">
+                    <a href="{{ route('admin.roles') }}">
+                        <i class="material-icons">recent_actors</i>
+                        <span>Roles</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="">
                         <i class="material-icons">library_music</i>
                         <span>Audio</span>
                     </a>

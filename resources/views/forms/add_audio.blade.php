@@ -23,14 +23,15 @@
 
     <center>
 
-        @if(session()->has('message'))
-            <div class="alert alert-success">
-                <script>
-                var $toastContent = $('<span>{{ session()->get('message') }}</span>');
-                Materialize.toast($toastContent, 10000);
-                </script>
-            </div>
+        @if(session('message'))
+            <script>
+              $( document ).ready(function() {
+                var $toastContent = $('<span>{{ session('message') }}</span>');
+                Materialize.toast($toastContent, 5000);
+              });
+            </script>
         @endif
+
         <div class="section"></div>
 
         <div class="container">

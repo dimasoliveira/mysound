@@ -4,17 +4,27 @@
     <div class="flex-container nav-content .center-align">
 
         <ul class="tabs tabs-transparent row">
-            <li class="flex-item valign tab"><a href="#test1">Playlists</a></li>
+            <li class="flex-item valign tab"><a href="{{ route('myaudio.playlist.index') }}">Playlists</a></li>
             <li class="flex-item valign tab"><a href="{{ route('myaudio.index') }}">Recent</a></li>
             <li class="flex-item valign tab"><a class="active" href="{{ route('myaudio.albums') }}">Albums</a></li>
         </ul>
-
 
     </div>
 @endsection
 
 
 @section('content')
+
+    @if(session('message'))
+            <script>
+              $( document ).ready(function() {
+                var $toastContent = $('<span>{{ session('message') }}</span>');
+                Materialize.toast($toastContent, 5000);
+              });
+            </script>
+    @endif
+
+
     <div class="container">
 
     <div class="row">
@@ -28,25 +38,14 @@
                   <div class="card-image waves-effect waves-block waves-light">
                       <span style="right: 0!important; top:0; height: 0;" class="card-title activator grey-text text-darken-4"><i class="material-icons">more_vert</i></span>
                       <a href="{{route('myaudio.album.show', $album->slug)}}">
-                          <img src="https://d2qqvwdwi4u972.cloudfront.net/static/img/default_album.png" style="height: auto;width: 100%">
-                            <span class="card-title" style="color: black;">{{ $album->name }}<br>{{ $album->artist }}</span>
+                          <img src="https://d2qqvwdwi4u972.cloudfront.net/static/img/default_album.png" id="img-preview" style="height: auto;width: 100%">
+
                       </a>
                   </div>
 
-                      <div class="card-content" style="padding: 0;line-height: 0;">
-
-
-                          <script>
-                            soundManager.setup({
-                              url: '{{ asset('swf/soundmanager2.swf') }}',
-                              flashVersion: 9, // optional: shiny features (default = 8)
-                              // optional: ignore Flash where possible, use 100% HTML5 mode
-                              // preferFlash: false,
-                              onready: function() {
-                                // Ready to use; soundManager.createSound() etc. can now be called.
-                              }
-                            });
-                          </script>
+                      <div class="card-content" style="padding: 6px">
+                          <p class="card-title" style="color: black;">{{ $album->name }}<br>{{ $album->artist }}</p>
+                          <p class="card-title" style="color: black;">{{ $album->artist }}</p>
                       </div>
 
                   <div class="card-reveal">

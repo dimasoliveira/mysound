@@ -26,16 +26,16 @@ class User extends Authenticatable
         'lastname','birthdate','role_id',
     ];
 
-    public function isAdmin()
-    {
-
-      dd(Auth::user()->hasRole('admin'));
-      if (Auth::user()->hasRole('admin')){
-
-        return true;
-    }
-      return false;
-    }
+//    public function isAdmin()
+//    {
+//
+//      dd(Auth::user()->hasRole('admin'));
+//      if (Auth::user()->hasRole('admin')){
+//
+//        return true;
+//    }
+//      return false;
+//    }
 
     /**
      * The attributes that should be hidden for arrays.

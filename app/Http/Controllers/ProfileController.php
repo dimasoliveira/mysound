@@ -11,29 +11,28 @@ use Overtrue\LaravelFollow\FollowTrait;
 
 class ProfileController extends Controller
 {
-    public function __construct()
-    {
-      $this->middleware('auth');
-    }
 
     public function index($slug){
 
-      if ($slug == Auth::user()->slug)
-      {
-        $user = Auth::user();
 
-        return view('profile',compact('user'));
-      }
-      elseif ($slug !== Auth::user()->slug){
-        $user = User::where('slug', $slug)->first();
+      if (User::where('slug', $slug)->exists()){
 
-        return view('profile',compact('user'));
-      }
-      else{
+        if ($slug == Auth::user()->slug)
+        {
+          $user = Auth::user();
 
-        //Return not found
+          return view('profile',compact('user'));
+        }
+        else{
+          $user = User::where('slug', $slug)->first();
+
+          return view('profile',compact('user'));
+        }
+
       }
-      return view('profile',compact('user'));
+
+      return redirect(route('timeline.show'))->with('message', 'Unfortunately, the user cannot be found');
+
     }
 
   public function follow_request($slug){

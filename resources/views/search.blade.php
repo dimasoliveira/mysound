@@ -47,11 +47,14 @@
                             <div class="card hoverable">
                                 <div class="card-image waves-effect waves-block waves-light">
                                     <p class="z-depth-2 card-title activator" style="font-size: 15px!important; color: white;background-color: rgba(0,0,0,0.18);width: 100%;padding-top: 0;padding-bottom: 0">{{ $result->title }}<br>{{ $result->artist }} </p>
-                                    <span id="play-{{ $result->id }}" style="right: 0!important; bottom:0; margin: 10px; padding: 0;" class="card-title btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
+                                    <span data-id="{{ $result->id }}" style="right: 0!important; bottom:0; margin: 10px; padding: 0;" class="playable-link card-title btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
                                     <img class="activator" src="{{ Storage::url($result->coverart) }}" style="height: auto;width: 100%">
                                 </div>
                                 <div class="card-content" style="padding: 0;line-height: 0;">
                                 </div>
+                                <ul data-id='{{ $result->id }}' id="playlist-item" hidden>
+                                    <li><a href="{{ Storage::url($result->filename) }}"><b>{{ $result->artist }}</b> - {{ $result->title }} @if($result->explicit)<span class="label">Explicit</span>@endif</a></li>
+                                </ul>
                                 <div class="card-reveal">
                                     <p class="grey-text text-darken-4">{{ $result->title }}<i class="material-icons right">close</i></p>
                                     <p>Artist: <br>{{ $result->artist }}</p>
@@ -85,21 +88,6 @@
         @endif
 </div>
 
-@if(isset($audio_results))
-<script>
 
-  $(function () {
 
-    @foreach($audio_results as $result)
-
-      $("#play-{{ $result->id }}").click(function(){
-      $(".sm2-playlist-bd").html('<ul class="sm2-playlist-bd"><li><a href="{{ Storage::url($result->filename) }}"><b>{{ $result->artist }}</b> - {{ $result->title }} @if($result->explicit)<span class="label">Explicit</span>@endif</a></li></ul>');
-      window.sm2BarPlayers[0].playlistController.playItemByOffset();
-    });
-
-      @endforeach
-
-  });
-</script>
-    @endif
 @endsection

@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Audio;
+use App\Playlist;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class PlaylistController extends Controller
+{
+  public function index(){
+
+    $playlists = Playlist::where('user_id',Auth::user()->id)->get();
+
+    return view('myaudio.playlist_index',compact('playlists'));
+  }
+
+  public function show($id){
+
+    $playlist = Playlist::where('user_id',Auth::user()->id)->where('id',$id)->first();
+
+    if (isset($playlist)){
+
+      return view('myaudio.playlist_show',compact('playlist'));
+    }
+
+    //$audio = Audio::findOrFail(1);
+
+    //$playlist->audio()->save($audio);
+
+    return redirect(route('myaudio.albums'))->with('message', 'Unfortunately, the playlist cannot be found');
+
+  }
+
+  public function addToPlaylist($playlist,$audio){
+
+    dd($audio);
+
+  }
+}

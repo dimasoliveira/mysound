@@ -11,8 +11,14 @@
 |
 */
 
-Route::get('/admin', function () {return view('admin.index'); });
-Route::get('/admin/users','Admin\UsersController@index')->name('admin.users');
+
+
+//
+//
+//Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
+//  Route::get('/admin', 'AdminController@index');
+//  Route::get('/manage', ['middleware' => ['permission:manage-admins'], 'uses' => 'Admin\UsersController@index']);
+//});
 
 //
 //Auth::routes();
