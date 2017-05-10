@@ -2,18 +2,14 @@
 
 @section('content')
 
-    @if(session('toast'))
 
 
-        <div id="snackbar"><span>{{ session('toast') }}</span</div>
+      @if(session('toast'))
 
-        <script>
-          $( document ).ready(function() {
-            var x = document.getElementById("snackbar");
-            x.className = "show";
-            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-          });
-        </script>
+          <div class="alert alert-success alert-dismissable">
+              <strong>Success! </strong>{{ session('toast') }}
+          </div>
+
 
     @endif
 
@@ -30,6 +26,7 @@
                             </div>
 
                             <ul class="header-dropdown m-r--5">
+
                                 <li class="dropdown">
                                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                         <i class="large material-icons">more_vert</i>
@@ -38,7 +35,10 @@
                                         <li><a data-toggle="modal" data-target="#myModal">Delete user <b>{{ $user->username }}</b></a></li>
                                     </ul>
                                 </li>
+
+
                             </ul>
+
                         </div>
 
 
@@ -79,14 +79,16 @@
 
                         <div class="body">
 
-
+                            {{ Form::submit('Save', ['class' => 'btn btn-primary waves-effect right', 'form' => 'userForm']) }}
                             <h2 class="card-inside-title"></h2>
                             <div class="row clearfix">
 
-                                {!!  Form::open(['route' => ['admin.users.store', $user->id]])  !!}
+                                {!!  Form::open(['route' => ['admin.users.store', $user->id], 'id' => 'userForm'])  !!}
 
                                 <div class="col-sm-12">
+
                                     <div class="form-group">
+                                        <div><b>Username:</b></div>
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="username" placeholder="Username" value="{{ $user->username }}"/>
                                         </div>
@@ -99,6 +101,7 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <div><b>Firstname:</b></div>
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="firstname" placeholder="Firstname" value="{{ $user->firstname }}"/>
                                         </div>
@@ -110,6 +113,7 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <div><b>Lastname:</b></div>
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="lastname" placeholder="Lastname" value="{{ $user->lastname }}"/>
                                         </div>
@@ -121,6 +125,7 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <div><b>Emailaddress:</b></div>
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="email" placeholder="Email" value="{{ $user->email}}"/>
                                         </div>
@@ -134,6 +139,7 @@
 
 
                                     <div class="form-group">
+                                        <div><b>Birthdate:</b></div>
                                         <div class="form-line">
                                             <input type="date" class="form-control" name="birthdate" placeholder="Birthdate" value="{{ $user->birthdate}}"/>
                                         </div>
@@ -143,20 +149,14 @@
                                                 </span>
                                         @endif
                                     </div>
-
-                                    {{ Form::submit('Save') }}
                                 </div>
-
-
-
                                 {{ Form::close() }}
                             </div>
-
-
                     </div>
                 </div>
             </div>
             <!--#END# DateTime Picker -->
         </div>
+
 
 @endsection

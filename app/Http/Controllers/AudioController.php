@@ -23,12 +23,12 @@ class AudioController extends Controller {
       ->where('user_id', Auth::user()->id)
       ->get();
 
-    return view('myaudio.recent', compact('audio_posts'));
+    return view('myaudio.index', compact('audio_posts'));
   }
 
   public function create() {
 
-    return view('forms.add_audio');
+    return view('forms.audio.create');
   }
 
   public function store(Request $request) {
@@ -135,7 +135,7 @@ class AudioController extends Controller {
       // Checkt in de AuthServiceProvider of de user eigenaar is van deze $audio, of een superadmin
       $this->authorize('audio-edit',$audio);
 
-      return view('forms.edit_audio', compact('audio'));
+      return view('forms.audio.edit', compact('audio'));
   }
 
   public function update(Request $request,Audio $audio) {

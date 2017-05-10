@@ -254,21 +254,37 @@
 
 
             <div class="row">
-                <div class="file-field input-field">
+
+
+
+                <div class="file-field input-field col s6">
+                    <div class="btn waves-effect blue">
+                        <span>Audio</span>
+                        <input id="filename" name="filename" type="file">
+                    </div>
+
+                    @if ($errors->has('filename'))
+                        <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('filename') }}</strong>
+                                    </span>
+                    @endif
+                </div>
+
+                <div class="file-field input-field col 6">
                     <div class="btn waves-effect blue">
                         <span>Coverart</span>
                         <input id="coverart" name="coverart" type="file" >
                     </div>
-                    <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text" value="{{ old('coverart') }}">
-                    </div>
+
                     @if ($errors->has('coverart'))
                         <span class="left help-block red-text">
                                     <strong>{{ $errors->first('coverart') }}</strong>
                                     </span>
                     @endif
                 </div>
+
             </div>
+
 
             <div class="row">
                 <div class="file-field input-field">

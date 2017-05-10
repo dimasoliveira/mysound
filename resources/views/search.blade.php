@@ -50,8 +50,6 @@
                                     <span data-id="{{ $result->id }}" style="right: 0!important; bottom:0; margin: 10px; padding: 0;" class="playable-link card-title btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
                                     <img class="activator" src="{{ Storage::url($result->coverart) }}" style="height: auto;width: 100%">
                                 </div>
-                                <div class="card-content" style="padding: 0;line-height: 0;">
-                                </div>
                                 <ul data-id='{{ $result->id }}' id="playlist-item" hidden>
                                     <li><a href="{{ Storage::url($result->filename) }}"><b>{{ $result->artist }}</b> - {{ $result->title }} @if($result->explicit)<span class="label">Explicit</span>@endif</a></li>
                                 </ul>
@@ -62,8 +60,9 @@
                                     <p>Year: <br>{{ $result->year }}</p>
                                 </div>
                                 <div class="card-action">
-                                    <h6 class="header">{{ \Carbon\Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans() .' by '. $result->user->username }}
+                                    <h6 class="header">{{ \Carbon\Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans() .' by ' }} <a class="blue-text" href="{{ route('profile.show', $result->user->slug) }}">{{$result->user->username }}</a>
                                     </h6>
+
                                 </div>
                             </div>
                         </div>

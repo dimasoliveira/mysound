@@ -39,7 +39,7 @@ class ProfileController extends Controller
 
     }
 
-    public function follow_request($slug){
+    public function followRequest($slug){
 
 
       $user_id = User::where('slug', $slug)->value('id');

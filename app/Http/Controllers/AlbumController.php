@@ -37,7 +37,7 @@ class AlbumController extends Controller
 
     $albums = Album::all()->where('user_id', Auth::user()->id);
 
-    return view('myaudio.albums', compact('albums'));
+    return view('myaudio.album.index', compact('albums'));
   }
 
   public function getAlbum($slug) {
@@ -68,7 +68,7 @@ class AlbumController extends Controller
         $album->year = array_unique($year);
       }
 
-    return view('myaudio.album_show',compact('album'),compact('playlists'));
+    return view('myaudio.album.show',compact('album'),compact('playlists'));
     }
 
 

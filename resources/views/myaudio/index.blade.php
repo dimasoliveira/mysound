@@ -57,11 +57,6 @@
                                 </div>
                             </div>
 
-                            <div class="card-content" style="padding: 0;line-height: 0;">
-
-
-                            </div>
-
                             <div class="card-reveal">
                                 <span class="card-title grey-text text-darken-4">{{ $audio_post->title }}<i class="material-icons right">close</i></span>
                                 <p>Artist: {{ $audio_post->artist }}</p>

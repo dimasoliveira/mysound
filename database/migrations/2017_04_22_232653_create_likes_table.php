@@ -18,8 +18,6 @@ class CreateLikesTable extends Migration
             $table->unsignedInteger('user_id');
             $table->foreign('audio_id')->references('id')->on('audio');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->boolean('like');
-            $table->timestamps();
         });
     }
 

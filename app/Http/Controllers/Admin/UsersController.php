@@ -61,8 +61,6 @@ class UsersController extends Controller
 
     $user = User::findOrFail($id);
 
-
-
     $allAudio = Audio::where('user_id',$id)->get();
 
     foreach ($allAudio as $audio){

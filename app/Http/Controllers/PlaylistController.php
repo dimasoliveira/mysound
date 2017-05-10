@@ -13,7 +13,7 @@ class PlaylistController extends Controller
 
     $playlists = Playlist::where('user_id',Auth::user()->id)->get();
 
-    return view('myaudio.playlist_index',compact('playlists'));
+    return view('myaudio.playlist.index',compact('playlists'));
   }
 
   public function show($id){
@@ -22,14 +22,14 @@ class PlaylistController extends Controller
 
     if (isset($playlist)){
 
-      return view('myaudio.playlist_show',compact('playlist'));
+      return view('myaudio.playlist.show',compact('playlist'));
     }
 
     //$audio = Audio::findOrFail(1);
 
     //$playlist->audio()->save($audio);
 
-    return redirect(route('myaudio.albums'))->with('message', 'Unfortunately, the playlist cannot be found');
+    return redirect(route('myaudio.album.index'))->with('message', 'Unfortunately, the playlist cannot be found');
 
   }
 
