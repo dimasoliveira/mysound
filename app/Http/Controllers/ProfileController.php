@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Audio;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,19 +15,22 @@ class ProfileController extends Controller
 
     public function index($slug){
 
-
       if (User::where('slug', $slug)->exists()){
 
         if ($slug == Auth::user()->slug)
         {
           $user = Auth::user();
 
-          return view('profile',compact('user'));
+          $posts = Audio::where('user_id',Auth::user()->id)->where('published',1)->get();
+
+          return view('profile',compact('user','posts'));
         }
         else{
           $user = User::where('slug', $slug)->first();
 
-          return view('profile',compact('user'));
+          $posts = Audio::where('user_id',$user->id)->where('published',1)->get();
+
+          return view('profile',compact('user','posts'));
         }
 
       }
@@ -35,22 +39,22 @@ class ProfileController extends Controller
 
     }
 
-  public function follow_request($slug){
+    public function follow_request($slug){
 
 
-    $user_id = User::where('slug', $slug)->value('id');
+      $user_id = User::where('slug', $slug)->value('id');
 
-    if ($user_id !== Auth::user()->id){
+      if ($user_id !== Auth::user()->id){
 
-      if (Auth::user()->isFollowing($user_id))
-      {
-        Auth::user()->unfollow($user_id);
+        if (Auth::user()->isFollowing($user_id))
+        {
+          Auth::user()->unfollow($user_id);
+        }
+        else{
+          Auth::user()->follow($user_id);
+        }
       }
-      else{
-        Auth::user()->follow($user_id);
-      }
+      return redirect()->intended(route('profile.show',$slug));
     }
-    return redirect()->intended(route('profile.show',$slug));
-  }
 
 }

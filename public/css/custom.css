@@ -51,9 +51,17 @@ html, body {
 .row {
     width: auto;
 }
+.card-content {
+    padding-bottom: 5px!important;
+    padding-top: 5px!important;
+}
+
+.follow-button{
+    margin:15px;
+}
 
 .card .card-image img {
-    border-radius: 2px 2px 0 0;
+
     position: relative;
     left: 0;
     right: 0;
@@ -63,7 +71,7 @@ html, body {
 }
 
 #profile-page-header .card-image {
-    height: 250px;
+    height: 150px;
 }
 
 html { overflow-y: scroll; }
@@ -77,7 +85,11 @@ img.responsive-img, video.responsive-video {
     width: 110px;
     z-index: 1;
     cursor: pointer;
-    margin: 0;
+
+}
+
+.card-profile-image img{
+    border-radius: 100%!important;
 }
 
 .sm2-bar-ui {

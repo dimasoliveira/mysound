@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/search','SearchController@index');
   Route::post('/search','SearchController@searchRequest')->name('search.request');
   Route::get('/timeline','TimelineController@index')->name('timeline.show');
+  Route::get('/profile', function () {return redirect()->intended(route('profile.show',Auth::user()->slug));});
   Route::get('/profile/{slug}','ProfileController@index')->name('profile.show');
   Route::post('/profile/{slug}','ProfileController@follow_request')->name('follow.request');
 
