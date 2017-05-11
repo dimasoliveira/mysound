@@ -1,0 +1,24 @@
+.card-title{
+    margin-bottom: 0;
+
+    font-size: 15px!important;
+    color: white!important;
+    background-color: rgba(0,0,0,0.18);
+    width: 100%;
+
+
+    right: 0!important;
+    bottom:0;
+
+    padding: 0!important;
+
+}
+
+.card-image img{
+    height: auto!important;
+    width: 100%!important;
+}
+
+.card-image + p{
+    padding-left: 10px !important;
+}

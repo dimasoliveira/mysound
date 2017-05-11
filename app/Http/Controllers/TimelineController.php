@@ -34,6 +34,13 @@ class TimelineController extends Controller
         //Audio::orderBy('created_at','asc')->whereIn('user_id',$followinglist)->get();
         //dd(Audio::all()->whereIn('user_id',$followinglist)->where('published', 1));
 
-        return view('timeline',compact('posts'));
+        return view('timeline.index',compact('posts'));
+    }
+
+    public function show(Audio $audio){
+
+      //dd($audio);
+
+      return view('timeline.show',compact('audio'));
     }
 }

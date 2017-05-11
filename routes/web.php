@@ -55,7 +55,12 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/profile/{slug}','ProfileController@index')->name('profile.show');
   Route::post('/profile/{slug}','ProfileController@followRequest')->name('follow.request');
 
-  Route::post('like/{audio}','ResponseController@likeRequest')->name('like.request');
+
+  Route::get('/audio/{audio}','TimelineController@show')->name('audio.show');
+  Route::post('/audio/{audio}','CommentController@create')->name('comment.create');
+  Route::delete('/comment/{comment}','CommentController@destroy')->name('comment.destroy');
+
+  Route::post('like/{audio}','LikeController@create')->name('like.create');
 
 
   Route::post('/playlistrequest','PlaylistController@addToPlaylist')->name('playlist.request');

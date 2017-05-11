@@ -41,7 +41,7 @@
                                 @endif
                             </div>
                                 <figure class="card-profile-image">
-                                    <img  src="https://thumb9.shutterstock.com/display_pic_with_logo/1375510/221431012/stock-vector-male-avatar-profile-picture-vector-illustration-eps-221431012.jpg" alt="profile image" class="circle z-depth-2 responsive-img activator">
+                                    <img  src="https://thumb9.shutterstock.com/display_pic_with_logo/1375510/221431012/stock-vector-male-avatar-profile-picture-vector-illustration-eps-221431012.jpg" alt="profile image" class="circle z-depth-2 responsive-img">
                                 </figure>
 
                         </div>
@@ -84,29 +84,37 @@
                                     <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-id='{{ $post->id }}' data-filename="{{ Storage::url($post->filename) }}" data-artist="{{ $post->artist }}" data-title="{{ $post->title }}" data-explicit="{{$post->explicit}}"  class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
                                 </div>
                                 <div class="card-stacked">
+
+
                                     <div class="card-content">
                                         <h6 class="right header">uploaded {{ \Carbon\Carbon::createFromTimeStamp(strtotime($post->created_at))->diffForHumans() .' by '}} <a class="blue-text" href="{{ route('profile.show', $post->user->slug) }}">{{$post->user->username }}</a>
                                         </h6>
-                                        <p class="card-title grey-text text-darken-4">{{ $post->title }}</p>
-                                        <p>Artist: {{ $post->artist }}</p>
-                                        <p>Album: {{ $post->album->name }}</p>
-                                    </div>
-                                    <ul data-id='{{ $post->id }}' id="playlist-item" hidden>
-                                        <li><a href="{{ Storage::url($post->filename) }}"><b>{{ $post->artist }}</b> - {{ $post->title }} @if($post->explicit)<span class="label">Explicit</span>@endif</a></li>
-                                    </ul>
+                                        <a class="black-text" href="{{ route('audio.show',$post->id) }}">
+                                            <p class="card-title grey-text text-darken-4">{{ $post->title }}</p>
+                                            <p>Artist: {{ $post->artist }}</p>  <p class="blue-text right">{{  count($post->likes).' Like(s), '.count($post->comments).' Comment(s)' }}</p>
+                                            <p>Album: {{ $post->album->name }}</p>
 
-                                    <div class="card-action" style="padding-top: 0px;padding-bottom: 0px;">
-                                        <div class="row s12">
-                                            <div class="input-field col s11">
-                                                <input id="commentField" type="text" class="validate" placeholder="Leave a comment..." style="margin-bottom: 0;">
-                                            </div>
-                                            <div class="input-field col s1">
-                                                <a class="btn-floating btn-medium waves-effect waves-light white blue-text right" style="box-shadow: blue"><i class="material-icons">thumb_up</i></a>
-                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div class="card-action" style="padding-top: 0px;margin-top: 10px;">
+
+                                        <div class="input-field right">
+
+                                            {!! Form::open(['route'=> ['like.create',$post->id],'method' => 'POST', 'id' => 'likeForm']) !!}
+
+                                            @if (\App\Like::where('user_id', Auth::user()->id)->where('audio_id', $post->id)->exists())
+                                                <button type="submit" role="button" id="likeButton" class="col s2 hoverable btn-floating btn-medium waves-effect waves-light blue right"><i class="material-icons">favorite</i></button>
+                                            @else
+                                                <button type="submit" role="button" id="likeButton" class="col s2 hoverable btn-floating btn-medium waves-effect waves-light white blue-text right"> <i class="material-icons" style="color: #2196F3;">favorite_border</i></button>
+                                            @endif
+
+                                            {{ Form::close() }}
+
                                         </div>
                                     </div>
+
                                 </div>
-                            </div>
                         </div>
                     @endforeach
                 </div>

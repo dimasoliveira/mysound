@@ -35,7 +35,7 @@ class ProfileController extends Controller
 
       }
 
-      return redirect(route('timeline.show'))->with('message', 'Unfortunately, the user cannot be found');
+      return redirect(route('timeline.show'))->with('message', 'Unfortunately, user '.$slug.' cannot be found');
 
     }
 

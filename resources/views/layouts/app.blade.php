@@ -39,10 +39,12 @@
 
     <link href="{{ asset('css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="{{ asset('css/custom.css') }}" type="text/css" rel="stylesheet"/>
+
     <link href="{{ asset('css/player.css') }}" type="text/css" rel="stylesheet"/>
 
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+    @yield('stylesheet')
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 
     <script src="{{ asset('js/materialize.js') }}"></script>
@@ -69,6 +71,16 @@
 
 
 <body>
+
+@if(session('message'))
+    <script>
+      $( document ).ready(function() {
+        var $toastContent = $('<span>{{ session('message') }}</span>');
+        Materialize.toast($toastContent, 5000);
+      });
+    </script>
+@endif
+
 <main>
 <nav class="light-blue lighten-1 nav-extended" role="navigation">
     <div class="nav-wrapper container">

@@ -3,33 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Audio;
+use App\Comment;
+use App\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
-class ResponseController extends Controller
+class LikeController extends Controller
 {
-  public function likeRequest(Audio $audio) {
+  public function create(Audio $audio) {
 
-    if (DB::table('likes')
-      ->where('user_id', Auth::user()->id)
+    if (Like::where('user_id', Auth::user()->id)
       ->where('audio_id', $audio->id)
       ->exists()
 
   ) {
-      DB::table('likes')
-        ->where('user_id', Auth::user()->id)
+      Like::where('user_id', Auth::user()->id)
         ->where('audio_id', $audio->id)
         ->delete();
-
-
-
       return redirect()
         ->back();
     }
     else {
 
-      DB::table('likes')->insert([
+      Like::insert([
         'audio_id' => $audio->id,
         'user_id' => Auth::user()->id
       ]);
