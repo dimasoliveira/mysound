@@ -10,6 +10,22 @@ main {
     flex: 1 0 auto;
 }
 
+.btn-small {
+    width: 30px!important;
+    height: 30px!important;
+}
+
+.btn-small i{
+    line-height: 30px!important;
+    font-size: 1.5rem!important;
+}
+
+.banner-image{
+    -webkit-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: blur(3px);
+}
+
 .input-field input[type=date]:focus + label,
 .input-field input[type=text]:focus + label,
 .input-field input[type=email]:focus + label,
@@ -83,6 +99,7 @@ img.responsive-img, video.responsive-video {
 
 #profile-page-header .card-profile-image {
     width: 110px;
+    height: 110px;
     z-index: 1;
     cursor: pointer;
 

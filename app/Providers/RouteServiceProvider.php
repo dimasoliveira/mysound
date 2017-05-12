@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Album;
+use App\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Http\Response as HttpResponse;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -26,6 +29,16 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+        \Route::bind('album',function($slug){
+          Album::where('slug', $slug)->first();
+          return Album::where('slug', $slug)->first();
+        });
+
+        \Route::bind('user',function($slug){
+          User::where('slug', $slug)->first();
+          return User::where('slug', $slug)->first();
+        });
     }
 
     /**
@@ -54,6 +67,8 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/web.php'));
+
+
     }
 
     /**

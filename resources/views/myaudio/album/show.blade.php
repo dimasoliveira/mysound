@@ -6,9 +6,6 @@
 
 @section('content')
 
-    @if(session('message'))
-
-@endif
 
 @if ($errors->has('album_name'))
 <script>
@@ -71,7 +68,6 @@
                         </h4>
                     </div>
 
-
                     {!!  Form::open(['route' => ['myaudio.album.update', $album->slug],'id' => 'albumNameForm','class' => 'form-horizontal col s12 hidden', 'style' => 'display:none'])  !!}
                     <div class="row" style="margin-bottom: 0;">
                         <div class="input-field col s12 {{ $errors->has('album_name') ? ' has-error' : '' }}">
@@ -88,11 +84,8 @@
                             <button id="test" type="submit" class="right btn-floating waves-effect waves-light blue">
                                 <i class="small material-icons">save</i>
                             </button>
-
                             </div>
-
                     </div>
-
 
                     {{ Form::close() }}
 
@@ -143,15 +136,10 @@
                                             {!! Form::close() !!}
 
                                          @endforeach
-                                        <li><a href="#modal-{{$song->id}}" id="testtest">Delete</a></li>
+                                        <li><a href="#delete-{{$song->id}}" id="testtest">Delete</a></li>
                                     </ul>
 
-                                    <ul data-id='{{ $song->id }}' id="playlist-item" hidden>
-                                        <li><a href="{{ Storage::url($song->filename) }}"><b>{{ $song->artist }}</b> - {{ $song->title }} @if($song->explicit)<span class="label">Explicit</span>@endif</a></li>
-                                    </ul>
-
-
-                                    <div id="modal-{{$song->id}}" class="modal">
+                                    <div id="delete-{{$song->id}}" class="modal">
                                         <div class="modal-content">
                                             <h5>Are you sure you want to delete <b>{{ $song->title}}</b> by <b>{{$song->artist}}</b>?</h5>
                                         </div>

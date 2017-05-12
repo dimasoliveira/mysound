@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Album;
 use App\Audio;
+use App\Playlist;
 use App\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -27,9 +29,19 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('audio-edit', function (User $user,Audio $audio) {
+        Gate::define('audio_owner', function (User $user,Audio $audio) {
 
-          return $user->id == $audio->user_id || $user->hasRole('superadmin');
+          return $user->id == $audio->user_id;
+        });
+
+        Gate::define('album_owner', function (User $user,Album $album) {
+
+          return $user->id == $album->user_id;
+        });
+
+        Gate::define('playlist_owner', function (User $user,Playlist $playlist) {
+
+          return $user->id == $playlist->user_id;
         });
 
     }

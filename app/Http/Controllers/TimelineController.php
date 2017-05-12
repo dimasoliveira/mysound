@@ -22,7 +22,6 @@ class TimelineController extends Controller
      */
     public function index()
     {
-
         foreach (Auth::user()->followings as $following){
           $followinglist[] = $following->id;
         }

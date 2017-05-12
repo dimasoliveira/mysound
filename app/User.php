@@ -23,19 +23,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username','email','password','firstname',
-        'lastname','birthdate','role_id',
+        'lastname','birthdate','role_id','avatar','banner',
     ];
-
-//    public function isAdmin()
-//    {
-//
-//      dd(Auth::user()->hasRole('admin'));
-//      if (Auth::user()->hasRole('admin')){
-//
-//        return true;
-//    }
-//      return false;
-//    }
 
     /**
      * The attributes that should be hidden for arrays.
@@ -48,6 +37,10 @@ class User extends Authenticatable
 
     public function audio(){
       return $this->hasMany(Audio::class);
+    }
+
+    public function playlists(){
+      return $this->hasMany(Playlist::class);
     }
 
     public function album(){

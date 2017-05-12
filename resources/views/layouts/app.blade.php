@@ -81,6 +81,14 @@
     </script>
 @endif
 
+@if(session()->has('validation-error'))
+
+    <script>
+      $(document).ready(function(){
+        $('#edit-{{ session()->get('validation-error') }}').modal().modal('open');
+      });</script>
+@endif
+
 <main>
 <nav class="light-blue lighten-1 nav-extended" role="navigation">
     <div class="nav-wrapper container">
@@ -97,7 +105,7 @@
             @else
 
                 <li>
-                    <a class="" href="{{ route('myaudio.index') }}">Mijn Audio
+                    <a class="" href="{{ route('myaudio.index') }}">My Audio
                     </a>
                 </li>
 
@@ -151,7 +159,7 @@
             <a href="#!email"><span class="white-text email">{{ Auth::user()->email }}</span></a>
         </div></li>
     <li><a class="waves-effect" href="{{route('profile.show',Auth::user()->slug)}}">Profiel</a></li>
-    <li><a class="waves-effect" href="{{route('myaudio.index')}}">Mijn Audio</a></li>
+    <li><a class="waves-effect" href="{{route('myaudio.index')}}">My Audio</a></li>
     <li><div class="divider"></div></li>
     <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
 

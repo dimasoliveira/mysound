@@ -5,7 +5,7 @@
     @if(session('toast'))
 
 
-        <div id="snackbar"><span>{{ session('toast') }}</span</div>
+        <div id="snackbar"><span>{{ session('toast') }}</span></div>
 
         <script>
           $( document ).ready(function() {
@@ -59,9 +59,6 @@
                                         <p>Are you sure you want to delete the <b>{{ $role->display_name }}</b> role?</p>
                                     </div>
                                     <div class="modal-footer">
-
-
-
 
                                         {!! Form::open(['method' => 'DELETE','route' => ['admin.role.destroy', $role->id]]) !!}
                                         {{  Form::submit('Yes', ['class' => 'btn btn-danger waves-effect'])}}
@@ -126,7 +123,7 @@
                                     <div class="form-group">
                                         @foreach($permissions as $permission)
                                             <div>
-                                                <input id="{{ $permission->id }}" type="checkbox" @if (in_array($permission->id, $role_permissions))checked="" @endif class="form-control filled-in" name="permissions[]" value="{{ $permission->id }}">
+                                                <input id="{{ $permission->id }}" type="checkbox" @if (!empty($role_permissions)) @if (in_array($permission->id, $role_permissions))checked="" @endif @endif class="form-control filled-in" name="permissions[]" value="{{ $permission->id }}">
                                                 <label for="{{ $permission->id }}">{{ $permission->display_name }}</label>
                                             </div>
                                         @endforeach

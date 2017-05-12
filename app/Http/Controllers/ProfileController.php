@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Overtrue\LaravelFollow\Models\Follower;
 use Overtrue\LaravelFollow\FollowTrait;
 
@@ -55,6 +56,32 @@ class ProfileController extends Controller
         }
       }
       return redirect()->intended(route('profile.show',$slug));
+    }
+
+    public function avatarUpdate(Request $request, User $user){
+
+      //dd($request);
+
+      $this->validate($request, [
+        'avatar' => 'nullable|image|file',
+      ]);
+
+
+
+     //$user->update(['avatar' => $request->avatar]);
+
+          if (Storage::exists($user->avatar)) {
+            Storage::delete($user->avatar);
+          }
+
+          $user->update([
+            'avatar' => $request->avatar = request()
+              ->file('avatar')
+              ->store('public/avatars')
+          ]);
+
+        return redirect()->intended(route('profile'));
+
     }
 
 }

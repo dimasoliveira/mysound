@@ -133,12 +133,14 @@ class AudioController extends Controller {
   public function edit(Audio $audio) {
 
       // Checkt in de AuthServiceProvider of de user eigenaar is van deze $audio, of een superadmin
-      $this->authorize('audio-edit',$audio);
+      //$this->authorize('audio-edit',$audio);
 
       return view('forms.audio.edit', compact('audio'));
   }
 
   public function update(Request $request,Audio $audio) {
+
+    $this->authorize('audio-edit',$audio);
 
     $validator = Validator::make($request->all(), [
       'title' => 'required|max:255',
@@ -234,7 +236,7 @@ class AudioController extends Controller {
       }
 
       return redirect()
-        ->back()
+        ->route('index')
         ->with('message', 'Bestand succesvol verwijderd');
     }
     return redirect()

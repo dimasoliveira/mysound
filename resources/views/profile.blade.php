@@ -12,22 +12,19 @@
     </div>
 @endsection
 
-
 @section('content')
-
 
     <div id="profile" class="col s12">
         <div class="container">
             <div class="section">
-
-
-                <!--   Icon Section   -->
                 <div class="row">
-
-
                     <div id="profile-page-header" class="card">
                         <div class="card-image waves-effect waves-block waves-light">
-                            <img class="activator" style="position: absolute!important;" src="http://demo.geekslabs.com/materialize/v3.1/images/user-profile-bg.jpg" alt="user background">
+                            <a class="btn-floating btn-small waves-effect waves-light right blue" style="margin:10px;">
+                                <i class="material-icons">edit</i>
+                            </a>
+
+                            <img class="activator banner-image" style="position: absolute!important;@if(!empty(Storage::exists($user->avatar) ))background: url('{{ Storage::url($user->avatar) }}'); background-size: cover; @endif" alt="user background">
 
                             <div class="col s2 right-align right follow-button">
                                 @if ($user->id !== Auth::user()->id)
@@ -40,12 +37,27 @@
                                     {{ Form::close() }}
                                 @endif
                             </div>
+
                                 <figure class="card-profile-image">
-                                    <img  src="https://thumb9.shutterstock.com/display_pic_with_logo/1375510/221431012/stock-vector-male-avatar-profile-picture-vector-illustration-eps-221431012.jpg" alt="profile image" class="circle z-depth-2 responsive-img">
+                                    <a id="avatarEdit" class="btn-floating btn-small waves-effect waves-light left blue" style="position: absolute">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                    <a hidden id="saveButton" class="btn-small" style="position: absolute;">
+                                        <i class="small material-icons">save</i>
+                                    </a>
+
+                                    <img id="avatarUser" src="@if (!empty(Storage::exists($user->avatar) )) {{ Storage::url($user->avatar) }} @else {{ Storage::url('public/defaults/avatar.png') }}  @endif" alt="profile image" class="circle z-depth-2 responsive-img">
+                                    {{--https://thumb9.shutterstock.com/display_pic_with_logo/1375510/221431012/stock-vector-male-avatar-profile-picture-vector-illustration-eps-221431012.jpg--}}
                                 </figure>
 
-                        </div>
+                            {!! Form::open(['route' => ['avatar.update', $user->slug],'method' => 'POST','id' => 'avatarForm','files' => 'true']) !!}
 
+                            <input id="avatarInput" hidden name="avatar" type="file" value="test">
+                            {{--{{ Form::submit('',['hidden','id' => 'coverartSubmit']) }}--}}
+                            <button hidden type="submit"></button>
+
+                            {!! Form::close() !!}
+                        </div>
 
                         <div class="card-content">
                             <div class="row">
@@ -75,17 +87,13 @@
 
 
                 @foreach($posts as $post)
-
-
-                        <div class="col s12 m7">
+                      <div class="col s12 m7">
                             <div class="card horizontal hoverable activator">
                                 <div class="card-image waves-effect waves-block waves-light">
                                     <img src="{{ Storage::url($post->coverart) }}" class="activator" style="height: auto;width: 215px">
                                     <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-id='{{ $post->id }}' data-filename="{{ Storage::url($post->filename) }}" data-artist="{{ $post->artist }}" data-title="{{ $post->title }}" data-explicit="{{$post->explicit}}"  class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
                                 </div>
                                 <div class="card-stacked">
-
-
                                     <div class="card-content">
                                         <h6 class="right header">uploaded {{ \Carbon\Carbon::createFromTimeStamp(strtotime($post->created_at))->diffForHumans() .' by '}} <a class="blue-text" href="{{ route('profile.show', $post->user->slug) }}">{{$post->user->username }}</a>
                                         </h6>
@@ -93,7 +101,6 @@
                                             <p class="card-title grey-text text-darken-4">{{ $post->title }}</p>
                                             <p>Artist: {{ $post->artist }}</p>  <p class="blue-text right">{{  count($post->likes).' Like(s), '.count($post->comments).' Comment(s)' }}</p>
                                             <p>Album: {{ $post->album->name }}</p>
-
                                         </a>
                                     </div>
 
@@ -123,5 +130,5 @@
 
         </div>
     </div>
-
+        <script src="{{ asset('js/profileShow.js') }}"></script>
 @endsection

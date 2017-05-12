@@ -275,7 +275,7 @@
         <!-- User Info -->
         <div class="user-info">
             <div class="image">
-                <img src="../../images/user.png" width="48" height="48" alt="User" />
+                <img src="@if(!empty(Storage::exists(Auth::user()->avatar) )) {{ Storage::url(Auth::user()->avatar) }} @else {{ Storage::url('public/defaults/avatar.png') }}  @endif" width="48" height="48" alt="User" />
             </div>
             <div class="info-container">
 

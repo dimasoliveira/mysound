@@ -33,29 +33,33 @@ class AlbumController extends Controller
     }
   }
 
-  public function getAll() {
+  public function index() {
 
     $albums = Album::all()->where('user_id', Auth::user()->id);
 
     return view('myaudio.album.index', compact('albums'));
   }
 
-  public function getAlbum($slug) {
+  public function show(Album $album) {
+
+
 
     //$id =\DB::table('albums')->where('user_id', Auth::user()->id)->where('name', $id)->value('id');
 
     $playlists = Playlist::where('user_id',Auth::user()->id)->get();
     //$album = Album::findOrfail($id);
-    $album = Album::where('slug', $slug)->where('user_id',Auth::user()->id)->first();
 
     if (isset($album)){
+
 
     if ($album->artist == NULL){
       foreach ($album->audio as $song){
 
         $artist[] = $song->artist;
 
+
         $album->artist = array_unique($artist);
+
       }
     }
 
@@ -68,11 +72,9 @@ class AlbumController extends Controller
         $album->year = array_unique($year);
       }
 
+
     return view('myaudio.album.show',compact('album'),compact('playlists'));
     }
-
-
-
 
       return redirect(route('myaudio.albums'))->with('message', 'Unfortunately, the album cannot be found');
 
@@ -82,45 +84,40 @@ class AlbumController extends Controller
 //
   }
 
-  public function edit(){
-
-  }
-
-  public function update(Request $request, $slug){
+  public function update(Request $request, Album $album){
 
     $this->validate($request, [
       'album_name' => 'nullable|max:50',
       'coverart' => 'nullable|image|file',
     ]);
 
-    $current_album = Album::where('slug', $slug)->where('user_id', Auth::user()->id)->first();
     $duplicate_album = Album::where('name', $request->album_name)->where('user_id', Auth::user()->id)->first();
 
     if (is_null($duplicate_album)){
 
       if(!empty($request->album_name)){
-        $current_album->slug = null;
-        $current_album->update(['name' => $request->album_name]);
+
+        $album->update(['name' => $request->album_name]);
       }
 
       if(!empty($request->coverart)) {
 
-        if (Storage::exists($current_album->coverart)) {
-          Storage::delete($current_album->coverart);
+        if (Storage::exists($album->coverart)) {
+          Storage::delete($album->coverart);
         }
 
-        $current_album->update([
+        $album->update([
           'coverart' => $request->coverart = request()
             ->file('coverart')
             ->store('public/coverarts')
         ]);
       }
 
-      return redirect()->intended(route('myaudio.album.show',$current_album->slug));
+      return redirect()->intended(route('myaudio.album.show',$album->slug));
     }
 
     else{
-      foreach ($current_album->audio as $song){
+      foreach ($album->audio as $song){
         $song->update(['album_id' => $duplicate_album->id]);
 
       }

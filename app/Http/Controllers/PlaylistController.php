@@ -16,9 +16,7 @@ class PlaylistController extends Controller
     return view('myaudio.playlist.index',compact('playlists'));
   }
 
-  public function show($id){
-
-    $playlist = Playlist::where('user_id',Auth::user()->id)->where('id',$id)->first();
+  public function show(Playlist $playlist){
 
     if (isset($playlist)){
 

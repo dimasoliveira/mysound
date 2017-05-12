@@ -81,7 +81,7 @@
                     <div class="col s2 m2">
                         <div class="card hoverable" style="border-radius: 100%;">
                             <div class="card-image waves-effect waves-block waves-light">
-                                <img style="border-radius: 100%" src="https://thumb9.shutterstock.com/display_pic_with_logo/1375510/221431012/stock-vector-male-avatar-profile-picture-vector-illustration-eps-221431012.jpg">
+                                <img style="border-radius: 100%" src="@if(!empty(Storage::exists($result->avatar) )) {{ Storage::url($result->avatar) }} @else {{ Storage::url('public/defaults/avatar.png') }}  @endif">
                             </div>
                         </div>
                         <p style="text-align: center"><a href="{{ route('profile.show', $result->slug) }}" class="blue-text">{{$result->username }}</a></p>

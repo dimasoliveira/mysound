@@ -55,6 +55,7 @@ class RoleController extends Controller
 
   public function edit(Role $role){
 
+
     foreach ($role->permissions as $role_permission){
       $role_permissions[] = $role_permission->id;
     }
@@ -80,12 +81,14 @@ class RoleController extends Controller
 
     DB::table('permission_role')->where('role_id',$role->id)->delete();
 
+    if (!empty($request->permissions)){
     foreach ($request->permissions as $id){
 
       if (!DB::table('permission_role')->where('role_id',$role->id)->where('permission_id', $id)->exists()) {
         $role->attachPermission(Permission::findOrfail($id));
       }
     }
+  }
 
     return redirect()
       ->route('admin.role.edit',$role->id)

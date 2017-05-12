@@ -14,7 +14,7 @@
 Route::get('/', function () {
   if (Auth::user()){ return redirect(route('timeline.show'));  }
     return view('welcome');
-});
+})->name('index');
 
 Auth::routes();
 
@@ -51,9 +51,15 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/search','SearchController@index');
   Route::post('/search','SearchController@searchRequest')->name('search.request');
   Route::get('/timeline','TimelineController@index')->name('timeline.show');
-  Route::get('/profile', function () {return redirect()->intended(route('profile.show',Auth::user()->slug));});
+  Route::get('/profile', function () {return redirect()->intended(route('profile.show',Auth::user()->slug));})->name('profile');
+
+
+  Route::post('/profile/{user}','ProfileController@avatarUpdate')->name('avatar.update');
   Route::get('/profile/{slug}','ProfileController@index')->name('profile.show');
   Route::post('/profile/{slug}','ProfileController@followRequest')->name('follow.request');
+
+
+
 
 
   Route::get('/audio/{audio}','TimelineController@show')->name('audio.show');
@@ -72,28 +78,31 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/myaudio/add','AudioController@store')->name('myaudio.store');
   });
 
-  Route::group(['middleware' => ['permission:audio-edit']], function () {
+  Route::group(['middleware' => ['can:audio_owner,audio']], function () {
 
     //Route::resource('id','AudioController',['except' => ['edit']]);
     Route::get('/myaudio/edit/{audio}','AudioController@edit')->name('myaudio.edit');
     Route::post('/myaudio/edit/{audio}','AudioController@update')->name('myaudio.update');
-    Route::post('/myaudio/albums/{slug}/edit','AlbumController@update')->name('myaudio.album.update');
+    Route::delete('/myaudio/destroy/{id}','AudioController@destroy')->name('myaudio.destroy');
 
+  });
+
+
+
+  Route::get('/myaudio/albums','AlbumController@index')->name('myaudio.albums');
+
+  Route::group(['middleware' => ['can:album_owner,album']], function () {
+
+    Route::get('/myaudio/album/{album}','AlbumController@show')->name('myaudio.album.show');
+    Route::post('/myaudio/album/{album}/edit','AlbumController@update')->name('myaudio.album.update');
+    // A L B U M  D E L E T E
   });
 
   //Route::get('/myaudio/albums/{slug}/edit','AlbumController@edit')->name('myaudio.album.edit');//->middleware('can:update-audio,audio')
 
-
-
-  Route::group(['middleware' => ['permission:audio-delete']], function () {
-    Route::delete('/myaudio/destroy/{id}','AudioController@destroy')->name('myaudio.destroy');
-  });
-
-  Route::get('/myaudio/albums','AlbumController@getAll')->name('myaudio.albums');
-  Route::get('/myaudio/album/{slug}','AlbumController@getAlbum')->name('myaudio.album.show');
-
   Route::get('/myaudio/playlists','PlaylistController@index')->name('myaudio.playlist.index');
-  Route::get('/myaudio/playlist/{id}','PlaylistController@show')->name('myaudio.playlist.show');
+  Route::get('/myaudio/playlist/{playlist}','PlaylistController@show')->name('myaudio.playlist.show');
+
 });
 //Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
 //  Route::get('/', 'AdminController@welcome');
