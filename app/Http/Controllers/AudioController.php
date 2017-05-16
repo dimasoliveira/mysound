@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Storage;
 
 class AudioController extends Controller {
 
+
+
   public function index() {
 
     $audio_posts = Audio::orderBy('created_at', 'desc')
@@ -33,7 +35,7 @@ class AudioController extends Controller {
 
   public function store(Request $request) {
 
-    $this->validate($request, [
+    $validator = Validator::make($request->all(), [
       'title' => 'required|max:255',
       'artist' => 'required|max:50',
       'album' => 'nullable|max:50',
@@ -43,6 +45,14 @@ class AudioController extends Controller {
       'year' => 'nullable|digits:4',
       'tracknumber' => 'nullable|max:99',
     ]);
+
+    if ($validator->fails()) {
+      return redirect()
+        ->back()
+        ->withErrors($validator)
+        ->with('audioAddValidationError', 'Adding audio failed')
+        ->withInput();
+    }
 
     if (!Input::file('filename')->getClientOriginalExtension() == 'mp3') {
         return redirect()->back()->with('message', 'Bestandformaat is geen mp3')->withInput();
@@ -125,22 +135,17 @@ class AudioController extends Controller {
       }
       else {
         return redirect()
-          ->back()->with('message', 'Er is helaas iets fout gegaan, probeer het opnieuw')->withInput();
+          ->back()->with('message', 'Something went wrong, try again')->withInput();
       }
-      return redirect()->back()->with('message', 'File succesfully edited')->withInput();
+      return redirect()->back()->with('message', 'File succesfully added')->withInput();
   }
 
   public function edit(Audio $audio) {
-
-      // Checkt in de AuthServiceProvider of de user eigenaar is van deze $audio, of een superadmin
-      //$this->authorize('audio-edit',$audio);
 
       return view('forms.audio.edit', compact('audio'));
   }
 
   public function update(Request $request,Audio $audio) {
-
-    $this->authorize('audio-edit',$audio);
 
     $validator = Validator::make($request->all(), [
       'title' => 'required|max:255',
@@ -156,7 +161,7 @@ class AudioController extends Controller {
       return redirect()
         ->back()
         ->withErrors($validator)
-        ->with('validation-error', $request->id)
+        ->with('audioEditValidationError', "jaa".$request->id)
         ->withInput();
     }
 
@@ -219,9 +224,8 @@ class AudioController extends Controller {
       ->with('message', 'File succesfully edited');
   }
 
-  public function destroy($id)
+  public function destroy(Audio $audio)
   {
-    $audio = Audio::findOrFail($id);
 
     if (Storage::exists($audio->filename)){
       Storage::delete($audio->filename);

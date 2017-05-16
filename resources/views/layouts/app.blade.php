@@ -81,13 +81,32 @@
     </script>
 @endif
 
-@if(session()->has('validation-error'))
+@if(session()->has('audioEditValidationError'))
 
     <script>
       $(document).ready(function(){
-        $('#edit-{{ session()->get('validation-error') }}').modal().modal('open');
+        $('#editAudio').modal().modal('open');
+
       });</script>
 @endif
+
+@if(session()->has('audioAddValidationError'))
+
+    <script>
+      $(document).ready(function(){
+        $('#addAudio').modal().modal('open');
+      });</script>
+@endif
+
+@if(session('playlistValidationError'))
+
+    <script>
+      $(document).ready(function(){
+        $('#addPlaylist').modal().modal('open');
+
+      });</script>
+@endif
+
 
 <main>
 <nav class="light-blue lighten-1 nav-extended" role="navigation">
@@ -140,7 +159,20 @@
     </div>
 
     @if (Auth::check())
-        <a style="position:absolute; right: 10%; top:15%;" class="btn-floating btn-large waves-effect waves-light blue" href="#addModal"><i class="material-icons">add</i></a>
+
+
+        <div style="" class="click-to-toggle fixed-action-btn horizontal">
+            <a class="btn-floating btn-large blue">
+                <i class="large material-icons">add</i>
+            </a>
+            <ul>
+                <li><a class="btn-floating waves-effect waves-light blue" href="#addAudio"><i class="material-icons">audiotrack</i></a></li>
+                <li><a class="btn-floating waves-effect waves-light blue" href="#addPlaylist"><i class="material-icons">playlist_add</i></a></li>
+            </ul>
+        </div>
+
+
+
     @endif
 
     @yield('expanded-navbar')
@@ -178,16 +210,9 @@
 @yield('content')
 
 <!-- Add-Modal Structure -->
-    @if(session()->has('validation-error'))
-
-        <script>
-          $(document).ready(function(){
-            $('#addModal').modal().modal('open');
-          });</script>
-    @endif
 
 
-    <div id="addModal" class="modal modal-fixed-footer" style="width: 30%;">
+    <div id="addAudio" class="modal modal-fixed-footer" style="width: 30%;">
         <div class="modal-content" style="padding-top: 15px;padding-bottom: 15px;">
             {!!  Form::open(['route' => ['myaudio.store'],'class' => 'form-horizontal col s12', 'files' => true])  !!}
 
@@ -337,7 +362,201 @@
 
         {{ Form::close() }}
     </div>
+    <div id="editAudio" class="modal modal-fixed-footer" style="width: 30%;">
+        <div class="modal-content" style="padding-top: 15px;padding-bottom: 15px;">
+            {!!  Form::open(['class' => 'form-horizontal col s12', 'id' => 'editAudioForm','files' => true, '_lpchecked' => '1'])  !!}
 
+
+
+            <div class="row">
+
+                <div class="input-field col s2 form-group{{ $errors->has('tracknumber') ? ' has-error' : '' }}">
+                    <input id="tracknumber" type="text" class="form-control" name="tracknumber" value="{{ old('tracknumber') }}" >
+
+                    <label for="tracknumber" class="active">Nr.</label>
+
+                    @if ($errors->has('tracknumber'))
+                        <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('tracknumber') }}</strong>
+                                    </span>
+                    @endif
+                </div>
+
+                <div class="input-field col s10 form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+                    <input id="title" type="text" class="form-control" name="title" value="{{ old('title') }}" >
+
+                    <label for="title" class="active">Title *</label>
+
+                    @if ($errors->has('title'))
+                        <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('title') }}</strong>
+                                    </span>
+                    @endif
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12 form-group{{ $errors->has('artist') ? ' has-error' : '' }}">
+                    <input id="artist" type="text" class="form-control" name="artist" value="{{ old('artist') }}" >
+                    <label for="artist" class="active">Artist *</label>
+
+                    @if ($errors->has('artist'))
+                        <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('artist') }}</strong>
+                                    </span>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="input-field col s12 form-group{{ $errors->has('album') ? ' has-error' : '' }}">
+                    <input id="album" type="text" class="form-control" name="album" value="{{ old('album') }}" >
+                    <label for="album" class="active">Album</label>
+
+                    @if ($errors->has('album'))
+                        <span class="left help-block red-text">
+                                                            <strong>{{ $errors->first('album') }}</strong>
+                                                        </span>
+                    @endif
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s10 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
+                    <input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}" >
+                    <label for="genre" class="active">Genre</label>
+
+                    @if ($errors->has('genre'))
+                        <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('genre') }}</strong>
+                                    </span>
+                    @endif
+
+                </div>
+
+                <div class="input-field col s2 form-group{{ $errors->has('year') ? ' has-error' : '' }}">
+                    <input id="year" type="text" class="form-control" name="year" value="{{ old('year') }}">
+                    <label for="year" class="active">Year </label>
+
+                    @if ($errors->has('year'))
+                        <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('year') }}</strong>
+                                    </span>
+                    @endif
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+
+
+                <div class="file-field input-field col s6">
+                    <div class="btn waves-effect blue">
+                        <span>Audio</span>
+                        <input id="filename" name="filename" type="file">
+                    </div>
+
+                    @if ($errors->has('filename'))
+                        <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('filename') }}</strong>
+                                    </span>
+                    @endif
+                </div>
+
+                <div class="file-field input-field col 6">
+                    <div class="btn waves-effect blue">
+                        <span>Coverart</span>
+                        <input id="coverart" name="coverart" type="file" >
+                    </div>
+
+                    @if ($errors->has('coverart'))
+                        <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('coverart') }}</strong>
+                                    </span>
+                    @endif
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="file-field input-field">
+
+
+
+                    <p class="left">
+                        <input title="published" type="checkbox" id="published2" class="filled-in" name="published">
+                        <label for="published2">Delen met anderen</label>
+                    </p>
+
+
+                    <p class="right">
+
+                        <input title="explicit" type="checkbox" class="filled-in" id="explicit2" name="explicit">
+
+                        <label for="explicit2">Explicit</label>
+                    </p>
+                </div>
+            </div>
+
+            <br/>
+
+        </div>
+
+        <button type="submit" class="modal-footer col s12 btn btn-large waves-effect blue">Upload</button>
+
+
+
+
+
+        {{ Form::close() }}
+    </div>
+    <div id="addPlaylist" class="modal modal-fixed-footer" style="width: 30%;height: 35%;">
+        <div class="modal-content" style="padding-top: 15px;padding-bottom: 15px;">
+            {!!  Form::open(['route' => ['playlist.store'],'class' => 'form-horizontal col s12'])  !!}
+
+            <div class="row">
+
+                <div class="input-field col s12 form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" >
+
+                    <label for="name">Playlist name</label>
+
+                    @if ($errors->has('name'))
+                        <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                    </span>
+                    @endif
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="input-field col s12 form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+                    <input id="description" type="text" class="form-control" name="description" value="{{ old('description') }}" >
+
+                    <label for="description">Playlist description</label>
+
+                    @if ($errors->has('description'))
+                        <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('description') }}</strong>
+                                    </span>
+                    @endif
+                </div>
+
+            </div>
+
+            <br/>
+
+        </div>
+
+        <button type="submit" class="modal-footer col s12 btn btn-large waves-effect blue">Create</button>
+
+        {{ Form::close() }}
+    </div>
 
 @if (Auth::check())
 <div class="sm2-bar-ui full-width fixed flat">
@@ -497,6 +716,34 @@
         $(".sm2-playlist-bd").html(music_item);
 
       window.sm2BarPlayers[0].playlistController.playItemByOffset();
+    });
+
+    $(".edit-audio").click(function(){
+
+      $('#editAudioForm input[name="title"]').val($(this).data('title'));
+      $('#editAudioForm input[name="artist"]').val($(this).data('artist'));
+      $('#editAudioForm input[name="tracknumber"]').val($(this).data('tracknumber'));
+      $('#editAudioForm input[name="album"]').val($(this).data('album'));
+
+
+      $('#editAudioForm input[name="year"]').val($(this).data('year'));
+      $('#editAudioForm input[name="genre"]').val($(this).data('genre'));
+
+
+      $('#editAudioForm label').not('#editAudioForm label[for="explicit2"]').not('#editAudioForm label[for="published2"]').addClass('active');
+
+      if ($(this).data('explicit')){
+        $('#editAudioForm input[name="explicit"]').attr("checked","checked");
+      }
+      if ($(this).data('published')){
+        $('#editAudioForm input[name="published"]').attr("checked","checked");
+      }
+
+      var route = "http://mysound.dev/myaudio/edit/"+$(this).data('id');
+
+      $("#editAudioForm").attr("action", route);
+
+      $('#editAudio').modal().modal('open');
     });
 
   });

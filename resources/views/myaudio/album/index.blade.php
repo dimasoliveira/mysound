@@ -4,7 +4,7 @@
     <div class="flex-container nav-content .center-align">
 
         <ul class="tabs tabs-transparent row">
-            <li class="flex-item valign tab"><a href="{{ route('myaudio.playlist.index') }}">Playlists</a></li>
+            <li class="flex-item valign tab"><a href="{{ route('playlist.index') }}">Playlists</a></li>
             <li class="flex-item valign tab"><a href="{{ route('myaudio.index') }}">Recent</a></li>
             <li class="flex-item valign tab"><a class="active" href="{{ route('myaudio.albums') }}">Albums</a></li>
         </ul>

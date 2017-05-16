@@ -164,3 +164,19 @@ img.responsive-img, video.responsive-video {
     from {top: 30px; opacity: 1;}
     to {top: 0; opacity: 0;}
 }
+
+/* FLOATING BUTTON MENU */
+.fixed-action-btn{
+    position:absolute;
+    right: 10%;
+    top:15%;
+}
+
+.fixed-action-btn.horizontal ul {
+    text-align: right;
+    right: 0!important;
+    top: 60%!important;
+    height: 100%!important;
+    left: 15px!important;
+    width: 0!important;
+}

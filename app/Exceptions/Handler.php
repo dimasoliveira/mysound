@@ -46,6 +46,11 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         return parent::render($request, $exception);
+
+      //REDIRECT TO LOGIN BY TOKENMISMATCH
+      if ($exception instanceof TokenMismatchException){
+        return redirect('auth/login');
+      }
     }
 
     /**
@@ -61,11 +66,6 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
-
-        //REDIRECT TO LOGIN BY TOKENMISMATCH
-        if ($exception instanceof TokenMismatchException){
-          return redirect('auth/login');
-        }
 
         return redirect()->guest('login');
     }

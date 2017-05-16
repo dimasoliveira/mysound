@@ -14,8 +14,9 @@ class CreateAudioPlaylistsTable extends Migration
     public function up()
     {
         Schema::create('audio_playlists', function (Blueprint $table) {
+          $table->increments('id');
           $table->integer('audio_id')->unsigned();
-          $table->foreign('audio_id')->references('id')->on('audio')->onDelete('cascade');
+          $table->foreign('audio_id')->references('id')->on('audio');
           $table->integer('playlist_id')->unsigned();
           $table->foreign('playlist_id')->references('id')->on('playlists');
           $table->timestamps();

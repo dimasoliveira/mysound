@@ -7,16 +7,7 @@
 
         <center>
 
-            @if(session()->has('message'))
-                <div class="alert alert-success">
 
-                    <script>
-                      var $toastContent = $('<span>{{ session()->get('message') }}</span>');
-                      Materialize.toast($toastContent, 10000);
-                    </script>
-
-                </div>
-            @endif
             <div class="section"></div>
 
             <div class="section"></div>

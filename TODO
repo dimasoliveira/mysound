@@ -17,7 +17,6 @@ Aanpasbare limiet aan totale tijdsduur van audio die een user kan toevoegen
 ----------------------------------------------------------------
 U P L O A D
 ----------------------------------------------------------------
-Profielfoto upload
 Popup window voor toevoegen en wijzigen en muziek automatisch
 openen als er validation errors zijn
 
@@ -25,7 +24,7 @@ openen als er validation errors zijn
 L A Y O U T
 ----------------------------------------------------------------
 Home page maken
-Profiel view
+Profiel view**
 Mobile/tablet layout maken
 Audio edit view verbeteren
 Kleine veranderingen aan album detail pagina
@@ -35,12 +34,11 @@ Popup window voor toevoegen muziek
 B I J   G E N O E G   T I J D
 ----------------------------------------------------------------
 Default cover art nietmeer invoeren, nullable maken en img tag backgroundimage met default coverart geven
-Audio liken
-Banner upload
+
 Muziek door laten spelen als je naar andere pagina gaat
 Autocomplete album input bij audio toevoegen
 Dropdown op Albumsview is niet volledig zichtbaar
-Audio en Coverart input leeg bij return van validator
+Audio en Coverart input leeg bij return van validator in add view
 
 Soundmanager Improvements:
     Muziek doorlaten spelen bij het toevoegen van nieuwe muziek aan de SMPlaylist
@@ -60,3 +58,5 @@ Return Toasts messages bij succes toevoegen muziek en andere dingen fixen**
 Album edit**
 Album wijzigen fixen**
 Multi-input/autocomplete voor invoer genres**  TIJDELIJK GEFIXT
+Profielfoto upload**
+Audio liken**

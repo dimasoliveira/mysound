@@ -14,11 +14,10 @@ class CreateActivityLogTable extends Migration
             $table->increments('id');
             $table->string('log_name')->nullable();
             $table->string('description');
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('subject_id')->nullable();
             $table->string('subject_type')->nullable();
-            $table->integer('causer_id')->nullable();
+            $table->unsignedInteger('causer_id');
+            $table->foreign('causer_id')->references('id')->on('users');
             $table->string('causer_type')->nullable();
             $table->text('properties')->nullable();
             $table->timestamps();

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
-  public function create(Request $request,Audio $audio){
+  public function store(Request $request,Audio $audio){
 
     Validator::make($request->all(), [
       'comment' => 'required|max:255|min:1',

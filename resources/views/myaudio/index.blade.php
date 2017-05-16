@@ -4,7 +4,7 @@
     <div class="flex-container nav-content .center-align">
 
         <ul class="tabs tabs-transparent row">
-            <li class="flex-item valign tab"><a href="{{ route('myaudio.playlist.index') }}">Playlists</a></li>
+            <li class="flex-item valign tab"><a href="{{ route('playlist.index') }}">Playlists</a></li>
             <li class="flex-item valign tab"><a class="active" href="{{ route('myaudio.index') }}">Recent</a></li>
             <li class="flex-item valign tab"><a href="{{ route('myaudio.albums') }}">Albums</a></li>
         </ul>
@@ -36,7 +36,7 @@
 
                             <!-- Dropdown Structure -->
                             <ul style="z-index: 100000" id='dropdown-{{ $audio_post->id }}' class='dropdown-content'>
-                                <li><a href="{{ route('myaudio.edit',$audio_post->id) }}">Edit</a></li>
+                                <li><a href="#editAudio" class="edit-audio" data-id="{{ $audio_post->id }}" data-title="{{ $audio_post->title }}" data-artist="{{ $audio_post->artist }}" data-tracknumber="{{ $audio_post->tracknumber }}" data-album="{{ $audio_post->album->name }}" data-explicit="{{ $audio_post->explicit }}" data-published="{{ $audio_post->published }}" data-year="{{ $audio_post->year }}" data-genre="{{ $audio_post->genre }}">Edit</a></li>
                                 <li><a href="#modal{{ $audio_post->id }}">Delete</a></li>
 
                             </ul>
