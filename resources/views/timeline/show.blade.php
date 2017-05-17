@@ -31,7 +31,7 @@
                             <li><a href="#edit-{{$audio->id}}">Edit</a></li>
                             @foreach(Auth::user()->playlists as $playlist)
 
-                                {!! Form::open(['method' => 'POST','route' => ['playlist.request',$playlist,$song]]) !!}
+                                {!! Form::open(['method' => 'POST','route' => ['playlist.request',$playlist->id,$audio->id]]) !!}
 
                                 <li><a type="submit" href="">Add to {{ $playlist->name }}</a></li>
                                 {!! Form::close() !!}
@@ -252,7 +252,7 @@
                         </li>
                         <li>
                             <div class="input-field">
-                                {!! Form::open(['route'=> ['comment.create',$audio->id],'method' => 'POST','style' => 'padding-left: 30px;padding-top: 0px;padding-right: 30px;']) !!}
+                                {!! Form::open(['route'=> ['comment.store',$audio->id],'method' => 'POST','style' => 'padding-left: 30px;padding-top: 0px;padding-right: 30px;']) !!}
                                 <div class="row" style="margin:15px;">
                                     <input id="commentField" type="text" class="validate col s11" name="comment" placeholder="Leave a comment..." style="padding:0">
                                     <button type="submit" role="button" id="likeButton" class="hoverable btn-floating btn-medium waves-effect waves-light blue right"><i class="material-icons large">send</i></button>

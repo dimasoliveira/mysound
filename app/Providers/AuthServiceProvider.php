@@ -44,5 +44,10 @@ class AuthServiceProvider extends ServiceProvider
           return $user->id == $playlist->user_id;
         });
 
+        Gate::define('profile_owner', function (User $user,$profile) {
+
+          return $user->id == $profile->user_id;
+        });
+
     }
 }

@@ -33,6 +33,10 @@ class Audio extends Model
     return $this->belongsTo(Album::class);
   }
 
+  public function playlist_id(){
+    return $this->belongsToMany('audio_playlists');
+  }
+
   public function playlist(){
     return $this->belongsToMany(Playlist::class,'audio_playlists');
   }
@@ -45,6 +49,9 @@ class Audio extends Model
 
     return $request->filename;
   }
+
+
+
 
 //  public function audio_genre(){
 //    return $this->hasMany(Audio_Genres::class);

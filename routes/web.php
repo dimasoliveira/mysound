@@ -22,10 +22,12 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::group(['middleware' => ['role:admin|superadmin']], function () {
 
-  Route::get('/admin',function () {return view('admin.index'); });
+  Route::get('/admin',function () {return view('admin.index');})->name('admin.index');
+
   Route::get('/admin/users','Admin\UsersController@index')->name('admin.users');
   Route::get('/admin/roles','Admin\RoleController@index')->name('admin.roles');
   Route::get('/admin/audio','Admin\AudioController@index')->name('admin.audio');
+  Route::get('/admin/comments','Admin\CommentController@index')->name('admin.comments');
 
   Route::group(['middleware' => ['permission:user-edit']], function () {
     Route::get('/admin/users/{id}','Admin\UsersController@edit')->name('admin.users.edit');
@@ -54,6 +56,7 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
   });
 
 
+
 });
 
   Route::get('/search','SearchController@index');
@@ -61,13 +64,10 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
   Route::get('/timeline','TimelineController@index')->name('timeline.show');
   Route::get('/profile', function () {return redirect()->intended(route('profile.show',Auth::user()->slug));})->name('profile');
 
+
   Route::post('/profile/{user}','ProfileController@avatarUpdate')->name('avatar.update');
   Route::get('/profile/{slug}','ProfileController@index')->name('profile.show');
   Route::post('/profile/{slug}','ProfileController@followRequest')->name('follow.request');
-
-
-
-
 
   Route::get('/audio/{audio}','TimelineController@show')->name('audio.show');
   Route::post('/audio/{audio}','CommentController@store')->name('comment.store');
@@ -75,8 +75,8 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
 
   Route::post('like/{audio}','LikeController@create')->name('like.create');
 
-
-  Route::post('/playlistrequest','PlaylistController@addToPlaylist')->name('playlist.request');
+  Route::post('/playlist/{playlist}/{audio}','PlaylistController@addToPlaylist')->name('playlist.request');
+  Route::delete('/playlist/{id}','PlaylistController@removeFromPlaylist')->name('playlist.remove');
 
   Route::get('/myaudio/','AudioController@index')->name('myaudio.index');
 
@@ -87,7 +87,6 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
 
   Route::group(['middleware' => ['can:audio_owner,audio']], function () {
 
-    //Route::resource('id','AudioController',['except' => ['edit']]);
     Route::get('/myaudio/edit/{audio}','AudioController@edit')->name('myaudio.edit');
     Route::post('/myaudio/edit/{audio}','AudioController@update')->name('myaudio.update');
     Route::delete('/myaudio/destroy/{audio}','AudioController@destroy')->name('myaudio.destroy');
@@ -95,11 +94,9 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
   });
 
 
-
   Route::get('/myaudio/albums','AlbumController@index')->name('myaudio.albums');
 
   Route::group(['middleware' => ['can:album_owner,album']], function () {
-
     Route::get('/myaudio/album/{album}','AlbumController@show')->name('myaudio.album.show');
     Route::post('/myaudio/album/{album}/edit','AlbumController@update')->name('myaudio.album.update');
     // A L B U M  D E L E T E

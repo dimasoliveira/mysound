@@ -11,7 +11,8 @@ class Playlist extends Model
   ];
 
   public function audio(){
-    return $this->belongsToMany(Audio::class,'audio_playlists');
+    return $this->belongsToMany(Audio::class,'audio_playlists')->withPivot('id');
   }
+
 
 }

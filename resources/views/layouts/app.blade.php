@@ -137,7 +137,7 @@
 
 
                 <ul id="dropdown1" class="dropdown-content">
-                    <li><a class="" href="{{route('profile.show',Auth::user()->slug)}}">Profiel</a></li>
+                    <li><a class="" href="{{route('profile.show',Auth::user()->slug)}}">Profile</a></li>
                     <li>
                         <a href="{{ route('logout') }}"
                            onclick="event.preventDefault();
@@ -184,13 +184,14 @@
 <ul id="slide-out" class="side-nav">
     <li><div class="userView">
             <div class="background">
-                <img src="#">
+                <img src="@if (!empty(Storage::exists(Auth::user()->avatar) )) {{ Storage::url(Auth::user()->avatar) }} @else {{ Storage::url('public/defaults/avatar.png') }}  @endif" class="circle z-depth-2 responsive-img">
+
             </div>
             <a href="#!user"><img class="circle" src="#"></a>
             <a href="#!name"><span class="white-text name">{{ Auth::user()->username }}</span></a>
             <a href="#!email"><span class="white-text email">{{ Auth::user()->email }}</span></a>
         </div></li>
-    <li><a class="waves-effect" href="{{route('profile.show',Auth::user()->slug)}}">Profiel</a></li>
+    <li><a class="waves-effect" href="{{route('profile.show',Auth::user()->slug)}}">Profile</a></li>
     <li><a class="waves-effect" href="{{route('myaudio.index')}}">My Audio</a></li>
     <li><div class="divider"></div></li>
     <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
@@ -299,8 +300,6 @@
 
 
             <div class="row">
-
-
 
                 <div class="file-field input-field col s6">
                     <div class="btn waves-effect blue">
@@ -505,7 +504,7 @@
 
         </div>
 
-        <button type="submit" class="modal-footer col s12 btn btn-large waves-effect blue">Upload</button>
+        <button type="submit" class="modal-footer col s12 btn btn-large waves-effect blue">Edit</button>
 
 
 

@@ -79,8 +79,12 @@
                                     <td>{{ $song->artist }}</td>
                                     <td>{{ gmdate("i:s",$song->length) }}</td>
                                     <td>{{ $song->year }}</td>
-
                                     <td><i data-activates='dropdown-{{ $song->id }}' style="cursor: pointer;" class="dropdown-button small material-icons">more_vert</i></td>
+                                    <td> {!! Form::open(['route'=> ['playlist.remove',$song->pivot->id],'method' => 'DELETE']) !!}
+                                    <button class="red-text right"><i class="tiny material-icons">clear</i></button>
+
+                                    {{ Form::close() }}</td>
+
                                 </tr>
 
                                 <ul style="z-index: 100000" id='dropdown-{{ $song->id }}' class='dropdown-content'>

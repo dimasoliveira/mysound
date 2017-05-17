@@ -34,7 +34,7 @@
                                 <li><a href="#edit-{{$audio->id}}">Edit</a></li>
                                 @foreach(Auth::user()->playlists as $playlist)
 
-                                    {!! Form::open(['method' => 'POST','route' => ['playlist.request',$playlist]]) !!}
+                                    {!! Form::open(['method' => 'POST','route' => ['playlist.request',$playlist->id,$audio->id]]) !!}
 
                                     <li><a type="submit" href="">Add to {{ $playlist->name }}</a></li>
                                     {!! Form::close() !!}

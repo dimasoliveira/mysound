@@ -127,14 +127,16 @@
                                     </tr>
 
                                     <ul style="z-index: 100000" id='dropdown-{{ $song->id }}' class='dropdown-content'>
-                                        <li><a href="#edit-{{$song->id}}">Edit</a></li>
+                                        <li><a href="#editAudio" class="edit-audio" data-title="{{ $song->title }}" data-artist="{{ $song->artist }}" data-tracknumber="{{ $song->tracknumber }}" data-album="{{ $song->album->name }}" data-explicit="{{ $song->explicit }}" data-published="{{ $song->published }}" data-year="{{ $song->year }}" data-genre="{{ $song->genre }}">Edit</a></li>
                                         @foreach($playlists as $playlist)
-
+                                            <li>
                                             {!! Form::open(['method' => 'POST','route' => ['playlist.request',$playlist,$song]]) !!}
 
-                                            <li><a type="submit" href="">Add to {{ $playlist->name }}</a></li>
-                                            {!! Form::close() !!}
+                                            {{  Form::submit('Add to '.$playlist->name, ['class' => 'btn-flat'])}}
+                                            {{--<a type="submit" href="">Add to {{ $playlist->name }}</a>--}}
 
+                                            {!! Form::close() !!}
+                                            </li>
                                          @endforeach
                                         <li><a href="#delete-{{$song->id}}" id="testtest">Delete</a></li>
                                     </ul>
@@ -152,147 +154,6 @@
                                             {!! Form::close() !!}
 
                                         </div>
-                                    </div>
-
-                                    <div id="edit-{{$song->id}}" class="modal modal-fixed-footer" style="width: 30%;">
-                                        <div class="modal-content" style="padding-top: 15px;padding-bottom: 15px;">
-                                            {!!  Form::open(['route' => ['myaudio.update', $song->id],'class' => 'form-horizontal col s12', 'files' => true])  !!}
-
-
-
-                                            <div class="row">
-
-                                                <div class="input-field col s2 form-group{{ $errors->has('tracknumber') ? ' has-error' : '' }}">
-                                                    <input id="tracknumber" type="text" class="form-control" name="tracknumber" value="{{ $song->tracknumber }}" >
-
-                                                    <label for="tracknumber">Nr.</label>
-
-                                                    @if ($errors->has('tracknumber'))
-                                                        <span class="left help-block red-text">
-                                    <strong>{{ $errors->first('tracknumber') }}</strong>
-                                    </span>
-                                                    @endif
-                                                </div>
-
-                                                <div class="input-field col s10 form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                                                    <input id="title" type="text" class="form-control" name="title" value="{{ $song->title }}" >
-
-                                                    <label for="title">Title *</label>
-
-                                                    @if ($errors->has('title'))
-                                                        <span class="left help-block red-text">
-                                    <strong>{{ $errors->first('title') }}</strong>
-                                    </span>
-                                                    @endif
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="input-field col s12 form-group{{ $errors->has('artist') ? ' has-error' : '' }}">
-                                                    <input id="artist" type="text" class="form-control" name="artist" value="{{ $song->artist }}" >
-                                                    <label for="artist">Artist *</label>
-
-                                                    @if ($errors->has('artist'))
-                                                        <span class="left help-block red-text">
-                                    <strong>{{ $errors->first('artist') }}</strong>
-                                    </span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <div class="row">
-
-                                                <div class="input-field col s12 form-group{{ $errors->has('album') ? ' has-error' : '' }}">
-                                                    <input id="album" type="text" class="form-control" name="album" value="{{ $song->album->name }}" >
-                                                    <label for="album">Album</label>
-
-                                                    @if ($errors->has('album'))
-                                                        <span class="left help-block red-text">
-                                                            <strong>{{ $errors->first('album') }}</strong>
-                                                        </span>
-                                                    @endif
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="input-field col s10 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
-                                                    <input id="genre" type="text" class="form-control" name="genre" value="{{ $song->genre }}" >
-                                                    <label for="genre">Genre</label>
-
-                                                    @if ($errors->has('genre'))
-                                                        <span class="left help-block red-text">
-                                    <strong>{{ $errors->first('genre') }}</strong>
-                                    </span>
-                                                    @endif
-
-                                                </div>
-
-                                                <div class="input-field col s2 form-group{{ $errors->has('year') ? ' has-error' : '' }}">
-                                                    <input id="year" type="text" class="form-control" name="year" value="{{ $song->year }}">
-                                                    <label for="year">Year </label>
-
-                                                    @if ($errors->has('year'))
-                                                        <span class="left help-block red-text">
-                                    <strong>{{ $errors->first('year') }}</strong>
-                                    </span>
-                                                    @endif
-                                                </div>
-
-                                            </div>
-
-
-                                            <div class="row">
-                                                <div class="file-field input-field">
-                                                    <div class="btn waves-effect blue">
-                                                        <span>Coverart</span>
-                                                        <input id="coverart" name="coverart" type="file" >
-                                                    </div>
-                                                    <div class="file-path-wrapper">
-                                                        <input class="file-path validate" type="text" value="{{ old('coverart') }}">
-                                                    </div>
-                                                    @if ($errors->has('coverart'))
-                                                        <span class="left help-block red-text">
-                                    <strong>{{ $errors->first('coverart') }}</strong>
-                                    </span>
-                                                    @endif
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="file-field input-field">
-
-
-                                                    <p class="left">
-                                                        @if ($song->published == 1)
-                                                            <input title="published" type="checkbox" class="filled-in" checked="checked" id="published" name="published">
-                                                        @else
-                                                            <input title="published" type="checkbox" id="published" class="filled-in" name="published">
-                                                        @endif
-                                                        <label for="published">Delen met anderen</label>
-                                                    </p>
-
-
-                                                    <p class="right">
-                                                        @if ($song->explicit == 1)
-                                                            <input title="explicit" type="checkbox" class="filled-in" id="explicit" checked="checked" name="explicit">
-                                                        @else
-                                                            <input title="explicit" type="checkbox" class="filled-in" id="explicit" name="explicit">
-                                                        @endif
-                                                        <label for="explicit">Explicit</label>
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <br/>
-
-                                        </div>
-
-                                                    <button type="submit" class="modal-footer col s12 btn btn-large waves-effect blue">Save</button>
-
-
-
-
-
-                                        {{ Form::close() }}
                                     </div>
 
                                 @endforeach

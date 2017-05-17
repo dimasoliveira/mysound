@@ -19,12 +19,10 @@
             <div class="section">
                 <div class="row">
                     <div id="profile-page-header" class="card">
-                        <div class="card-image waves-effect waves-block waves-light">
-                            <a class="btn-floating btn-small waves-effect waves-light right blue" style="margin:10px;">
-                                <i class="material-icons">edit</i>
-                            </a>
+                        <div class="card-image waves-effect waves-block waves-light light-blue">
 
-                            <img class="activator banner-image" style="position: absolute!important;@if(!empty(Storage::exists($user->avatar) ))background: url('{{ Storage::url($user->avatar) }}'); background-size: cover; @endif" alt="user background">
+
+                            <img class="activator banner-image" style="position: absolute!important;@if(!empty(Storage::exists($user->avatar) ))background: url('{{ Storage::url($user->avatar) }}'); background-size: cover; @endif">
 
                             <div class="col s2 right-align right follow-button">
                                 @if ($user->id !== Auth::user()->id)
@@ -39,6 +37,8 @@
                             </div>
 
                                 <figure class="card-profile-image">
+                                    @if ($user->id == Auth::user()->id)
+
                                     <a id="avatarEdit" class="btn-floating btn-small waves-effect waves-light left blue" style="position: absolute">
                                         <i class="material-icons">edit</i>
                                     </a>
@@ -46,7 +46,8 @@
                                         <i class="small material-icons">save</i>
                                     </a>
 
-                                    <img id="avatarUser" src="@if (!empty(Storage::exists($user->avatar) )) {{ Storage::url($user->avatar) }} @else {{ Storage::url('public/defaults/avatar.png') }}  @endif" alt="profile image" class="circle z-depth-2 responsive-img">
+                                    @endif
+                                    <img id="avatarUser" src="@if (!empty(Storage::exists($user->avatar) )) {{ Storage::url($user->avatar) }} @else {{ Storage::url('public/defaults/avatar.png') }}  @endif" class="circle z-depth-2 responsive-img">
                                     {{--https://thumb9.shutterstock.com/display_pic_with_logo/1375510/221431012/stock-vector-male-avatar-profile-picture-vector-illustration-eps-221431012.jpg--}}
                                 </figure>
 

@@ -6,6 +6,7 @@ use App\Audio;
 use App\Playlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class PlaylistController extends Controller
@@ -29,14 +30,22 @@ class PlaylistController extends Controller
     //$playlist->audio()->save($audio);
 
     return redirect(route('myaudio.album.index'))->with('message', 'Unfortunately, the playlist cannot be found');
-
   }
 
-  public function addToPlaylist($playlist,$audio){
+  public function addToPlaylist(Playlist $playlist,Audio $audio){
 
-    dd($audio);
+    $playlist->audio()->save($audio);
 
+    return redirect()->back()->with('message', 'Added '.$audio->title.' to playlist '.$playlist->name);
   }
+
+  public function removeFromPlaylist($id){
+
+    DB::table('audio_playlists')->where('id',$id)->delete();
+
+    return redirect()->back()->with('message', 'Succesfully removed from playlist');
+  }
+
 
   public function store(Request $request){
 
