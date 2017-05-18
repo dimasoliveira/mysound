@@ -1,6 +1,8 @@
 <?php
 namespace App;
 
+use Illuminate\Support\Facades\Storage;
+
 class MP3File {
   protected $filename;
 
@@ -366,6 +368,15 @@ class MP3File {
     }
 
     return $fileData;
+  }
+
+  public function storeAsMP3($request){
+
+    $request->filename = request()->file('filename')->store('public/audio');
+    Storage::move($request->filename, dirname($request->filename).'/'.basename($request->filename,".mpga").'.mp3');
+    $request->filename = dirname($request->filename).'/'.basename($request->filename,".mpga").'.mp3';
+
+    return $request->filename;
   }
 }
 

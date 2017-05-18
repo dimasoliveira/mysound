@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Album;
+use App\Genre;
 use Illuminate\Support\Facades\Gate;
 use App\Audio;
 use App\MP3File;
@@ -30,7 +31,9 @@ class AudioController extends Controller {
 
   public function create() {
 
-    return view('forms.audio.create');
+    $genres = Genre::all();
+
+    return view('forms.audio.create',compact('genres'));
   }
 
   public function store(Request $request) {
@@ -39,7 +42,7 @@ class AudioController extends Controller {
       'title' => 'required|max:255',
       'artist' => 'required|max:50',
       'album' => 'nullable|max:50',
-      'genre' => 'required|max:50',
+      'genre' => 'required',
       'coverart' => 'nullable',
       'filename' => 'required|mimes:mpga',
       'year' => 'nullable|digits:4',
@@ -53,15 +56,6 @@ class AudioController extends Controller {
         ->with('audioAddValidationError', 'Adding audio failed')
         ->withInput();
     }
-
-    if (!Input::file('filename')->getClientOriginalExtension() == 'mp3') {
-        return redirect()->back()->with('message', 'Bestandformaat is geen mp3')->withInput();
-      }
-
-      $audio_data = new MP3File($request->filename);
-
-      $request->length = $audio_data->getDuration();
-      $request->bitrate = $audio_data->getMP3BitRate();
 
       if ($request->explicit == "on") {
         $request->explicit = 1;
@@ -86,23 +80,10 @@ class AudioController extends Controller {
           $request->coverart = "/defaults/coverart.png";
         }
 
-        $request->filename = request()->file('filename')->store('public/audio');
+        $audioData = new MP3File($request->filename);
+        $audioData->storeAsMP3($request);
 
-        Storage::move($request->filename, dirname($request->filename) . '/' . basename($request->filename, ".mpga") . '.mp3');
-
-        $request->filename = dirname($request->filename) . '/' . basename($request->filename, ".mpga") . '.mp3';
-
-        //if (file_exists($request->filename)){
-        //\DB::table('albums')->where('role_name', 'user')->value('role_id');
-
-        //check if album exists
-        $request->album_id = \DB::table('albums')
-          ->where('name', $request->album)
-          ->where('user_id', Auth::user()->id)
-          ->value('id');
-
-        //if not, create the album and pass the album id
-        if ($request->album_id === NULL) {
+        if (!Album::where('name', $request->album)->where('user_id', Auth::user()->id)->exists()) {
 
           Album::create([
             'name' => $request->album,
@@ -110,6 +91,9 @@ class AudioController extends Controller {
           ]);
 
           $request->album_id = \DB::getPdo()->lastInsertId();
+        }
+        else{
+          $request->album_id = Album::where('name', $request->album)->where('user_id', Auth::user()->id)->first()->id;
         }
 
         Audio::create([
@@ -119,25 +103,20 @@ class AudioController extends Controller {
             'album_id' => $request->album_id,
             'tracknumber' => $request->tracknumber,
             'published' => $request->published,
-            'genre' => $request->genre,
+            'genre_id' => Genre::where('name',$request->genre)->first()->id,
             'explicit' => $request->explicit,
             'year' => $request->year,
-            'length' => $request->length,
-            'bitrate' => $request->bitrate,
+            'length' => $audioData->getDuration(),
+            'bitrate' => $audioData->getMP3BitRate(),
             'coverart' => $request->coverart,
             'user_id' => Auth::user()->id,
           ]
         );
-
-//        }else{
-//          return redirect()->back()->with('message', 'MP3 Bestand niet gevonden');
-//        }
       }
       else {
-        return redirect()
-          ->back()->with('message', 'Something went wrong, try again')->withInput();
+        return redirect()->back()->with('message', 'Something went wrong, try again')->withInput();
       }
-      return redirect()->back()->with('message', 'File succesfully added')->withInput();
+        return redirect()->back()->with('message', 'File succesfully added');
   }
 
   public function edit(Audio $audio) {
