@@ -22,7 +22,6 @@ class CreateAudioTable extends Migration
             $table->boolean('explicit');
             $table->boolean('published');
             $table->integer('year')->nullable();
-            $table->string('genre',50);
             $table->integer('length');
             $table->integer('bitrate');
             $table->string('coverart');
@@ -30,6 +29,8 @@ class CreateAudioTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedInteger('album_id');
             $table->foreign('album_id')->references('id')->on('albums');
+            $table->unsignedInteger('genre_id');
+            $table->foreign('genre_id')->references('id')->on('genres');
             $table->timestamps();
         });
     }

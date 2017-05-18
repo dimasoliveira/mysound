@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
-@section('expanded-navbar')
-
-@endsection
-
 @section('content')
 
-    <script src="https://rawgit.com/icefox0801/materialize-autocomplete/master/jquery.materialize-autocomplete.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <script src="https://rawgit.com/opoloo/jquery_upload_preview/master/assets/js/jquery.uploadPreview.js"></script>
 
@@ -19,18 +17,9 @@
         });
       });
     </script>
-
+    <script src="{{ asset('js/genreCombobox.js') }}"></script>
 
     <center>
-
-        @if(session('message'))
-            <script>
-              $( document ).ready(function() {
-                var $toastContent = $('<span>{{ session('message') }}</span>');
-                Materialize.toast($toastContent, 5000);
-              });
-            </script>
-        @endif
 
         <div class="section"></div>
 
@@ -44,10 +33,10 @@
                 <div class="row">
                         <div class="card col s5">
                             <div class="card-image">
-                                <img style="width: 300px; height: auto" id="img-preview" src="#" >
+                                <img style="width: 300px; height: auto" id="img-preview">
                             </div>
                             <div id="audio-preview">
-                                <div >No file selected</div>
+
                             </div>
                         </div>
                 </div>
@@ -78,7 +67,6 @@
                         @endif
                     </div>
 
-
                 </div>
 
                 <div class="row">
@@ -106,9 +94,21 @@
                 </div>
 
                 <div class="row">
+
                     <div class="input-field col s10 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
-                        <input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}" >
-                        <label for="genre">Genre</label>
+
+                            <select id="combobox">
+                                <option value="">Select one...</option>
+                                    @foreach($genres as $genre)
+                                        <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                                    @endforeach
+                            </select>
+
+                            <label for="combobox">Genre </label>
+
+
+                        {{--<input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}" >--}}
+                        {{--<label for="genre">Genre</label>--}}
 
                         @if ($errors->has('genre'))
                             <span class="left help-block red-text">
@@ -203,7 +203,7 @@
         </div>
 
     </center>
-    <script src="{{ asset('js/img-preview.js') }}"></script>
+    <script src="{{ asset('js/imgPreview.js') }}"></script>
     <div class="section"></div>
     <div class="section"></div>
 

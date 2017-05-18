@@ -22,9 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('email',100)->unique();
             $table->string('password');
             $table->string('avatar');
-            $table->string('banner');
-//            $table->unsignedInteger('role_id');
-//            $table->foreign('role_id')->references('id')->on('roles');
+            $table->integer('upload_limit')->default(10800);
             $table->string('slug')->nullable();
             $table->rememberToken();
             $table->timestamps();

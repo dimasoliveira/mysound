@@ -60,4 +60,12 @@ class User extends Authenticatable
       ];
     }
 
+    public function uploadLimitCheck($durationCurrent) {
+
+      foreach ($this->audio as $audio){
+        $totalUploadSeconds[] = $audio->length;
+      }
+        $totalUploadSeconds[] = $durationCurrent;
+        return array_sum($totalUploadSeconds) >= $this->upload_limit;
+    }
 }

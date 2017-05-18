@@ -22,18 +22,17 @@ class ProfileController extends Controller
         {
           $user = Auth::user();
 
-          $posts = Audio::where('user_id',Auth::user()->id)->where('published',1)->get();
+          $audios = Audio::orderBy('created_at', 'desc')->where('user_id',Auth::user()->id)->where('published',1)->get();
 
-          return view('profile',compact('user','posts'));
+          return view('profile',compact('user','audios'));
         }
         else{
           $user = User::where('slug', $slug)->first();
 
-          $posts = Audio::where('user_id',$user->id)->where('published',1)->get();
+          $audios = Audio::where('user_id',$user->id)->where('published',1)->get();
 
-          return view('profile',compact('user','posts'));
+          return view('profile',compact('user','audios'));
         }
-
       }
 
       return redirect(route('timeline.show'))->with('message', 'Unfortunately, user '.$slug.' cannot be found');

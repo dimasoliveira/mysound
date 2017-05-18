@@ -94,11 +94,11 @@
                     </h6>
 
                         @if (count($album->year) === 1)
-                        <i>{{ implode(', ',$album->year).' •' }}</i>
+                        <i>{{ implode(', ',$album->year) }}</i>
                         @elseif(count($album->year) > 1)
-                        <i>{{ min($album->year).' - '. max($album->year . ' •')}}</i>
+                        <i>{{ min($album->year).' - '. max($album->year)}}</i>
                         @endif
-                        <i>{{implode(', ',$album->genres )}}</i>
+                        <i>{{' • '.implode(', ',$album->genres )}}</i>
 
                     <div class="row">
 
@@ -115,41 +115,41 @@
                             </thead>
 
                             <tbody>
-                                @foreach($album->audio as $song)
+                                @foreach($album->audio as $audio)
                                     <tr>
-                                        <td><i data-id="{{ $song->id }}" style="cursor: pointer;" class="playable-link small material-icons">play_circle_outline</i></td>
-                                        <td>{{ $song->tracknumber }}</td>
-                                        <td>{{ $song->title }} @if ($song->explicit)<i class="tiny material-icons">explicit</i>@endif</td>
-                                        <td>{{ $song->artist }}</td>
-                                        <td>{{ gmdate("i:s",$song->length) }}</td>
-                                        <td>{{ $song->year }}</td>
-                                        <td><i data-activates='dropdown-{{ $song->id }}' style="cursor: pointer;" class="dropdown-button small material-icons">more_vert</i></td>
+                                        <td><i data-id="{{ $audio->id }}" style="cursor: pointer;" class="playable-link small material-icons">play_circle_outline</i></td>
+                                        <td>{{ $audio->tracknumber }}</td>
+                                        <td>{{ $audio->title }} @if ($audio->explicit)<i class="tiny material-icons">explicit</i>@endif</td>
+                                        <td>{{ $audio->artist }}</td>
+                                        <td>{{ gmdate("i:s",$audio->length) }}</td>
+                                        <td>{{ $audio->year }}</td>
+                                        <td><i data-activates='dropdown-{{ $audio->id }}' style="cursor: pointer;" class="dropdown-button small material-icons">more_vert</i></td>
                                     </tr>
 
-                                    <ul style="z-index: 100000" id='dropdown-{{ $song->id }}' class='dropdown-content'>
-                                        <li><a href="#editAudio" class="edit-audio" data-title="{{ $song->title }}" data-artist="{{ $song->artist }}" data-tracknumber="{{ $song->tracknumber }}" data-album="{{ $song->album->name }}" data-explicit="{{ $song->explicit }}" data-published="{{ $song->published }}" data-year="{{ $song->year }}" data-genre="{{ $song->genre }}">Edit</a></li>
-                                        @foreach($playlists as $playlist)
+                                    <ul style="z-index: 100000" id='dropdown-{{ $audio->id }}' class='dropdown-content'>
+                                        <li><a href="#editAudio" class="edit-audio" data-id="{{ $audio->id }}" data-title="{{ $audio->title }}" data-artist="{{ $audio->artist }}" data-tracknumber="{{ $audio->tracknumber }}" data-album="{{ $audio->album->name }}" data-explicit="{{ $audio->explicit }}" data-published="{{ $audio->published }}" data-year="{{ $audio->year }}" data-genre="{{ $audio->genre->name }}">Edit</a></li>
+                                         @foreach($playlists as $playlist)
                                             <li>
-                                            {!! Form::open(['method' => 'POST','route' => ['playlist.request',$playlist,$song]]) !!}
+                                            {!! Form::open(['method' => 'POST','route' => ['playlist.request',$playlist,$audio]]) !!}
 
                                             {{  Form::submit('Add to '.$playlist->name, ['class' => 'btn-flat'])}}
-                                            {{--<a type="submit" href="">Add to {{ $playlist->name }}</a>--}}
+                                            <a type="submit" href="">Add to {{ $playlist->name }}</a>
 
                                             {!! Form::close() !!}
                                             </li>
                                          @endforeach
-                                        <li><a href="#delete-{{$song->id}}" id="testtest">Delete</a></li>
+                                        <li><a href="#delete-{{$audio->id}}" id="testtest">Delete</a></li>
                                     </ul>
 
-                                    <div id="delete-{{$song->id}}" class="modal">
+                                    <div id="delete-{{$audio->id}}" class="modal">
                                         <div class="modal-content">
-                                            <h5>Are you sure you want to delete <b>{{ $song->title}}</b> by <b>{{$song->artist}}</b>?</h5>
+                                            <h5>Are you sure you want to delete <b>{{ $audio->title}}</b> by <b>{{$audio->artist}}</b>?</h5>
                                         </div>
                                         <div class="modal-footer">
                                             {{--<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>--}}
                                             <a class="modal-action modal-close btn-flat">No</a>
 
-                                            {!! Form::open(['method' => 'DELETE','route' => ['myaudio.destroy', $song->id]]) !!}
+                                            {!! Form::open(['method' => 'DELETE','route' => ['myaudio.destroy', $audio->id]]) !!}
                                             {{  Form::submit('Yes', ['class' => 'modal-action btn-flat'])}}
                                             {!! Form::close() !!}
 

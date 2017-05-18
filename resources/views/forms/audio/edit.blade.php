@@ -2,11 +2,13 @@
 
 @section('content')
 
-    <main>
-        <script src="https://rawgit.com/icefox0801/materialize-autocomplete/master/jquery.materialize-autocomplete.js"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+
+
 
         <center>
-
 
             <div class="section"></div>
 
@@ -76,10 +78,26 @@
                         </div>
                     </div>
 
+
+
+
+
                     <div class="row">
+
                         <div class="input-field col s10 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
-                            <input id="genre" type="text" class="form-control" name="genre" value="{{ $audio->genre }}" >
-                            <label for="genre">Genre</label>
+
+                            <select id="combobox">
+                                <option value="">Select one...</option>
+                                @foreach($genres as $genre)
+                                    <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                                @endforeach
+                            </select>
+
+                            <label for="combobox">Genre </label>
+
+
+                            {{--<input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}" >--}}
+                            {{--<label for="genre">Genre</label>--}}
 
                             @if ($errors->has('genre'))
                                 <span class="left help-block red-text">
@@ -88,8 +106,7 @@
                             @endif
 
                         </div>
-
-                            <div class="input-field col s2 form-group{{ $errors->has('year') ? ' has-error' : '' }}">
+                        <div class="input-field col s2 form-group{{ $errors->has('year') ? ' has-error' : '' }}">
                             <input id="year" type="text" class="form-control" name="year" value="{{ $audio->year }}">
                             <label for="year">Year </label>
 
@@ -159,6 +176,6 @@
 
         <div class="section"></div>
         <div class="section"></div>
-    </main>
+
 
 @endsection

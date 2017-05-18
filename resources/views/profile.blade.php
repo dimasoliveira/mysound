@@ -28,9 +28,9 @@
                                 @if ($user->id !== Auth::user()->id)
                                     {!! Form::open(['route'=> ['follow.request',$user->slug],'method' => 'POST']) !!}
                                     @if (Auth::user()->isFollowing($user->id))
-                                        {{ Form::submit('Unfollow',['class'=> 'waves-effect waves-light btn']) }}
+                                        {{ Form::submit('Unfollow',['class'=> 'waves-effect waves-light btn blue white-text']) }}
                                     @else
-                                        {{ Form::submit('Follow', ['class'=> 'waves-effect waves-light btn']) }}
+                                        {{ Form::submit('Follow', ['class'=> 'waves-effect waves-light btn white blue-text']) }}
                                     @endif
                                     {{ Form::close() }}
                                 @endif
@@ -87,21 +87,21 @@
                 </div>
 
 
-                @foreach($posts as $post)
+                @foreach($audios as $audio)
                       <div class="col s12 m7">
                             <div class="card horizontal hoverable activator">
                                 <div class="card-image waves-effect waves-block waves-light">
-                                    <img src="{{ Storage::url($post->coverart) }}" class="activator" style="height: auto;width: 215px">
-                                    <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-id='{{ $post->id }}' data-filename="{{ Storage::url($post->filename) }}" data-artist="{{ $post->artist }}" data-title="{{ $post->title }}" data-explicit="{{$post->explicit}}"  class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
+                                    <img src="{{ Storage::url($audio->coverart) }}" class="activator" style="height: auto;width: 215px">
+                                    <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-id='{{ $audio->id }}' data-filename="{{ Storage::url($audio->filename) }}" data-artist="{{ $audio->artist }}" data-title="{{ $audio->title }}" data-explicit="{{$audio->explicit}}"  class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
                                 </div>
                                 <div class="card-stacked">
                                     <div class="card-content">
-                                        <h6 class="right header">uploaded {{ \Carbon\Carbon::createFromTimeStamp(strtotime($post->created_at))->diffForHumans() .' by '}} <a class="blue-text" href="{{ route('profile.show', $post->user->slug) }}">{{$post->user->username }}</a>
+                                        <h6 class="right header">uploaded {{ \Carbon\Carbon::createFromTimeStamp(strtotime($audio->created_at))->diffForHumans() .' by '}} <a class="blue-text" href="{{ route('profile.show', $audio->user->slug) }}">{{$audio->user->username }}</a>
                                         </h6>
-                                        <a class="black-text" href="{{ route('audio.show',$post->id) }}">
-                                            <p class="card-title grey-text text-darken-4">{{ $post->title }}</p>
-                                            <p>Artist: {{ $post->artist }}</p>  <p class="blue-text right">{{  count($post->likes).' Like(s), '.count($post->comments).' Comment(s)' }}</p>
-                                            <p>Album: {{ $post->album->name }}</p>
+                                        <a class="black-text" href="{{ route('audio.show',$audio->id) }}">
+                                            <p class="card-title grey-text text-darken-4">{{ $audio->title }}</p>
+                                            <p>Artist: {{ $audio->artist }}</p>  <p class="blue-text right">{{  count($audio->likes).' Like(s), '.count($audio->comments).' Comment(s)' }}</p>
+                                            <p>Album: {{ $audio->album->name }}</p>
                                         </a>
                                     </div>
 
@@ -109,9 +109,9 @@
 
                                         <div class="input-field right">
 
-                                            {!! Form::open(['route'=> ['like.create',$post->id],'method' => 'POST', 'id' => 'likeForm']) !!}
+                                            {!! Form::open(['route'=> ['like.create',$audio->id],'method' => 'POST', 'id' => 'likeForm']) !!}
 
-                                            @if (\App\Like::where('user_id', Auth::user()->id)->where('audio_id', $post->id)->exists())
+                                            @if (\App\Like::where('user_id', Auth::user()->id)->where('audio_id', $audio->id)->exists())
                                                 <button type="submit" role="button" id="likeButton" class="col s2 hoverable btn-floating btn-medium waves-effect waves-light blue right"><i class="material-icons">favorite</i></button>
                                             @else
                                                 <button type="submit" role="button" id="likeButton" class="col s2 hoverable btn-floating btn-medium waves-effect waves-light white blue-text right"> <i class="material-icons" style="color: #2196F3;">favorite_border</i></button>

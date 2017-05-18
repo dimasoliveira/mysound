@@ -46,7 +46,6 @@ class PlaylistController extends Controller
     return redirect()->back()->with('message', 'Succesfully removed from playlist');
   }
 
-
   public function store(Request $request){
 
     $validator = Validator::make($request->all(), [

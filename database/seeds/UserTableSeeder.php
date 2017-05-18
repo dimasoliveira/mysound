@@ -19,7 +19,7 @@ class UserTableSeeder extends Seeder
         'lastname' => 'Oliveira',
         'email' => 'd.oliveira@live.nl',
         'password' => bcrypt('password'),
-        'birthdate' => '03-02-1998',]);
+        'birthdate' => '1998-03-02',]);
 
       $user->attachRole(Role::where('name','admin')->first()->id);
 

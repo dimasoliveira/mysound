@@ -66,7 +66,7 @@ class AlbumController extends Controller
     foreach ($album->audio as $song){
 
         $year[] = $song->year;
-        $genres[] = $song->genre;
+        $genres[] = $song->genre->name;
 
         $album->genres = array_unique($genres);
         $album->year = array_unique($year);

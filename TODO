@@ -1,8 +1,8 @@
 ---------------------------------------------------------------
 F U N C T I O N A L I T E I T
 ---------------------------------------------------------------
-Dropdown audio toevoegen aan playlist
 
+Genre selecteren in add en create modal
 
 ---------------------------------------------------------------
 C R E A T E ,   E D I T ,   D E L E T E
@@ -11,24 +11,23 @@ C R E A T E ,   E D I T ,   D E L E T E
 ---------------------------------------------------------------
 A D M I N
 ---------------------------------------------------------------
-Admin/beheerder kant maken
+Admin/beheerder kant afwerken
 Aanpasbare limiet aan totale tijdsduur van audio die een user kan toevoegen
 
 ----------------------------------------------------------------
 U P L O A D
 ----------------------------------------------------------------
-Popup window voor toevoegen en wijzigen en muziek automatisch
-openen als er validation errors zijn
+
 
 ----------------------------------------------------------------
 L A Y O U T
 ----------------------------------------------------------------
 Home page maken
-Profiel view**
+Knop voor audio toevoegen aan playlist restylen
 Mobile/tablet layout maken
 Audio edit view verbeteren
 Kleine veranderingen aan album detail pagina
-Popup window voor toevoegen muziek
+
 
 ----------------------------------------------------------------
 B I J   G E N O E G   T I J D
@@ -60,3 +59,6 @@ Album wijzigen fixen**
 Multi-input/autocomplete voor invoer genres**  TIJDELIJK GEFIXT
 Profielfoto upload**
 Audio liken**
+Popup window voor toevoegen en wijzigen en muziek automatisch openen als er validation errors zijn**
+Profiel view**
+Popup window voor toevoegen muziek**

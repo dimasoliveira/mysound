@@ -15,7 +15,7 @@ class Audio extends Model
   protected $fillable = [
     'filename', 'title', 'artist','album_id', 'published', 'coverart',
     'tracknumber','explicit', 'year', 'length', 'bitrate', 'user_id',
-    'genre',
+    'genre_id',
   ];
 
   public function likes(){
@@ -33,22 +33,15 @@ class Audio extends Model
     return $this->belongsTo(Album::class);
   }
 
-  public function playlist_id(){
-    return $this->belongsToMany('audio_playlists');
-  }
-
   public function playlist(){
     return $this->belongsToMany(Playlist::class,'audio_playlists');
   }
 
-  public function saveAsMP3($request){
-
-    Storage::move($request->filename, dirname($request->filename).'/'.basename($request->filename,".mpga").'.mp3');
-
-    $request->filename = dirname($request->filename).'/'.basename($request->filename,".mpga").'.mp3';
-
-    return $request->filename;
+  public function genre(){
+    return $this->belongsTo(Genre::class);
   }
+
+
 
 
 

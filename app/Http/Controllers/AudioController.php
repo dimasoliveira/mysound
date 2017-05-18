@@ -15,16 +15,12 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
-
 class AudioController extends Controller {
-
-
 
   public function index() {
 
     $audio_posts = Audio::orderBy('created_at', 'desc')
-      ->where('user_id', Auth::user()->id)
-      ->get();
+      ->where('user_id', Auth::user()->id)->get();
 
     return view('myaudio.index', compact('audio_posts'));
   }
@@ -32,7 +28,6 @@ class AudioController extends Controller {
   public function create() {
 
     $genres = Genre::all();
-
     return view('forms.audio.create',compact('genres'));
   }
 
@@ -46,8 +41,7 @@ class AudioController extends Controller {
       'coverart' => 'nullable',
       'filename' => 'required|mimes:mpga',
       'year' => 'nullable|digits:4',
-      'tracknumber' => 'nullable|max:99',
-    ]);
+      'tracknumber' => 'nullable|max:99',]);
 
     if ($validator->fails()) {
       return redirect()
@@ -57,7 +51,11 @@ class AudioController extends Controller {
         ->withInput();
     }
 
-      if ($request->explicit == "on") {
+    if (!file_exists(request()->file('filename'))) {
+      return redirect()->back()->with('message', 'Something went wrong, try again')->withInput();
+    }
+
+    if ($request->explicit == "on") {
         $request->explicit = 1;
       }
       else {
@@ -71,7 +69,11 @@ class AudioController extends Controller {
         $request->published = 0;
       }
 
-      if ($request->filename !== NULL && file_exists(request()->file('filename'))) {
+     if (Auth::user()->uploadLimitCheck(($audioData = new MP3File($request->filename))->getDuration())){
+       return redirect()->back()->with('audioAddValidationError', 'Adding audio failed')
+         ->with('message', 'No enough space left, Try delete existing songs to free space')
+         ->withInput();
+     }
 
         if ($request->coverart !== NULL && file_exists(request()->file('coverart'))) {
           $request->coverart = request()->file('coverart')->store('public/coverarts');
@@ -80,7 +82,6 @@ class AudioController extends Controller {
           $request->coverart = "/defaults/coverart.png";
         }
 
-        $audioData = new MP3File($request->filename);
         $audioData->storeAsMP3($request);
 
         if (!Album::where('name', $request->album)->where('user_id', Auth::user()->id)->exists()) {
@@ -112,16 +113,14 @@ class AudioController extends Controller {
             'user_id' => Auth::user()->id,
           ]
         );
-      }
-      else {
-        return redirect()->back()->with('message', 'Something went wrong, try again')->withInput();
-      }
+
         return redirect()->back()->with('message', 'File succesfully added');
   }
 
   public function edit(Audio $audio) {
 
-      return view('forms.audio.edit', compact('audio'));
+      $genres = Genre::all();
+      return view('forms.audio.edit', compact('audio','genres'));
   }
 
   public function update(Request $request,Audio $audio) {
@@ -195,7 +194,7 @@ class AudioController extends Controller {
       $audio->published = $request->published;
       $audio->year = $request->year;
       $audio->coverart = $request->coverart;
-      $audio->genre = $request->genre;
+      $audio->genre_id = Genre::where('name',$request->genre)->first()->id;
       $audio->save();
 
     return redirect()

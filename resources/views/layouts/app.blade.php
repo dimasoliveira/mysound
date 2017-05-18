@@ -21,53 +21,43 @@
     <link href="{{ asset('css/bar-ui.css') }}" type="text/css" rel="stylesheet"/>
 
 
-    {{--<script type="text/javascript" src="../../script/soundmanager2.js"></script>--}}
-    {{--<script src="script/bar-ui.js"></script>--}}
-    {{--<link rel="stylesheet" href="css/bar-ui.css" />--}}
-
-
     {{--<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>--}}
     <script type="text/javascript" src="https://rawgit.com/scottschiller/SoundManager2/master/script/soundmanager2-jsmin.js"></script>
-    {{--<script type="text/javascript" src="{{ asset('js/soundmanager2.js') }}"></script>--}}
+
     <script type="text/javascript" src="https://rawgit.com/scottschiller/SoundManager2/master/demo/bar-ui/script/bar-ui.js"></script>
     {{--<script src="{{ asset('js/bar-ui.js') }}"></script>--}}
 
-
-
-
-    {{--<script src="{{ asset('js/initialize.js') }}"></script>--}}
 
     <link href="{{ asset('css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="{{ asset('css/custom.css') }}" type="text/css" rel="stylesheet"/>
 
     <link href="{{ asset('css/player.css') }}" type="text/css" rel="stylesheet"/>
 
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
+
     @yield('stylesheet')
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 
     <script src="{{ asset('js/materialize.js') }}"></script>
     <script src="{{ asset('js/materialize_conf.js') }}"></script>
 
-    {{--<script>--}}
-      {{--soundManager.setup({--}}
-        {{--url: '{{ asset('swf/') }}',--}}
-        {{--flashVersion: 9, // optional: shiny features (default = 8)--}}
-        {{--// optional: ignore Flash where possible, use 100% HTML5 mode--}}
-        {{--// preferFlash: false,--}}
-        {{--onready: function() {--}}
-          {{--// Ready to use; soundManager.createSound() etc. can now be called.--}}
-        {{--}--}}
-      {{--});--}}
-    {{--</script>--}}
 
-    <!-- Scripts -->
-    <script>
-      window.Laravel = {!! json_encode([
-        'csrfToken' => csrf_token(),
-    ]) !!};
-    </script>
+    <script src="{{ asset('js/playableLink.js') }}"></script>
+    <script src="{{ asset('js/editAudioModal.js') }}"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="{{ asset('js/genreCombobox.js') }}"></script>
+
+    {{--verplaatst vanuit audio create view--}}
+
+
+    {{--<!-- Scripts -->--}}
+    {{--<script>--}}
+      {{--window.Laravel = {!! json_encode([--}}
+        {{--'csrfToken' => csrf_token(),--}}
+    {{--]) !!};--}}
+    {{--</script>--}}
 
 
 <body>
@@ -107,7 +97,6 @@
       });</script>
 @endif
 
-
 <main>
 <nav class="light-blue lighten-1 nav-extended" role="navigation">
     <div class="nav-wrapper container">
@@ -124,8 +113,7 @@
             @else
 
                 <li>
-                    <a class="" href="{{ route('myaudio.index') }}">My Audio
-                    </a>
+                    <a class="" href="{{ route('myaudio.index') }}">My Audio</a>
                 </li>
 
 
@@ -362,10 +350,8 @@
         {{ Form::close() }}
     </div>
     <div id="editAudio" class="modal modal-fixed-footer" style="width: 30%;">
-        <div class="modal-content" style="padding-top: 15px;padding-bottom: 15px;">
+        <div class="modal-content" style="height:auto!important">
             {!!  Form::open(['class' => 'form-horizontal col s12', 'id' => 'editAudioForm','files' => true, '_lpchecked' => '1'])  !!}
-
-
 
             <div class="row">
 
@@ -419,52 +405,35 @@
                     @endif
                 </div>
             </div>
-
             <div class="row">
-                <div class="input-field col s10 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
-                    <input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}" >
-                    <label for="genre" class="active">Genre</label>
+            <div class="input-field col s12 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
 
-                    @if ($errors->has('genre'))
-                        <span class="left help-block red-text">
+                <select id="combobox">
+                    @foreach(\App\Genre::all() as $genre)
+                        <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                    @endforeach
+                </select>
+
+                <label for="combobox">Genre </label>
+
+
+                {{--<input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}" >--}}
+                {{--<label for="genre">Genre</label>--}}
+
+                @if ($errors->has('genre'))
+                    <span class="left help-block red-text">
                                     <strong>{{ $errors->first('genre') }}</strong>
                                     </span>
-                    @endif
+                @endif
 
-                </div>
-
-                <div class="input-field col s2 form-group{{ $errors->has('year') ? ' has-error' : '' }}">
-                    <input id="year" type="text" class="form-control" name="year" value="{{ old('year') }}">
-                    <label for="year" class="active">Year </label>
-
-                    @if ($errors->has('year'))
-                        <span class="left help-block red-text">
-                                    <strong>{{ $errors->first('year') }}</strong>
-                                    </span>
-                    @endif
-                </div>
-
+            </div>
             </div>
 
 
             <div class="row">
 
 
-
                 <div class="file-field input-field col s6">
-                    <div class="btn waves-effect blue">
-                        <span>Audio</span>
-                        <input id="filename" name="filename" type="file">
-                    </div>
-
-                    @if ($errors->has('filename'))
-                        <span class="left help-block red-text">
-                                    <strong>{{ $errors->first('filename') }}</strong>
-                                    </span>
-                    @endif
-                </div>
-
-                <div class="file-field input-field col 6">
                     <div class="btn waves-effect blue">
                         <span>Coverart</span>
                         <input id="coverart" name="coverart" type="file" >
@@ -481,17 +450,17 @@
 
 
             <div class="row">
-                <div class="file-field input-field">
+                <div class="file-field input-field col s12">
 
 
 
-                    <p class="left">
+                    <p class="col s5 left">
                         <input title="published" type="checkbox" id="published2" class="filled-in" name="published">
                         <label for="published2">Delen met anderen</label>
                     </p>
 
 
-                    <p class="right">
+                    <p class="col s3 right">
 
                         <input title="explicit" type="checkbox" class="filled-in" id="explicit2" name="explicit">
 
@@ -505,12 +474,8 @@
         </div>
 
         <button type="submit" class="modal-footer col s12 btn btn-large waves-effect blue">Edit</button>
-
-
-
-
-
         {{ Form::close() }}
+
     </div>
     <div id="addPlaylist" class="modal modal-fixed-footer" style="width: 30%;height: 35%;">
         <div class="modal-content" style="padding-top: 15px;padding-bottom: 15px;">
@@ -698,53 +663,5 @@
 </footer>
 
 </body>
-<script>
 
-  $(function () {
-
-    $(".playable-link").click(function(){
-
-      if ($(this).data('explicit')){
-        var explicit = '<span class="label">E</span>';
-      }
-      else {
-        var explicit = ''
-      }
-      var music_item = '<li><a href="'+ $(this).data('filename')+'"><b>'+ $(this).data('artist')+'</b> - '+$(this).data('title')+explicit+'</a></li>';
-
-        $(".sm2-playlist-bd").html(music_item);
-
-      window.sm2BarPlayers[0].playlistController.playItemByOffset();
-    });
-
-    $(".edit-audio").click(function(){
-
-      $('#editAudioForm input[name="title"]').val($(this).data('title'));
-      $('#editAudioForm input[name="artist"]').val($(this).data('artist'));
-      $('#editAudioForm input[name="tracknumber"]').val($(this).data('tracknumber'));
-      $('#editAudioForm input[name="album"]').val($(this).data('album'));
-
-
-      $('#editAudioForm input[name="year"]').val($(this).data('year'));
-      $('#editAudioForm input[name="genre"]').val($(this).data('genre'));
-
-
-      $('#editAudioForm label').not('#editAudioForm label[for="explicit2"]').not('#editAudioForm label[for="published2"]').addClass('active');
-
-      if ($(this).data('explicit')){
-        $('#editAudioForm input[name="explicit"]').attr("checked","checked");
-      }
-      if ($(this).data('published')){
-        $('#editAudioForm input[name="published"]').attr("checked","checked");
-      }
-
-      var route = "http://mysound.dev/myaudio/edit/"+$(this).data('id');
-
-      $("#editAudioForm").attr("action", route);
-
-      $('#editAudio').modal().modal('open');
-    });
-
-  });
-</script>
 </html>
