@@ -36,7 +36,7 @@ class TimelineController extends Controller
         return view('timeline.index',compact('posts'));
     }
 
-    public function show(Audio $audio){
+    public function show($slug,Audio $audio){
 
       //dd($audio);
 

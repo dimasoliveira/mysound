@@ -54,16 +54,7 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
   Route::get('/search','SearchController@index');
   Route::post('/search','SearchController@searchRequest')->name('search.request');
   Route::get('/timeline','TimelineController@index')->name('timeline.show');
-  Route::get('/profile', function () {return redirect()->intended(route('profile.show',Auth::user()->slug));})->name('profile');
 
-  Route::post('/profile/avatar/{user}','ProfileController@avatarUpdate')->name('avatar.update')->middleware('can:owner,user');
-
-  Route::get('/profile/{slug}','ProfileController@index')->name('profile.show');
-  Route::post('/profile/{slug}/follow','ProfileController@followRequest')->name('follow.request');
-
-  Route::get('/audio/{audio}','TimelineController@show')->name('audio.show');
-  Route::post('/audio/{audio}','CommentController@store')->name('comment.store');
-  Route::delete('/comment/{comment}','CommentController@destroy')->name('comment.destroy');
 
   Route::post('like/{audio}','LikeController@create')->name('like.create');
 
@@ -96,5 +87,16 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
   Route::get('/playlists','PlaylistController@index')->name('playlist.index');
   Route::get('/playlist/{playlist}','PlaylistController@show')->name('playlist.show');
   Route::post('/playlist/add','PlaylistController@store')->name('playlist.store');
+
+  Route::get('/profile', function () {return redirect()->intended(route('profile.show',Auth::user()->slug));})->name('profile');
+
+  Route::get('/{slug}','ProfileController@index')->name('profile.show');
+  Route::post('/profile/avatar/{user}','ProfileController@avatarUpdate')->name('avatar.update')->middleware('can:owner,user');
+  Route::post('profile/{slug}/follow','ProfileController@followRequest')->name('follow.request');
+
+  Route::get('/{slug}/audio/{audio}','TimelineController@show')->name('audio.show');
+  Route::post('/audio/{audio}','CommentController@store')->name('comment.store');
+  Route::delete('/comment/{comment}','CommentController@destroy')->name('comment.destroy');
+
 
 });

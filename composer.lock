@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dcab6dfe87d9b009c99c52576758d5ff",
-    "content-hash": "b2503dc60ddf7bbc1c4bc613c5957713",
+    "hash": "7d86a89faf707bf7eb6e821153f0c1ef",
+    "content-hash": "769e281b399697632b9262d67a12d449",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1301,6 +1301,7 @@
             ],
             "time": "2017-03-26 20:37:53"
         },
+
         {
             "name": "spatie/laravel-activitylog",
             "version": "1.13.0",

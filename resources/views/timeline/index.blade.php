@@ -24,7 +24,7 @@
 
 
                         <div class="card horizontal activator">
-                            <div class="card-image waves-effect waves-block waves-light"><a class="black-text" href="{{ route('audio.show',$audio->id) }}">
+                            <div class="card-image waves-effect waves-block waves-light"><a class="black-text" href="{{ route('audio.show', [$audio->user->slug,$audio->id]) }}">
 
                                     <img src="{{ Storage::url($audio->coverart) }}" class="activator" style="height: auto;width: 180px"></a>
                                 <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-id='{{ $audio->id }}' data-filename="{{ Storage::url($audio->filename) }}" data-artist="{{ $audio->artist }}" data-title="{{ $audio->title }}" data-explicit="{{$audio->explicit}}"  class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
@@ -49,7 +49,7 @@
                                     <div class="card-content">
                                     <h6 class="right header">uploaded {{ \Carbon\Carbon::createFromTimeStamp(strtotime($audio->created_at))->diffForHumans() .' by '}} <a class="blue-text" href="{{ route('profile.show', $audio->user->slug) }}">{{$audio->user->username }}</a>
                                     </h6>
-                                        <a class="black-text" href="{{ route('audio.show',$audio->id) }}">
+                                        <a class="black-text" href="{{ route('audio.show', [$audio->user->slug,$audio->id]) }}">
                                     <p class="card-title grey-text text-darken-4">{{ $audio->title }}</p>
                                     <p>Artist: {{ $audio->artist }}</p>  <p class="blue-text right">{{  count($audio->likes).' Like(s), '.count($audio->comments).' Comment(s)' }}</p>
                                     <p>Album: {{ $audio->album->name }}</p>
