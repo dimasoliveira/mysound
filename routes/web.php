@@ -29,6 +29,10 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
       Route::get('/admin/roles','Admin\RoleController@index')->name('admin.roles');
       Route::get('/admin/audio','Admin\AudioController@index')->name('admin.audio');
       Route::get('/admin/comments','Admin\CommentController@index')->name('admin.comments');
+      Route::get('/admin/settings','Admin\SettingsController@index')->name('admin.settings');
+
+      Route::post('/admin/settings','Admin\SettingsController@updateUploadLimit')->name('admin.uploadlimit.update');
+
 
       Route::group(['middleware' => ['permission:user-edit']], function () {
           Route::get('/admin/users/{id}','Admin\UsersController@edit')->name('admin.users.edit');

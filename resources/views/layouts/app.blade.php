@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="{{ config('app.locale') }}">
 <head>
@@ -24,7 +25,7 @@
     {{--<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>--}}
     <script type="text/javascript" src="https://rawgit.com/scottschiller/SoundManager2/master/script/soundmanager2-jsmin.js"></script>
 
-    <script type="text/javascript" src="https://rawgit.com/scottschiller/SoundManager2/master/demo/bar-ui/script/bar-ui.js"></script>
+    <script src="{{ asset('js/bar-ui.js') }}"></script>
     {{--<script src="{{ asset('js/bar-ui.js') }}"></script>--}}
 
 
@@ -409,7 +410,7 @@
             <div class="input-field col s12 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
 
                 <select id="combobox">
-                    @foreach(\App\Genre::all() as $genre)
+                    @foreach($genres as $genre)
                         <option value="{{ $genre->id }}">{{ $genre->name }}</option>
                     @endforeach
                 </select>
@@ -522,6 +523,7 @@
         {{ Form::close() }}
     </div>
 
+
 @if (Auth::check())
 <div class="sm2-bar-ui full-width fixed flat">
 
@@ -603,7 +605,7 @@
 
     </div>
 
-    <div class="bd sm2-playlist-drawer sm2-element">
+    <div class="bd sm2-playlist-drawer sm2-element" style="width: 30%; right:0;">
 
         <div class="sm2-inline-texture">
             <div class="sm2-box-shadow"></div>
@@ -611,7 +613,7 @@
 
         <!-- playlist content is mirrored here -->
 
-        <div class="sm2-playlist-wrapper">
+        <div class="sm2-playlist-wrapper" style="padding-bottom: 30px;">
 
             <ul class="sm2-playlist-bd">
 

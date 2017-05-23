@@ -42,24 +42,24 @@
             </div>
         </div>
     </div>
-    @if(isset($audio_results))
+    @if(isset($audios))
     <h6>Audio Results</h6>
     <hr>
            <div class="row">
-                    @foreach($audio_results as $result)
+                    @foreach($audios as $audio)
 
                         <div class="col s2 m2">
                             <div class="card hoverable">
                                 <div class="card-image waves-effect waves-block waves-light">
-                                    <p class="z-depth-2 card-title" >{{ $result->title }}<br>{{ $result->artist }} </p>
-                                    <span data-id="{{ $result->id }}" data-filename="{{ Storage::url($result->filename) }}" data-artist="{{ $result->artist }}" data-title="{{ $result->title }}" data-explicit="{{$result->explicit}}" class="playable-link card-title btn-floating btn-large waves-effect waves-light blue right">
+                                    <p class="z-depth-2 card-title" >{{ $audio->title }}<br>{{ $audio->artist }} </p>
+                                    <span data-id="{{ $audio->id }}" data-filename="{{ Storage::url($audio->filename) }}" data-artist="{{ $audio->artist }}" data-title="{{ $audio->title }}" data-explicit="{{$audio->explicit}}" class="playable-link card-title btn-floating btn-large waves-effect waves-light blue right">
                                         <i class="large material-icons">play_arrow</i>
                                     </span>
-                                    <img src="{{ Storage::url($result->coverart) }}">
+                                    <img src="{{ Storage::url($audio->coverart) }}">
                                 </div>
 
                                 <div class="card-action">
-                                    <h6 class="header">{{ \Carbon\Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans() .' by ' }} <a class="blue-text" href="{{ route('profile.show', $result->user->slug) }}">{{$result->user->username }}</a>
+                                    <h6 class="header">{{ \Carbon\Carbon::createFromTimeStamp(strtotime($audio->created_at))->diffForHumans() .' by ' }} <a class="blue-text" href="{{ route('profile.show', $audio->user->slug) }}">{{$audio->user->username }}</a>
                                     </h6>
 
                                 </div>
@@ -67,27 +67,32 @@
                         </div>
                     @endforeach
                 </div>
-
     @endif
 
 
-    @if(isset($user_results))
+    @if(isset($users))
     <h6>User Results</h6>
     <hr>
         <div class="row">
-    @foreach($user_results as $result)
+    @foreach($users as $user)
 
-                <a href="{{ route('profile.show', $result->slug) }}">
+                <a href="{{ route('profile.show', $user->slug) }}">
                     <div class="col s2 m2">
                         <div class="card hoverable" style="border-radius: 100%;">
                             <div class="card-image waves-effect waves-block waves-light">
-                                <img style="border-radius: 100%" src="@if(!empty(Storage::exists($result->avatar) )) {{ Storage::url($result->avatar) }} @else {{ Storage::url('public/defaults/avatar.png') }}  @endif">
+                                <img style="border-radius: 100%" src="@if(!empty(Storage::exists($user->avatar) )) {{ Storage::url($user->avatar) }} @else {{ Storage::url('public/defaults/avatar.png') }}  @endif">
                             </div>
                         </div>
-                        <p style="text-align: center"><a href="{{ route('profile.show', $result->slug) }}" class="blue-text">{{$result->username }}</a></p>
+                        <p style="text-align: center"><a href="{{ route('profile.show', $user->slug) }}" class="blue-text">{{$user->username }}</a></p>
                     </div>
                 </a>
     @endforeach
+        @endif
+
+    @if(!isset($audios) && !isset($users) && isset($request))
+
+        <h4>No results where found for <b>{{ $request->search }}</b></h4>
+
         @endif
         </div>
 </div>

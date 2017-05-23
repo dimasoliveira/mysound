@@ -4,6 +4,14 @@ F U N C T I O N A L I T E I T
 
 Genre selecteren in add en create modal
 Bepaalde audiobestanden willen niet uploaden en geven validation error terug met: audio must be mpga
+Profile edit (firstname, lastname, username, email)
+Liken via ajax
+Luistergedrag loggen
+Playlist verwijderen
+Album delete
+
+Coverart delete
+Profilepicture delete
 ---------------------------------------------------------------
 C R E A T E ,   E D I T ,   D E L E T E
 ---------------------------------------------------------------

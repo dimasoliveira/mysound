@@ -14,11 +14,11 @@
   "use strict";
 
   var Player,
-      players = [],
-      // CSS selector that will get us the top-level DOM node for the player UI.
-      playerSelector = '.sm2-bar-ui',
-      playerOptions,
-      utils;
+    players = [],
+    // CSS selector that will get us the top-level DOM node for the player UI.
+    playerSelector = '.sm2-bar-ui',
+    playerOptions,
+    utils;
 
   /**
    * Slightly hackish: event callbacks.
@@ -26,24 +26,24 @@
    */
   players.on = {
     /*
-    play: function(player) {
-      console.log('playing', player);
-    },
-    finish: function(player) {
-      // each sound
-      console.log('finish', player);
-    },
-    pause: function(player) {
-      console.log('pause', player);
-    },
-    error: function(player) {
-      console.log('error', player);
-    }
-    end: function(player) {
-      // end of playlist
-      console.log('end', player);
-    }
-    */
+     play: function(player) {
+     console.log('playing', player);
+     },
+     finish: function(player) {
+     // each sound
+     console.log('finish', player);
+     },
+     pause: function(player) {
+     console.log('pause', player);
+     },
+     error: function(player) {
+     console.log('error', player);
+     }
+     end: function(player) {
+     // end of playlist
+     console.log('end', player);
+     }
+     */
   };
 
   playerOptions = {
@@ -70,7 +70,7 @@
         players.push(new Player(nodes[i]));
       }
     }
-  
+
   });
 
   /**
@@ -133,9 +133,9 @@
       // convert milliseconds to hh:mm:ss, return as object literal or string
 
       var nSec = Math.floor(msec/1000),
-          hh = Math.floor(nSec/3600),
-          min = Math.floor(nSec/60) - Math.floor(hh * 60),
-          sec = Math.floor(nSec -(hh*3600) -(min*60));
+        hh = Math.floor(nSec/3600),
+        min = Math.floor(nSec/60) - Math.floor(hh * 60),
+        sec = Math.floor(nSec -(hh*3600) -(min*60));
 
       // if (min === 0 && sec === 0) return null; // return 0:00 as null
 
@@ -175,17 +175,17 @@
         whileplaying: function() {
 
           var progressMaxLeft = 100,
-              left,
-              width;
-  
+            left,
+            width;
+
           left = Math.min(progressMaxLeft, Math.max(0, (progressMaxLeft * (this.position / this.durationEstimate)))) + '%';
           width = Math.min(100, Math.max(0, (100 * this.position / this.durationEstimate))) + '%';
-  
+
           if (this.duration) {
 
             dom.progress.style.left = left;
             dom.progressBar.style.width = width;
-              
+
             // TODO: only write changes
             dom.time.innerHTML = getTime(this.position, true);
 
@@ -206,6 +206,7 @@
         onplay: function() {
           utils.css.swap(dom.o, 'paused', 'playing');
           callback('play');
+
         },
 
         onpause: function() {
@@ -267,7 +268,7 @@
           callback('error');
 
           // load next, possibly with delay.
-            
+
           if (navigator.userAgent.match(/mobile/i)) {
             // mobile will likely block the next play() call if there is a setTimeout() - so don't use one here.
             actions.next();
@@ -405,7 +406,7 @@
       function getItem(offset) {
 
         var list,
-            item;
+          item;
 
         // given the current selection (or an offset), return the current item.
 
@@ -432,9 +433,9 @@
 
         // given an <li> item, find it in the playlist array and return the index.
         var list,
-            i,
-            j,
-            offset;
+          i,
+          j,
+          offset;
 
         offset = -1;
 
@@ -515,7 +516,7 @@
 
         // remove UI highlight(s) on selected items.
         var items,
-            i, j;
+          i, j;
 
         items = utils.dom.getAll(dom.playlist, '.' + css.selected);
 
@@ -528,12 +529,12 @@
       function select(item) {
 
         var offset,
-            itemTop,
-            itemBottom,
-            containerHeight,
-            scrollTop,
-            itemPadding,
-            liElement;
+          itemTop,
+          itemBottom,
+          containerHeight,
+          scrollTop,
+          itemPadding,
+          liElement;
 
         // remove last selected, if any
         resetLastSelected();
@@ -561,7 +562,7 @@
         }
 
         // update selected offset, too.
-        offset = findOffsetFromItem(item);
+        offset = findOffsetFromItem(liElement);
 
         data.selectedIndex = offset;
 
@@ -574,7 +575,7 @@
         offset = (offset || 0);
 
         item = getItem(offset);
-        
+
         if (item) {
           playLink(item.getElementsByTagName('a')[0]);
         }
@@ -587,7 +588,7 @@
         var item, url;
 
         item = getItem();
-      
+
         if (item) {
           url = item.getElementsByTagName('a')[0].href;
         }
@@ -689,7 +690,7 @@
     function handleMouseDown(e) {
 
       var links,
-          target;
+        target;
 
       target = e.target || e.srcElement;
 
@@ -726,12 +727,12 @@
     function handleClick(e) {
 
       var evt,
-          target,
-          offset,
-          targetNodeName,
-          methodName,
-          href,
-          handled;
+        target,
+        offset,
+        targetNodeName,
+        methodName,
+        href,
+        handled;
 
       evt = (e || window.event);
 
@@ -947,12 +948,12 @@
         /**
          * This is an overloaded function that takes mouse/touch events or offset-based item indices.
          * Remember, "auto-play" will not work on mobile devices unless this function is called immediately from a touch or click event.
-         * If you have the link but not the offset, you can also pass a fake event object with a target of an <a> inside the playlist - e.g. { target: someMP3Link }         
+         * If you have the link but not the offset, you can also pass a fake event object with a target of an <a> inside the playlist - e.g. { target: someMP3Link }
          */
 
         var target,
-            href,
-            e;
+          href,
+          e;
 
         if (offsetOrEvent !== undefined && !isNaN(offsetOrEvent)) {
           // smells like a number.
@@ -1117,10 +1118,10 @@
          */
 
         var backgroundMargin,
-            pixelMargin,
-            target,
-            value,
-            volume;
+          pixelMargin,
+          target,
+          value,
+          volume;
 
         value = 0;
 
@@ -1178,11 +1179,11 @@
         // set volume (0-100) and update volume slider UI.
 
         var backgroundSize,
-            backgroundMargin,
-            backgroundOffset,
-            target,
-            from,
-            to;
+          backgroundMargin,
+          backgroundOffset,
+          target,
+          from,
+          to;
 
         if (volume === undefined || isNaN(volume)) {
           return;
@@ -1326,7 +1327,7 @@
       function toggleClass(o, cStr) {
 
         var found,
-            method;
+          method;
 
         found = hasClass(o, cStr);
 
@@ -1354,8 +1355,8 @@
       function getAll(param1, param2) {
 
         var node,
-            selector,
-            results;
+          selector,
+          results;
 
         if (arguments.length === 1) {
 
@@ -1447,7 +1448,7 @@
 
         } else if (o.x) {
 
-            curleft += o.x;
+          curleft += o.x;
 
         }
 
@@ -1472,7 +1473,7 @@
 
         } else if (o.y) {
 
-            curtop += o.y;
+          curtop += o.y;
 
         }
 
@@ -1534,10 +1535,10 @@
       };
 
       remove = (window.removeEventListener !== undefined ? function(o, evtName, evtHandler) {
-        return o.removeEventListener(evtName, evtHandler, false);
-      } : function(o, evtName, evtHandler) {
-        return o.detachEvent('on' + evtName, evtHandler);
-      });
+          return o.removeEventListener(evtName, evtHandler, false);
+        } : function(o, evtName, evtHandler) {
+          return o.detachEvent('on' + evtName, evtHandler);
+        });
 
       preventDefault = function(e) {
         if (e.preventDefault) {
@@ -1560,14 +1561,14 @@
     features: (function() {
 
       var getAnimationFrame,
-          localAnimationFrame,
-            localFeatures,
-            prop,
-            styles,
-          testDiv,
-          transform;
+        localAnimationFrame,
+        localFeatures,
+        prop,
+        styles,
+        testDiv,
+        transform;
 
-        testDiv = document.createElement('div');
+      testDiv = document.createElement('div');
 
       /**
        * hat tip: paul irish
@@ -1576,16 +1577,16 @@
        */
 
       localAnimationFrame = (window.requestAnimationFrame
-        || window.webkitRequestAnimationFrame
-        || window.mozRequestAnimationFrame
-        || window.oRequestAnimationFrame
-        || window.msRequestAnimationFrame
-        || null);
+      || window.webkitRequestAnimationFrame
+      || window.mozRequestAnimationFrame
+      || window.oRequestAnimationFrame
+      || window.msRequestAnimationFrame
+      || null);
 
       // apply to window, avoid "illegal invocation" errors in Chrome
       getAnimationFrame = localAnimationFrame ? function() {
-        return localAnimationFrame.apply(window, arguments);
-      } : null;
+          return localAnimationFrame.apply(window, arguments);
+        } : null;
 
       function has(prop) {
 

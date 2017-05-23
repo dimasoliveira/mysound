@@ -14,19 +14,19 @@ class SearchController extends Controller
 
     public function searchRequest(Request $request){
 
-    $audio_results = Audio::where('title','LIKE','%'.$request->search.'%')->orWhere('artist','LIKE','%'.$request->search.'%')->where('published',1)->get();
-    $user_results =  User::where('username','LIKE','%'.$request->search.'%')->orWhere('firstname','LIKE','%'.$request->search.'%')->orWhere('lastname','LIKE','%'.$request->search.'%')->get();
+    $audios = Audio::where('title','LIKE','%'.$request->search.'%')->orWhere('artist','LIKE','%'.$request->search.'%')->where('published',1)->get();
+    $users =  User::where('username','LIKE','%'.$request->search.'%')->orWhere('firstname','LIKE','%'.$request->search.'%')->orWhere('lastname','LIKE','%'.$request->search.'%')->get();
 
     //dd(!$audio_results->isEmpty());
 
-    if ($audio_results->isEmpty()){
-      $audio_results = NULL;
+    if ($audios->isEmpty()){
+      $audios = NULL;
     }
 
-    if ($user_results->isEmpty()){
-        $user_results = NULL;
+    if ($users->isEmpty()){
+        $users = NULL;
       }
 
-    return view('search',compact('audio_results','user_results'));
+    return view('search',compact('audios','users','request'));
     }
 }

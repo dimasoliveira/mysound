@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('avatar');
             $table->integer('upload_limit')->default(10800);
-            $table->string('slug')->nullable();
+            $table->string('slug')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
         });

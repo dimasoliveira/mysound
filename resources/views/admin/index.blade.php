@@ -29,6 +29,16 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{{  asset('css/admin/css/themes/all-themes.css') }}" rel="stylesheet" />
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+    <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/i18n/defaults-*.min.js"></script>
+
 </head>
 
 <body class="theme-light-blue">
@@ -279,7 +289,7 @@
             </div>
             <div class="info-container">
 
-                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}, {{ Auth::user()->username }}</div>
+                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->username }}</div>
                 <div class="email">{{ Auth::user()->email }}</div>
                 <div class="btn-group user-helper-dropdown">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
@@ -300,40 +310,45 @@
         <div class="menu">
             <ul class="list">
 
-                <li class="active">
+                <li {{ (Request::is('admin') ? 'class=active' : '') }}>
                     <a href="{{ route('admin.index') }}">
                         <i class="material-icons">home</i>
                         <span>Home</span>
                     </a>
                 </li>
 
-                <li>
+                <li {{ (Request::is('admin/users/*','admin/users') ? 'class=active' : '') }}>
                     <a href="{{ route('admin.users') }}">
                         <i class="material-icons">contacts</i>
                         <span>Users</span>
                     </a>
                 </li>
 
-                <li>
+                <li {{ (Request::is('admin/role/*','admin/roles') ? 'class=active' : '') }}>
                     <a href="{{ route('admin.roles') }}">
                         <i class="material-icons">recent_actors</i>
                         <span>Roles</span>
                     </a>
                 </li>
 
-                <li>
+                <li {{ (Request::is('admin/audio','admin/audio/*') ? 'class=active' : '') }}>
                     <a href="{{ route('admin.audio') }}">
                         <i class="material-icons">library_music</i>
                         <span>Audio</span>
                     </a>
                 </li>
 
-
-
-                <li>
+                <li {{ (Request::is('admin/comments','admin/comments/*') ? 'class=active' : '') }}>
                     <a href="{{ route('admin.comments') }}">
                         <i class="material-icons">textsms</i>
                         <span>Comments</span>
+                    </a>
+                </li>
+
+                <li {{ (Request::is('admin/settings','admin/settings/*') ? 'class=active' : '') }}>
+                    <a href="{{ route('admin.settings') }}">
+                        <i class="material-icons">settings</i>
+                        <span>Settings</span>
                     </a>
                 </li>
 

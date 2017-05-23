@@ -27,7 +27,6 @@ class AudioController extends Controller {
 
   public function create() {
 
-    $genres = Genre::all();
     return view('forms.audio.create',compact('genres'));
   }
 
@@ -43,16 +42,12 @@ class AudioController extends Controller {
       'year' => 'nullable|digits:4',
       'tracknumber' => 'nullable|max:99',]);
 
-    if ($validator->fails()) {
+    if ($validator->fails() || !file_exists(request()->file('filename'))) {
       return redirect()
         ->back()
         ->withErrors($validator)
         ->with('audioAddValidationError', 'Adding audio failed')
         ->withInput();
-    }
-
-    if (!file_exists(request()->file('filename'))) {
-      return redirect()->back()->with('message', 'Something went wrong, try again')->withInput();
     }
 
     if ($request->explicit == "on") {
@@ -84,24 +79,22 @@ class AudioController extends Controller {
 
         $audioData->storeAsMP3($request);
 
-        if (!Album::where('name', $request->album)->where('user_id', Auth::user()->id)->exists()) {
+        $album = Album::where('name', $request->album)->where('user_id', Auth::user()->id)->first();
 
-          Album::create([
+        if (empty($album)) {
+
+          $album = Album::create([
             'name' => $request->album,
             'user_id' => Auth::user()->id,
           ]);
 
-          $request->album_id = \DB::getPdo()->lastInsertId();
-        }
-        else{
-          $request->album_id = Album::where('name', $request->album)->where('user_id', Auth::user()->id)->first()->id;
         }
 
         Audio::create([
             'filename' => $request->filename,
             'title' => $request->title,
             'artist' => $request->artist,
-            'album_id' => $request->album_id,
+            'album_id' => $album->id,
             'tracknumber' => $request->tracknumber,
             'published' => $request->published,
             'genre_id' => Genre::where('name',$request->genre)->first()->id,
@@ -170,20 +163,19 @@ class AudioController extends Controller {
       $request->coverart = $audio->coverart;
     }
 
-    $request->album_id = \DB::table('albums')
-      ->where('name', $request->album)
+    $request->album_id = Album::where('name', $request->album)
       ->where('user_id', Auth::user()->id)
       ->value('id');
 
     //if not, create the album and pass the album id
     if ($request->album_id == NULL) {
 
-      Album::create([
+      $newAlbum = Album::create([
         'name' => $request->album,
         'user_id' => Auth::user()->id,
       ]);
 
-      $request->album_id = \DB::getPdo()->lastInsertId();
+      $request->album_id = $newAlbum;
     }
 
       $audio->title = $request->title;
@@ -196,6 +188,7 @@ class AudioController extends Controller {
       $audio->coverart = $request->coverart;
       $audio->genre_id = Genre::where('name',$request->genre)->first()->id;
       $audio->save();
+
 
     return redirect()
       ->back()
@@ -226,4 +219,6 @@ class AudioController extends Controller {
       ->with('message', 'Er is iets fout gegaan, probeer het nogmaals');
 
   }
+
+
 }

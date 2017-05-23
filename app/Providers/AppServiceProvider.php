@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use App\Genre;
 use App\Validation\AllowedUsernameValidator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -14,10 +15,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+      view()->share('genres', Genre::all());
+
       Validator::extend(
         'allowed_username',
         'App\Validation\AllowedUsernameValidator@validate'
       );
+
+
     }
 
     /**
