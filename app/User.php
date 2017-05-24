@@ -16,6 +16,7 @@ class User extends Authenticatable
     use CanFollow, CanBeFollowed;
     use EntrustUserTrait;
     use Sluggable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -48,8 +49,10 @@ class User extends Authenticatable
     }
 
     public function role(){
-      return $this->belongsTo(Role::class);
+      return $this->hasOne(Role::class,'role_user');
+
     }
+
 
     public function sluggable()
     {

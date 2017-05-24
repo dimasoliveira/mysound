@@ -33,9 +33,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('owner', function (User $user,$object) {
 
           if(is_a($object, 'App\User')){
-            return $user->id == $object->id;
+            return $user->id == $object->id || $user->hasRole('superadmin');
           }
-          return $user->id == $object->user_id;
+          return $user->id == $object->user_id || $user->hasRole('superadmin');
         });
 
     }

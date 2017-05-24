@@ -59,15 +59,9 @@ class ProfileController extends Controller
 
     public function avatarUpdate(Request $request, User $user){
 
-      //dd($request);
-
       $this->validate($request, [
-        'avatar' => 'nullable|image|file',
+        'avatar' => 'nullable|image|file|dimensions:ratio=1/1',
       ]);
-
-
-
-     //$user->update(['avatar' => $request->avatar]);
 
           if (Storage::exists($user->avatar)) {
             Storage::delete($user->avatar);
@@ -77,6 +71,24 @@ class ProfileController extends Controller
             'avatar' => $request->avatar = request()
               ->file('avatar')
               ->store('public/avatars')
+          ]);
+
+        return redirect()->intended(route('profile'));
+
+    }
+
+    public function nameUpdate(Request $request, User $user){
+
+      $this->validate($request, [
+        'username' => 'required|max:255|allowed_username|unique:users,username,'.$user->id,
+        'firstname' => 'required|max:255',
+        'lastname' => 'required|max:255',
+      ]);
+
+          $user->update([
+            'username' => $request->username,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
           ]);
 
         return redirect()->intended(route('profile'));

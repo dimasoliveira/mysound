@@ -14,8 +14,6 @@ class AlbumController extends Controller
 {
   public function __construct()
   {
-//    $this->middleware('auth');
-
     // Delete Albums waarvan de album id niet voorkomt in het audio tabel
     // hier verwijderd hij dus albums waar geen audio aan gekoppeld is
 
@@ -42,15 +40,12 @@ class AlbumController extends Controller
 
   public function show(Album $album) {
 
-
-
     //$id =\DB::table('albums')->where('user_id', Auth::user()->id)->where('name', $id)->value('id');
 
     $playlists = Playlist::where('user_id',Auth::user()->id)->get();
     //$album = Album::findOrfail($id);
 
     if (isset($album)){
-
 
     if ($album->artist == NULL){
       foreach ($album->audio as $song){
@@ -88,7 +83,7 @@ class AlbumController extends Controller
 
     $this->validate($request, [
       'album_name' => 'nullable|max:50',
-      'coverart' => 'nullable|image|file',
+      'coverart' => 'nullable|image|file|dimensions:ratio=1/1',
     ]);
 
     $duplicate_album = Album::where('name', $request->album_name)->where('user_id', Auth::user()->id)->first();
@@ -123,18 +118,6 @@ class AlbumController extends Controller
       }
       return redirect()->intended(route('myaudio.album.show',$duplicate_album->slug));
 }
-
-    // Als ingevoerde albumnaam al bestaat
-    // Moeten de albums bij elkaar gegooit worden
-
-
-    // Verplaats liedjes naar nieuwe album
-    //Verwijder huidige album
-
-//    $album->name = $request->album_name;
-//    $album->save();
-
-
 
   }
 }

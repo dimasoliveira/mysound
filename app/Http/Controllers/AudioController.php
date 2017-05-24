@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Album;
 use App\Genre;
+use App\Playlist;
 use Illuminate\Support\Facades\Gate;
 use App\Audio;
 use App\MP3File;
@@ -21,8 +22,10 @@ class AudioController extends Controller {
 
     $audio_posts = Audio::orderBy('created_at', 'desc')
       ->where('user_id', Auth::user()->id)->get();
+    $playlists = Playlist::orderBy('created_at', 'desc')
+      ->where('user_id', Auth::user()->id)->get();
 
-    return view('myaudio.index', compact('audio_posts'));
+    return view('myaudio.index', compact('audio_posts','playlists'));
   }
 
   public function create() {
@@ -37,7 +40,7 @@ class AudioController extends Controller {
       'artist' => 'required|max:50',
       'album' => 'nullable|max:50',
       'genre' => 'required',
-      'coverart' => 'nullable',
+      'coverart' => 'nullable|dimensions:ratio=1/1',
       'filename' => 'required|mimes:mpga',
       'year' => 'nullable|digits:4',
       'tracknumber' => 'nullable|max:99',]);
@@ -86,6 +89,7 @@ class AudioController extends Controller {
           $album = Album::create([
             'name' => $request->album,
             'user_id' => Auth::user()->id,
+            'coverart' => $request->coverart,
           ]);
 
         }
@@ -123,7 +127,7 @@ class AudioController extends Controller {
       'artist' => 'required|max:50',
       'album' => 'nullable|max:50',
       'genre' => 'required|max:50',
-      'coverart' => 'nullable',
+      'coverart' => 'nullable|dimensions:ratio=1/1',
       'year' => 'nullable|digits:4',
       'tracknumber' => 'nullable|max:99',
     ]);
@@ -152,6 +156,7 @@ class AudioController extends Controller {
 
     if ($request->coverart !== NULL && file_exists(request()->file('coverart'))) {
 
+
       $request->coverart = request()->file('coverart')->store('public/coverarts');
 
       if (Storage::exists($audio->coverart) && Storage::exists($request->coverart) && $audio->coverart !== "/defaults/coverart.png"){
@@ -175,7 +180,7 @@ class AudioController extends Controller {
         'user_id' => Auth::user()->id,
       ]);
 
-      $request->album_id = $newAlbum;
+      $request->album_id = $newAlbum->id;
     }
 
       $audio->title = $request->title;

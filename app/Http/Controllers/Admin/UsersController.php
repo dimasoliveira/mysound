@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Audio;
+use App\Role;
 use App\User;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -21,23 +23,21 @@ class UsersController extends Controller
   public function edit($id){
 
     $user = User::findOrFail($id);
-    // View oproepen
+    $roles = Role::all();
 
-    return view('admin.users.edit', compact('user'));
+    return view('admin.users.edit', compact('user','roles'));
   }
 
-  public function store(Request $request, $id){
+  public function store(Request $request, User $user){
 
     $this->validate($request, [
-      'username' => 'required|max:255|allowed_username|unique:users,username,'.$id,
+      'username' => 'required|max:255|allowed_username|unique:users,username,'.$user->id,
       'firstname' => 'required|max:255',
       'birthdate' => 'nullable|date',
       'lastname' => 'required|max:255',
-      'email' => 'required|email|max:255|unique:users,email,'.$id,
+      'email' => 'required|email|max:255|unique:users,email,'.$user->id,
+      'role' => 'required|integer',
     ]);
-
-    $user = User::findOrFail($id);
-
 
     $user->update([
       'username' => $request->username,
@@ -45,16 +45,14 @@ class UsersController extends Controller
       'birthdate' => $request->birthdate,
       'lastname' => $request->lastname,
       'email' => $request->email,
-    ]);
 
+    ]);
+    $user->detachRoles($user->roles);
+    $user->roles()->attach($request->role);
 
     return redirect()
       ->back()
-      ->with('toast', 'Updated user succesfully');
-
-
-
-    // Veranderingen opslaan
+      ->with('message', 'Updated user succesfully');
   }
 
   public function destroy($id){
@@ -92,7 +90,7 @@ class UsersController extends Controller
 
     return redirect()
       ->route('admin.users')
-      ->with('toast', $user->username.' deleted succesfully');
+      ->with('message', $user->username.' deleted succesfully');
 
     // User deleten
   }

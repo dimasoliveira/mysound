@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Album;
 use App\Audio;
+use App\Genre;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class AudioController extends Controller
 {
@@ -18,79 +23,111 @@ class AudioController extends Controller
 
   public function edit(Audio $audio){
 
-
-
     return view('admin.audio.edit', compact('audio'));
   }
 
-  public function store(Request $request, Audio $audio){
+  public function update(Request $request,Audio $audio) {
 
-    $this->validate($request, [
-      'username' => 'required|max:255|unique:users,username,'.$id,
-      'firstname' => 'required|max:255',
-      'birthdate' => 'nullable|date',
-      'lastname' => 'required|max:255',
-      'email' => 'required|email|max:255|unique:users,email,'.$id,
+    $validator = Validator::make($request->all(), [
+      'title' => 'required|max:255',
+      'artist' => 'required|max:50',
+      'album' => 'nullable|max:50',
+      'genre' => 'required|max:50',
+      'coverart' => 'nullable',
+      'year' => 'nullable|digits:4',
+      'tracknumber' => 'nullable|max:99',
     ]);
 
-    $user = User::findOrFail($id);
+    if ($validator->fails()) {
+      return redirect()
+        ->back()
+        ->withErrors($validator)
+        ->with('audioEditValidationError', "jaa".$request->id)
+        ->withInput();
+    }
 
+    if ($request->explicit == "on") {
+      $request->explicit = 1;
+    }
+    else {
+      $request->explicit = 0;
+    }
 
-    $user->update([
-      'username' => $request->username,
-      'firstname' => $request->firstname,
-      'birthdate' => $request->birthdate,
-      'lastname' => $request->lastname,
-      'email' => $request->email,
-    ]);
+    if ($request->published == "on") {
+      $request->published = 1;
+    }
+    else {
+      $request->published = 0;
+    }
+
+    if ($request->coverart !== NULL && file_exists(request()->file('coverart'))) {
+
+      $request->coverart = request()->file('coverart')->store('public/coverarts');
+
+      if (Storage::exists($audio->coverart) && Storage::exists($request->coverart) && $audio->coverart !== "/defaults/coverart.png"){
+        Storage::delete($audio->coverart);
+      }
+
+    }
+    else {
+      $request->coverart = $audio->coverart;
+    }
+
+    $request->album_id = Album::where('name', $request->album)
+      ->where('user_id', Auth::user()->id)
+      ->value('id');
+
+    //if not, create the album and pass the album id
+    if ($request->album_id == NULL) {
+
+      $newAlbum = Album::create([
+        'name' => $request->album,
+        'user_id' => Auth::user()->id,
+      ]);
+
+      $request->album_id = $newAlbum->id;
+    }
+
+    $audio->title = $request->title;
+    $audio->artist = $request->artist;
+    $audio->album_id = $request->album_id;
+    $audio->tracknumber = $request->tracknumber;
+    $audio->explicit = $request->explicit;
+    $audio->published = $request->published;
+    $audio->year = $request->year;
+    $audio->coverart = $request->coverart;
+    $audio->genre_id = $request->genre;
+    $audio->save();
 
 
     return redirect()
       ->back()
-      ->with('toast', 'Updated user succesfully');
-
-
-
-    // Veranderingen opslaan
+      ->with('message', 'File succesfully edited');
   }
 
-  public function destroy(Audio $audio){
+  public function destroy(Audio $audio)
+  {
 
-    $user = User::findOrFail($id);
+    if (Storage::exists($audio->filename)){
+      Storage::delete($audio->filename);
 
-    $allAudio = Audio::where('user_id',$id)->get();
-
-    foreach ($allAudio as $audio){
-
-      if (Storage::exists($audio->filename)){
-        Storage::delete($audio->filename);
-
-        if (Storage::exists($audio->filename) == false)
-        {
-          if (Storage::exists($audio->coverart) && $audio->coverart !== "/defaults/coverart.png"){
-            Storage::delete($audio->coverart);
-          }
-
-          $audio->delete();
+      if (Storage::exists($audio->filename) == false)
+      {
+        if (Storage::exists($audio->coverart) && $audio->coverart !== "/defaults/coverart.png"){
+          Storage::delete($audio->coverart);
         }
 
-        return redirect()
-          ->back()
-          ->with('message', 'Bestand succesvol verwijderd');
+        $audio->delete();
       }
+
       return redirect()
-        ->back()
-        ->with('message', 'Er is iets fout gegaan, probeer het nogmaals');
-
+        ->route('index')
+        ->with('message', 'Bestand succesvol verwijderd');
     }
-
-    // Delete alle bijbehorende muziek en coverarts
-    $user->delete();
-
     return redirect()
-      ->route('admin.users')
-      ->with('toast', $user->username.' deleted succesfully');
+      ->back()
+      ->with('message', 'Er is iets fout gegaan, probeer het nogmaals');
 
-    // User deleten
   }
+
 }
