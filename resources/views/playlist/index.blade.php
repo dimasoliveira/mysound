@@ -30,39 +30,27 @@
 
         <div class="row">
 
-            @foreach($playlists as $playlist)
 
-                <div class="col s3 m3">
+            @if (!$playlists->isEmpty())
+                <ul class="collection with-header">
+                @foreach($playlists as $playlist)
+                        <a href="{{ route('playlist.show',$playlist->id) }}">
+                            <li class="collection-header">
+                                <h5>{{ $playlist->name }}</h5>
+                                {{ $playlist->description }}
+                                <span class="right">{{ count($playlist->audio) }} song(s) in this playlist</span>
+                            </li>
 
-                    <div class="card hoverable">
+                        </a>
+                @endforeach
+            @else
+                        <ul class="collection">
 
-                        <div class="card-image waves-effect waves-block waves-light">
-                            <span style="right: 0!important; top:0; height: 0;" class="card-title activator grey-text text-darken-4"><i class="material-icons">more_vert</i></span>
-                            <a href="{{ route('playlist.show',$playlist->id) }}">
-                                <img src="https://d2qqvwdwi4u972.cloudfront.net/static/img/default_album.png" style="height: auto;width: 100%">
-                                <span class="card-title" style="color: black;">{{ $playlist->name }}</span>
-                            </a>
-                        </div>
+                            <li class="collection-item">You don't have any playlists at the moment, click <a href="#addPlaylist">here</a> to ceate one</li>
+                        </ul>
+             @endif
 
-                        <div class="card-content" style="padding: 0;line-height: 0;">
-                            <script>
-                              soundManager.setup({
-                                url: '{{ asset('swf/soundmanager2.swf') }}',
-                                flashVersion: 9, // optional: shiny features (default = 8)
-                                // optional: ignore Flash where possible, use 100% HTML5 mode
-                                // preferFlash: false,
-                                onready: function() {
-                                  // Ready to use; soundManager.createSound() etc. can now be called.
-                                }
-                              });
-                            </script>
-                        </div>
-
-                    </div>
-                </div>
-
-            @endforeach
-
+            </ul>
         </div>
     </div>
 

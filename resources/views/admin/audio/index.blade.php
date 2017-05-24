@@ -11,9 +11,7 @@
         </script>
     @endif
 
-    {{ activity()
-  ->causedBy(Auth::user()->id)
-  ->log('Look, I logged something') }}
+
 
 <div class="container-fluid">
 
@@ -23,7 +21,7 @@
             <div class="card">
                 <div class="header">
                     <h2>
-                        USER TABLE
+                        AUDIO TABLE
                     </h2>
                     <ul class="header-dropdown m-r--5">
                         <li class="dropdown">

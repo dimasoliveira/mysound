@@ -83,11 +83,13 @@
                             <h2 class="card-inside-title"></h2>
                             <div class="row clearfix">
 
-                                {!!  Form::open(['route' => ['admin.audio.store', $audio->id], 'id' => 'audioForm'])  !!}
+                                {!!  Form::open(['route' => ['admin.audio.update', $audio->id], 'id' => 'audioForm'])  !!}
 
                                 <div class="col-sm-12">
 
                                     <div class="form-group">
+                                        <div class="col-sm-1">
+                                        <b>Nr:</b>
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="tracknumber" placeholder="Tracknumber" value="{{ $audio->tracknumber }}"/>
                                         </div>
@@ -97,10 +99,9 @@
                                     <strong>{{ $errors->first('tracknumber') }}</strong>
                                     </span>
                                             @endif
-                                        </div>
-
-
-                                    <div class="form-group">
+                                    </div>
+                                        <div class="col-sm-11">
+                                        <b>Title:</b>
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="title" placeholder="Title" value="{{ $audio->title }}"/>
                                         </div>
@@ -110,10 +111,12 @@
                                     <strong>{{ $errors->first('title') }}</strong>
                                     </span>
                                             @endif
-                                        </div>
+                                        </div></div>
 
 
                                     <div class="form-group">
+                                        <div class="col-sm-4">
+                                        <b>Artist:</b>
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="artist" placeholder="Artist" value="{{ $audio->artist }}"/>
                                         </div>
@@ -122,10 +125,10 @@
                                     <strong>{{ $errors->first('artist') }}</strong>
                                     </span>
                                             @endif
-                                        </div>
+                                    </div>
 
-
-                                    <div class="form-group">
+                                        <div class="col-sm-5">
+                                        <b>Album:</b>
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="album" placeholder="Album" value="{{ $audio->album->name }}"/>
                                         </div>
@@ -136,21 +139,32 @@
                                     </span>
                                             @endif
                                         </div>
+                                </div>
 
 
                                     <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="genre" placeholder="Genre" value="{{ $audio->genre }}"/>
-                                        </div>
+                                    <div class="col-sm-2">
 
-                                            @if ($errors->has('genre'))
+
+                                            <div class="form-line">
+                                                <b>Genre:</b>
+                                                <select class="selectpicker" id="selectpicker" name="genre" data-live-search="true">
+                                                    <option value="{{$audio->genre->id}}">{{ $audio->genre->name }} (Current)</option>
+                                                    @foreach($genres as $genre)
+                                                        <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                    @if ($errors->has('genre'))
                                                 <span class="left help-block red-text">
                                     <strong>{{ $errors->first('genre') }}</strong>
                                     </span>
                                             @endif
+                                    </div>
+                                        <div class="col-sm-1">
 
-                                        </div>
-                                    <div class="form-group">
+                                        <b>Year:</b>
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="year" placeholder="Year" value="{{ $audio->year }}"/>
                                         </div>
@@ -160,40 +174,41 @@
                                     </span>
                                             @endif
                                         </div>
+                                </div>
 
-                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                        <b>Coverart:</b>
+                                        <input id="coverart" name="coverart" type="file" value="{{ old('coverart') }}">
 
-                                        <div class="file-field input-field">
-                                            <div class="btn waves-effect blue">
-                                                <span>Coverart</span>
-                                                <input id="coverart" name="coverart" type="file" >
-                                            </div>
-                                            <div class="file-path-wrapper">
-                                                <input class="file-path validate" type="text" value="{{ old('coverart') }}">
-                                            </div>
-                                            @if ($errors->has('coverart'))
-                                                <span class="left help-block red-text">
+
+                                        @if ($errors->has('coverart'))
+                                            <span class="left help-block red-text">
                                     <strong>{{ $errors->first('coverart') }}</strong>
                                     </span>
-                                            @endif
-                                        </div>
+                                        @endif
+                                        @if ($errors->has('coverart'))
+                                            <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('coverart') }}</strong>
+                                    </span>
+                                        @endif
+                                    </div>
 
-
+                                </div>
 
                                         <div class="file-field input-field">
-
-
+                                            <div class="col-sm-">
                                             <p class="left">
                                                 @if ($audio->published == 1)
                                                     <input title="published" type="checkbox" class="filled-in" checked="checked" id="published" name="published">
                                                 @else
                                                     <input title="published" type="checkbox" id="published" class="filled-in" name="published">
                                                 @endif
-                                                <label for="published">Delen met anderen</label>
+                                                <label for="published">Published</label>
                                             </p>
 
 
-                                            <p class="right">
+                                            <p class="left">
                                                 @if ($audio->explicit == 1)
                                                     <input title="explicit" type="checkbox" class="filled-in" id="explicit" checked="checked" name="explicit">
                                                 @else
@@ -202,7 +217,8 @@
                                                 <label for="explicit">Explicit</label>
                                             </p>
                                         </div>
-
+                                        </div>
+                            </div>
                                 </div>
                                 {{ Form::close() }}
                             </div>

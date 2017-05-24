@@ -91,7 +91,11 @@
 
     @if(!isset($audios) && !isset($users) && isset($request))
 
-        <h4>No results where found for <b>{{ $request->search }}</b></h4>
+            <ul class="collection">
+                <li class="collection-item">No results where found for <b>{{ $request->search }}</b></li>
+            </ul>
+
+        <h4></h4>
 
         @endif
         </div>

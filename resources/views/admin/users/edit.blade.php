@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="modal-footer">
 
-                                    {!! Form::open(['method' => 'DELETE','route' => ['admin.users.destroy', $user->id]]) !!}
+                                    {!! Form::open(['method' => 'DELETE','route' => ['admin.users.destroy', $user->slug]]) !!}
                                     {{  Form::submit('Yes', ['class' => 'btn btn-danger waves-effect'])}}
 
                                     <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
@@ -80,7 +80,7 @@
                         <h2 class="card-inside-title"></h2>
                         <div class="row clearfix">
 
-                            {!!  Form::open(['route' => ['admin.users.store', $user->id], 'id' => 'userForm'])  !!}
+                            {!!  Form::open(['route' => ['admin.users.store', $user->slug], 'id' => 'userForm'])  !!}
 
                             <div class="col-sm-12">
 
@@ -144,6 +144,24 @@
                                         <span style="float: left; color: red" class="help-block">
                                                 <strong>{{ $errors->first('birthdate') }}</strong>
                                                 </span>
+                                    @endif
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <b>Role:</b>
+                                        <select class="selectpicker" id="selectpicker" name="role" data-live-search="true">
+                                            <option value="{{$user->roles->first()->id}}">{{$user->roles->first()->name}} (Current)</option>
+                                            @foreach($roles as $role)
+                                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    @if ($errors->has('role'))
+                                        <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('role') }}</strong>
+                                    </span>
                                     @endif
                                 </div>
                             </div>

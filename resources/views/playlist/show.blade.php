@@ -18,29 +18,37 @@
             </div>
             <div class="card-stacked">
                 <div class="card-content">
-                    <div id="albumNameBlock"><h4 id="album_name_field">{{$playlist->name}}<a class="right btn-floating waves-effect waves-light blue"><i id="test" onclick="albumNameEditForm()" class="small material-icons">mode_edit</i></a>
-                        </h4></div><script>
+                    <div id="playlistNameBlock">
+                        <h4 id="album_name_field">{{$playlist->name}}
+                            <a class="right btn-floating waves-effect waves-light blue">
+                                <i id="test" onclick="playlistNameEditForm()" class="small material-icons">mode_edit</i>
+                            </a>
+                            <h6>{{ $playlist->description }}</h6>
+                        </h4>
+                    </div>
 
-                    function albumNameEditForm() {
+                    <script>
+
+                    function playlistNameEditForm() {
 
                       $("#test").click(function(){
-                        $("#albumNameBlock").attr('style', 'display:none');
-                        $("#albumNameForm").removeAttr("style");
+                        $("#playlistNameBlock").attr('style', 'display:none');
+                        $("#playlistDescriptionBlock").attr('style', 'display:none');
+                        $("#playlistForm").removeAttr("style");
                       })}
 
                     </script>
 
-
-                    {!!  Form::open(['route' => ['myaudio.album.update', $playlist->id],'id' => 'albumNameForm','class' => 'form-horizontal col s12 hidden', 'style' => 'display:none'])  !!}
+                    {!!  Form::open(['route' => ['playlist.update', $playlist->id],'id' => 'playlistForm','class' => 'form-horizontal col s12 hidden', 'style' => 'display:none'])  !!}
                     <div class="row" style="margin-bottom: 0;">
-                        <div class="input-field col s12 {{ $errors->has('album_name') ? ' has-error' : '' }}">
-                            <input id="album_name" type="text" class="form-control col s5" name="album_name" value="{{ $playlist->name }}" style="font-size: 2.28rem;padding-left: 0;">
+                        <div class="input-field col s12 {{ $errors->has('playlist_name') ? ' has-error' : '' }}">
+                            <input id="playlist_name" type="text" class="form-control col s5"  placeholder="Name" name="playlist_name" value="{{ $playlist->name }}" style="font-size: 2.28rem;padding-left: 0;">
 
 
 
-                            @if ($errors->has('album_name'))
+                            @if ($errors->has('playlist_name'))
                                 <span class="left help-block red-text">
-                                        <strong>{{ $errors->first('album_name') }}</strong>
+                                        <strong>{{ $errors->first('playlist_name') }}</strong>
                                         </span>
                             @endif
 
@@ -50,10 +58,25 @@
 
                         </div>
 
+                        <div class="input-field col s12 {{ $errors->has('playlist_description') ? ' has-error' : '' }}">
+                            <input id="playlist_description" placeholder="Description" type="text" class="form-control col s5" name="playlist_description" value="{{ $playlist->description }}" style="font-size: 1rem;padding-left: 0;">
+
+
+
+                            @if ($errors->has('playlist_description'))
+                                <span class="left help-block red-text">
+                                        <strong>{{ $errors->first('playlist_description') }}</strong>
+                                        </span>
+                            @endif
+
+
+                        </div>
+
+
                     </div>
-
-
                     {{ Form::close() }}
+
+
 
 
                     <div class="row">
@@ -115,27 +138,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-
-      $(function () {
-
-        @foreach($playlist->audio as $song)
-
-             $("#play-{{ $song->id }}").click(function(){
-          $(".sm2-playlist-bd").html('<ul class="sm2-playlist-bd"><li><a href="{{ Storage::url($song->filename) }}"><b>{{ $song->artist }}</b> - {{ $song->title }}@if($song->explicit)<span class="label">Explicit</span>@endif</a></li></ul>');
-          window.sm2BarPlayers[0].playlistController.playItemByOffset();
-        });
-          @endforeach
-
-      });
-    </script>
-    <script>
-
-      $(document).ready(function(){
-        // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-        $('#modal41').modal('open');
-      });
-    </script>
 
 @endsection

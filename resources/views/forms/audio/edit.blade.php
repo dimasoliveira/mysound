@@ -147,7 +147,7 @@
                                 @else
                                 <input title="published" type="checkbox" id="published" class="filled-in" name="published">
                                 @endif
-                                <label for="published">Delen met anderen</label>
+                                <label for="published">Share with others</label>
                             </p>
 
 

@@ -93,6 +93,13 @@ class PermissionTableSeeder extends Seeder
       $editRole->description  = 'edit existing roles';
       $editRole->save();
 
+      $uploadLimitEdit = new Permission();
+      $uploadLimitEdit->name         = 'uploadlimit-edit';
+      $uploadLimitEdit->display_name = 'Edit User Upload Limit';
+// Allow a user to...
+      $uploadLimitEdit->description  = 'edit the upload limit for all/one user';
+      $uploadLimitEdit->save();
+
       $showLogs = new Permission();
       $showLogs->name         = 'log-show';
       $showLogs->display_name = 'Show Logs';
@@ -100,8 +107,8 @@ class PermissionTableSeeder extends Seeder
       $showLogs->description  = 'access to the logs from the behavior and activity of the users';
       $showLogs->save();
 
-      $superadmin->attachPermissions([$uploadAudio, $editAudio, $deleteAudio, $editUser, $deleteUser, $showLogs, $editRole, $createRole, $followUser]);
-      $admin->attachPermissions([$uploadAudio, $editAudio, $deleteAudio, $editUser, $deleteUser, $showLogs, $editRole,$createRole,$followUser]);
+      $superadmin->attachPermissions([$uploadAudio, $editAudio, $deleteAudio, $editUser, $deleteUser, $showLogs, $editRole, $createRole, $followUser,$uploadLimitEdit]);
+      $admin->attachPermissions([$uploadAudio, $editAudio, $deleteAudio, $editUser, $deleteUser, $showLogs, $editRole,$createRole,$followUser,$uploadLimitEdit]);
       $user->attachPermissions([$uploadAudio, $followUser, $editAudio, $deleteAudio]);
       $partner->attachPermissions([$uploadAudio, $editAudio, $deleteAudio, $editUser, $deleteUser, $showLogs]);
 

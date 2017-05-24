@@ -2,7 +2,7 @@
  * Created by dimas on 5/2/17.
  */
 
-// $(document).ready(function(){
+
 //   // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
 //
 //   $('.dropdown-button').dropdown({
@@ -42,6 +42,15 @@ $("#avatarInput").change(function(){
 
   });
 
+
+
 });
+
+$("#nameEdit").click(function() {
+
+  $("#nameBlock").attr('style', 'display:none');
+  $("#nameForm").removeAttr("style");
+});
+
 
 

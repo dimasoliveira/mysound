@@ -31,13 +31,14 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
       Route::get('/admin/comments','Admin\CommentController@index')->name('admin.comments');
       Route::get('/admin/settings','Admin\SettingsController@index')->name('admin.settings');
 
-      Route::post('/admin/settings','Admin\SettingsController@updateUploadLimit')->name('admin.uploadlimit.update');
+
+      Route::post('/admin/settings','Admin\SettingsController@updateUploadLimit')->name('admin.uploadlimit.update')->middleware('permission:uploadlimit-edit');
 
 
       Route::group(['middleware' => ['permission:user-edit']], function () {
-          Route::get('/admin/users/{id}','Admin\UsersController@edit')->name('admin.users.edit');
-          Route::post('/admin/users/{id}','Admin\UsersController@store')->name('admin.users.store');
-          Route::delete('/admin/users/{id}','Admin\UsersController@destroy')->name('admin.users.destroy'); });
+          Route::get('/admin/users/{user}','Admin\UsersController@edit')->name('admin.users.edit');
+          Route::post('/admin/users/{user}','Admin\UsersController@store')->name('admin.users.store');
+          Route::delete('/admin/users/{user}','Admin\UsersController@destroy')->name('admin.users.destroy'); });
 
       Route::group(['middleware' => ['permission:role-create']], function () {
           Route::get('/admin/role/add','Admin\RoleController@create')->name('admin.role.create');
@@ -51,14 +52,13 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
 
       Route::group(['middleware' => ['permission:audio-edit']], function () {
           Route::get('/admin/audio/{audio}','Admin\AudioController@edit')->name('admin.audio.edit');
-          Route::post('/admin/audio/{audio}','Admin\AudioController@store')->name('admin.audio.store');
+          Route::post('/admin/audio/{audio}','Admin\AudioController@update')->name('admin.audio.update');
           Route::delete('/admin/admin/{audio}','Admin\AudioController@destroy')->name('admin.audio.destroy'); });
       });
 
   Route::get('/search','SearchController@index');
   Route::post('/search','SearchController@searchRequest')->name('search.request');
   Route::get('/timeline','TimelineController@index')->name('timeline.show');
-
 
   Route::post('like/{audio}','LikeController@create')->name('like.create');
 
@@ -86,16 +86,20 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
     // A L B U M  D E L E T E
   });
 
-  //Route::get('/myaudio/albums/{slug}/edit','AlbumController@edit')->name('myaudio.album.edit');//->middleware('can:update-audio,audio')
-
-  Route::get('/playlists','PlaylistController@index')->name('playlist.index');
-  Route::get('/playlist/{playlist}','PlaylistController@show')->name('playlist.show');
   Route::post('/playlist/add','PlaylistController@store')->name('playlist.store');
+  Route::get('/playlists','PlaylistController@index')->name('playlist.index');
+
+  Route::group(['middleware' => ['can:owner,playlist']], function () {
+    Route::get('/playlist/{playlist}','PlaylistController@show')->name('playlist.show');
+    Route::post('/playlist/{playlist}','PlaylistController@update')->name('playlist.update');
+  });
+
 
   Route::get('/profile', function () {return redirect()->intended(route('profile.show',Auth::user()->slug));})->name('profile');
 
   Route::get('/{slug}','ProfileController@index')->name('profile.show');
   Route::post('/profile/avatar/{user}','ProfileController@avatarUpdate')->name('avatar.update')->middleware('can:owner,user');
+  Route::post('/profile/name/{user}','ProfileController@nameUpdate')->name('name.update')->middleware('can:owner,user');
   Route::post('profile/{slug}/follow','ProfileController@followRequest')->name('follow.request');
 
   Route::get('/{slug}/audio/{audio}','TimelineController@show')->name('audio.show');

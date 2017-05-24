@@ -37,7 +37,7 @@
                             </div>
 
                                 <figure class="card-profile-image">
-                                    @if ($user->id == Auth::user()->id)
+                                    @if ($user->id == Auth::user()->id || Auth::user()->hasRole('superadmin'))
 
                                     <a id="avatarEdit" class="btn-floating btn-small waves-effect waves-light left blue" style="position: absolute">
                                         <i class="material-icons">edit</i>
@@ -63,8 +63,56 @@
                         <div class="card-content">
                             <div class="row">
 
-                                <div class="col s2">
-                                    <h4 class="card-title grey-text text-darken-4">{{ $user->firstname }} {{ $user->lastname }}</h4>
+                                {!!  Form::open(['route' => ['name.update', $user->slug],'id' => 'nameForm','class' => 'form-horizontal col s12 hidden', 'style' => 'display:none'])  !!}
+
+
+                                    <div class="input-field col s12 {{ $errors->has('firstname') ? ' has-error' : '' }}{{ $errors->has('lastname') ? ' has-error' : '' }}">
+                                        <input id="firstname" type="text" class="form-control col s2" name="firstname" value="{{ $user->firstname }}" style="font-size: 1.2rem;padding-left: 0;">
+
+                                        @if ($errors->has('firstname'))
+                                            <span class="left help-block red-text">
+                                        <strong>{{ $errors->first('firstname') }}</strong>
+                                        </span>
+                                        @endif
+
+                                        <input id="lastname" type="text" class="form-control col s2" name="lastname" value="{{ $user->lastname }}" style="font-size: 1.2rem;padding-left: 0;">
+                                        <button id="test" type="submit" class="right btn-floating waves-effect waves-light blue">
+                                            <i class="small material-icons">save</i>
+                                        </button>
+                                    @if ($errors->has('lastname'))
+                                            <span class="left help-block red-text">
+                                        <strong>{{ $errors->first('lastname') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                    <div class="input-field col s12 {{ $errors->has('username') ? ' has-error' : '' }}">
+                                        <input id="username" type="text" class="form-control col s2" name="username" value="{{ $user->username }}" style="font-size: 1.2rem;padding-left: 0;">
+
+                                    @if ($errors->has('username'))
+                                            <span class="left help-block red-text">
+                                        <strong>{{ $errors->first('username') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+
+
+
+
+                                {{ Form::close() }}
+                                <div class="col s2" id="nameBlock">
+                                    <h4 class="card-title grey-text text-darken-4">{{ $user->firstname }} {{ $user->lastname }}
+                                        @if ($user->id == Auth::user()->id || Auth::user()->hasRole('superadmin'))
+
+                                            <a id="nameEdit" class="btn-floating btn-small waves-effect waves-light left blue">
+                                                <i class="material-icons">edit</i>
+                                            </a>
+                                            <a hidden id="saveButton" class="btn-small" style="position: absolute;">
+                                                <i class="small material-icons">save</i>
+                                            </a>
+
+                                        @endif
+                                    </h4>
+
                                     <p class="medium-small grey-text">{{ $user->username }}</p>
                                 </div>
                                 <div class="col s2 center-align right">
@@ -87,8 +135,9 @@
                 </div>
 
 
-                @foreach($audios as $audio)
+               @if (!$audios->isEmpty())
                       <div class="col s12 m7">
+                          @foreach($audios as $audio)
                             <div class="card horizontal hoverable activator">
                                 <div class="card-image waves-effect waves-block waves-light">
                                     <img src="{{ Storage::url($audio->coverart) }}" class="activator" style="height: auto;width: 215px">
@@ -125,7 +174,13 @@
                                 </div>
                         </div>
                     @endforeach
-                </div>
+                              @else
+                                  <ul class="collection">
+                                      <li class="collection-item">You don't have shared any music yet, click <a href="#addAudio">here</a> to upload some music and select <i>share with others</i> to get your music published</li>
+                                  </ul>
+                              @endif
+
+                      </div>
             <br><br>
 
 

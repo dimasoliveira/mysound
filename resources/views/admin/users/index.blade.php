@@ -65,7 +65,7 @@
                                     <td>{{ $user->lastname }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->birthdate }}</td>
-                                    <td><a href="{{ route('admin.users.edit',$user->id) }}">Edit</a></td>
+                                    <td><a href="{{ route('admin.users.edit',$user->slug) }}">Edit</a></td>
                                 </tr>
                             @endforeach
                             </tbody>

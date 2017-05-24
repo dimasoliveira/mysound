@@ -1,4 +1,6 @@
 /node_modules
+/storage/app/public/
+!/storage/app/public/defaults
 /public/storage
 /public/hot
 /storage/*.key

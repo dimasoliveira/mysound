@@ -42,8 +42,8 @@
     <script src="{{ asset('js/materialize.js') }}"></script>
     <script src="{{ asset('js/materialize_conf.js') }}"></script>
 
-
     <script src="{{ asset('js/playableLink.js') }}"></script>
+
     <script src="{{ asset('js/editAudioModal.js') }}"></script>
 
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -52,13 +52,6 @@
 
     {{--verplaatst vanuit audio create view--}}
 
-
-    {{--<!-- Scripts -->--}}
-    {{--<script>--}}
-      {{--window.Laravel = {!! json_encode([--}}
-        {{--'csrfToken' => csrf_token(),--}}
-    {{--]) !!};--}}
-    {{--</script>--}}
 
 
 <body>
@@ -325,7 +318,7 @@
 
                     <p class="left">
                             <input title="published" type="checkbox" id="published" class="filled-in" name="published">
-                        <label for="published">Delen met anderen</label>
+                        <label for="published">Share with others</label>
                     </p>
 
 
@@ -457,7 +450,7 @@
 
                     <p class="col s5 left">
                         <input title="published" type="checkbox" id="published2" class="filled-in" name="published">
-                        <label for="published2">Delen met anderen</label>
+                        <label for="published2">Share with others</label>
                     </p>
 
 
@@ -480,7 +473,7 @@
     </div>
     <div id="addPlaylist" class="modal modal-fixed-footer" style="width: 30%;height: 35%;">
         <div class="modal-content" style="padding-top: 15px;padding-bottom: 15px;">
-            {!!  Form::open(['route' => ['playlist.store'],'class' => 'form-horizontal col s12'])  !!}
+            {!!  Form::open(['route' => ['playlist.store'],'class' => 'form-horizontal col s12','method' => 'POST'])  !!}
 
             <div class="row">
 
@@ -665,5 +658,5 @@
 </footer>
 
 </body>
-
+{{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.0.3/turbolinks.js"></script>--}}
 </html>

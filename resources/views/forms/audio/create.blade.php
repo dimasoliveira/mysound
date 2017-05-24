@@ -168,7 +168,7 @@
 
                         <p class="left">
                             <input title="published" type="checkbox" class="filled-in" id="published" name="published">
-                            <label for="published">Delen met anderen</label>
+                            <label for="published">Share with others</label>
                         </p>
 
                         <p class="right">

@@ -165,29 +165,6 @@
         </div>
     </div>
 
-
-
-
-
-    {{--<script>--}}
-
-      {{--$(function () {--}}
-
-        {{--@foreach($album->audio as $song)--}}
-
-             {{--$("#play-{{ $song->id }}").click(function(){--}}
-          {{--$(".sm2-playlist-bd").html('<ul class="sm2-playlist-bd"><li><a href="{{ Storage::url($song->filename) }}"><b>{{ $song->artist }}</b> - {{ $song->title }}@if($song->explicit)<span class="label">Explicit</span>@endif</a></li></ul>');--}}
-          {{--window.sm2BarPlayers[0].playlistController.playItemByOffset();--}}
-        {{--});--}}
-          {{--@endforeach--}}
-
-      {{--});--}}
-    {{--</script>--}}
-
-
-
     <script src="{{ asset('js/albumShow.js') }}"></script>
-
-
 
     @endsection
