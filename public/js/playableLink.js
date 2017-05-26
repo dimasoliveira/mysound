@@ -2,13 +2,19 @@ $(function () {
 
   $(".playable-link").click(function(){
 
-    $.ajax({
-        type: 'POST',
-        url: 'myaudio.dev/js/script.php',
-      success: function(data) {
-      alert(data);
-    }});
 
+
+    var $csrf = $('meta[name="csrf-token"]').attr('content');
+
+      $.ajax({
+        type: 'POST',
+        url: $(this).data('url'),
+        data: {_token: $csrf}
+
+    });
+
+
+    $.post(url, {_token: $csrf}).success().error();
 
 
     if ($(this).data('explicit')){

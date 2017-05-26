@@ -4,6 +4,10 @@ namespace App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+/*
+ * This class is made by Zenwood.com
+ * http://www.zedwood.com/article/php-calculate-duration-of-mp3
+ */
 class MP3File {
   protected $filename;
 

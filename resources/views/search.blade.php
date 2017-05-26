@@ -55,7 +55,7 @@
                                     <span data-id="{{ $audio->id }}" data-filename="{{ Storage::url($audio->filename) }}" data-artist="{{ $audio->artist }}" data-title="{{ $audio->title }}" data-explicit="{{$audio->explicit}}" class="playable-link card-title btn-floating btn-large waves-effect waves-light blue right">
                                         <i class="large material-icons">play_arrow</i>
                                     </span>
-                                    <img src="{{ Storage::url($audio->coverart) }}">
+                                    <img src="@if (!empty(Storage::exists($audio->coverart) )) {{ Storage::url($audio->coverart) }} @else {{ Storage::url('public/defaults/coverart.png') }}  @endif" class="circle z-depth-2 responsive-img" style="height: auto;width: 180px">
                                 </div>
 
                                 <div class="card-action">

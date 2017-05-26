@@ -30,7 +30,7 @@
                             <div class="card-image waves-effect waves-block waves-light"><a class="black-text" href="{{ route('audio.show', [$audio->user->slug,$audio->id]) }}">
 
                                     <img src="{{ Storage::url($audio->coverart) }}" class="activator" style="height: auto;width: 180px"></a>
-                                <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-id='{{ $audio->id }}' data-filename="{{ Storage::url($audio->filename) }}" data-artist="{{ $audio->artist }}" data-title="{{ $audio->title }}" data-explicit="{{$audio->explicit}}"  class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
+                                <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-url="{{ route('log.index') }}" data-id='{{ $audio->id }}' data-filename="{{ Storage::url($audio->filename) }}" data-artist="{{ $audio->artist }}" data-title="{{ $audio->title }}" data-explicit="{{$audio->explicit}}"  class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
                             </div>
 
                             <div class="card-stacked">

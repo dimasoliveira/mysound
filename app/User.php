@@ -40,6 +40,10 @@ class User extends Authenticatable
       return $this->hasMany(Audio::class);
     }
 
+    public function audio_published(){
+      return $this->hasMany(Audio::class)->where('published', '=', 1);
+    }
+
     public function playlists(){
       return $this->hasMany(Playlist::class);
     }

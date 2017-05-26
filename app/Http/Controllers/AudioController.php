@@ -140,19 +140,8 @@ class AudioController extends Controller {
         ->withInput();
     }
 
-    if ($request->explicit == "on") {
-      $request->explicit = 1;
-    }
-    else {
-      $request->explicit = 0;
-    }
-
-    if ($request->published == "on") {
-      $request->published = 1;
-    }
-    else {
-      $request->published = 0;
-    }
+    $request->explicit = $request->explicit == 'on' ? 1 : 0;
+    $request->published = $request->published == 'on' ? 1 : 0;
 
     if ($request->coverart !== NULL && file_exists(request()->file('coverart'))) {
 
@@ -217,11 +206,11 @@ class AudioController extends Controller {
 
       return redirect()
         ->route('index')
-        ->with('message', 'Bestand succesvol verwijderd');
+        ->with('message', 'Succesfully delete audio');
     }
     return redirect()
       ->back()
-      ->with('message', 'Er is iets fout gegaan, probeer het nogmaals');
+      ->with('message', 'Something went wrong, try again');
 
   }
 

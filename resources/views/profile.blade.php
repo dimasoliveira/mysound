@@ -96,8 +96,6 @@
                                     </div>
 
 
-
-
                                 {{ Form::close() }}
                                 <div class="col s2" id="nameBlock">
                                     <h4 class="card-title grey-text text-darken-4">{{ $user->firstname }} {{ $user->lastname }}
@@ -124,7 +122,7 @@
                                     <p class="medium-small grey-text">Following</p>
                                 </div>
                                 <div class="col s2 center-align right">
-                                    <h4 class="card-title grey-text text-darken-4">{{ count($user->audio) }}</h4>
+                                    <h4 class="card-title grey-text text-darken-4">{{ count($user->audio_published) }}</h4>
                                     <p class="medium-small grey-text">Posts</p>
                                 </div>
 
@@ -140,7 +138,7 @@
                           @foreach($audios as $audio)
                             <div class="card horizontal hoverable activator">
                                 <div class="card-image waves-effect waves-block waves-light">
-                                    <img src="{{ Storage::url($audio->coverart) }}" class="activator" style="height: auto;width: 215px">
+                                    <img src="@if (!empty(Storage::exists($audio->coverart) )) {{ Storage::url($audio->coverart) }} @else {{ Storage::url('public/defaults/coverart.png') }}  @endif" class="circle z-depth-2 responsive-img" style="height: auto;width: 180px">
                                     <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-id='{{ $audio->id }}' data-filename="{{ Storage::url($audio->filename) }}" data-artist="{{ $audio->artist }}" data-title="{{ $audio->title }}" data-explicit="{{$audio->explicit}}"  class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
                                 </div>
                                 <div class="card-stacked">

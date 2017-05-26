@@ -10,26 +10,33 @@ use App\Album;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class AlbumController extends Controller
-{
-  public function __construct()
-  {
-    // Delete Albums waarvan de album id niet voorkomt in het audio tabel
-    // hier verwijderd hij dus albums waar geen audio aan gekoppeld is
+class AlbumController extends Controller {
+  /**
+   * AlbumController constructor.
+   *
+   * In the album constructor I'm getting all the empty albums, and delete them
+   * with their coverart
+   */
 
-    $empty_albums = Album::whereNotExists(function($query)
-    {
+  public function __construct() {
+    $empty_albums = Album::whereNotExists(function ($query) {
       $query->select(DB::raw(1))
         ->from('audio')->whereRaw('albums.id = audio.album_id');
     })->get();
 
-    foreach ($empty_albums as $empty_album){
+    foreach ($empty_albums as $empty_album) {
       if (Storage::exists($empty_album->coverart)) {
         Storage::delete($empty_album->coverart);
       }
       $empty_album->delete();
     }
   }
+
+  /**
+   * Here I'm getting all the albums that are created by the authenticated user
+   *
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+   */
 
   public function index() {
 
@@ -38,27 +45,30 @@ class AlbumController extends Controller
     return view('myaudio.album.index', compact('albums'));
   }
 
+  /**
+   *
+   *
+   * @param \App\Album $album
+   *
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+   */
+
   public function show(Album $album) {
 
-    //$id =\DB::table('albums')->where('user_id', Auth::user()->id)->where('name', $id)->value('id');
+    $playlists = Playlist::where('user_id', Auth::user()->id)->get();
 
-    $playlists = Playlist::where('user_id',Auth::user()->id)->get();
-    //$album = Album::findOrfail($id);
+    if (isset($album)) {
 
-    if (isset($album)){
+      if ($album->artist == NULL) {
+        foreach ($album->audio as $song) {
 
-    if ($album->artist == NULL){
-      foreach ($album->audio as $song){
+          $artist[] = $song->artist;
 
-        $artist[] = $song->artist;
-
-
-        $album->artist = array_unique($artist);
-
+          $album->artist = array_unique($artist);
+        }
       }
-    }
 
-    foreach ($album->audio as $song){
+      foreach ($album->audio as $song) {
 
         $year[] = $song->year;
         $genres[] = $song->genre->name;
@@ -67,35 +77,31 @@ class AlbumController extends Controller
         $album->year = array_unique($year);
       }
 
-
-    return view('myaudio.album.show',compact('album'),compact('playlists'));
+      return view('myaudio.album.show', compact('album'), compact('playlists'));
     }
 
-      return redirect(route('myaudio.albums'))->with('message', 'Unfortunately, the album cannot be found');
-
-//    return redirect()
-//      ->back()
-//      ->with('message', 'Er is helaas iets fout gegaan, probeer het opnieuw');
-//
+    return redirect(route('myaudio.albums'))->with('message', 'Unfortunately, the album cannot be found');
   }
 
-  public function update(Request $request, Album $album){
+  public function update(Request $request, Album $album) {
 
     $this->validate($request, [
       'album_name' => 'nullable|max:50',
       'coverart' => 'nullable|image|file|dimensions:ratio=1/1',
     ]);
 
-    $duplicate_album = Album::where('name', $request->album_name)->where('user_id', Auth::user()->id)->first();
+    $duplicate_album = Album::where('name', $request->album_name)
+      ->where('user_id', Auth::user()->id)
+      ->first();
 
-    if (is_null($duplicate_album)){
+    if (is_null($duplicate_album)) {
 
-      if(!empty($request->album_name)){
+      if (!empty($request->album_name)) {
 
         $album->update(['name' => $request->album_name]);
       }
 
-      if(!empty($request->coverart)) {
+      if (!empty($request->coverart)) {
 
         if (Storage::exists($album->coverart)) {
           Storage::delete($album->coverart);
@@ -108,16 +114,14 @@ class AlbumController extends Controller
         ]);
       }
 
-      return redirect()->intended(route('myaudio.album.show',$album->slug));
+      return redirect()->intended(route('myaudio.album.show', $album->slug));
     }
 
-    else{
-      foreach ($album->audio as $song){
+    else {
+      foreach ($album->audio as $song) {
         $song->update(['album_id' => $duplicate_album->id]);
-
       }
-      return redirect()->intended(route('myaudio.album.show',$duplicate_album->slug));
-}
-
+      return redirect()->intended(route('myaudio.album.show', $duplicate_album->slug));
+    }
   }
 }
