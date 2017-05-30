@@ -19,12 +19,18 @@
             <div class="card-stacked">
                 <div class="card-content">
                     <div id="playlistNameBlock">
-                        <h4 id="album_name_field">{{$playlist->name}}
+
+                        <h4 id="album_name_field"> {{$playlist->name}}
                             <a class="right btn-floating waves-effect waves-light blue">
                                 <i id="test" onclick="playlistNameEditForm()" class="small material-icons">mode_edit</i>
                             </a>
+
+
                             <h6>{{ $playlist->description }}</h6>
                         </h4>
+                        <a id="playlistPlay" class="left btn-floating waves-effect waves-light blue">
+                            <i class="small material-icons">play_arrow</i>
+                        </a>
                     </div>
 
                     <script>
@@ -90,46 +96,31 @@
                                 <th>Artist</th>
                                 <th>Length</th>
                                 <th>Year</th>
+                                <th>Uploaded by</th>
                             </tr>
                             </thead>
 
                             <tbody>
-                            @foreach($playlist->audio as $song)
-                                <tr>
-                                    <td><i id="play-{{ $song->id }}" style="cursor: pointer;" class="dropdown-button small material-icons">play_circle_outline</i></td>
-                                    <td>{{ $song->tracknumber }}</td>
-                                    <td>{{ $song->title }} @if ($song->explicit)<i class="tiny material-icons">explicit</i>@endif</td>
-                                    <td>{{ $song->artist }}</td>
-                                    <td>{{ gmdate("i:s",$song->length) }}</td>
-                                    <td>{{ $song->year }}</td>
-                                    <td><i data-activates='dropdown-{{ $song->id }}' style="cursor: pointer;" class="dropdown-button small material-icons">more_vert</i></td>
-                                    <td> {!! Form::open(['route'=> ['playlist.remove',$song->pivot->id],'method' => 'DELETE']) !!}
-                                    <button class="red-text right"><i class="tiny material-icons">clear</i></button>
-
-                                    {{ Form::close() }}</td>
-
+                            @foreach($playlist->audio as $audio)
+                                <tr class="playlistItem" data-title="{{ $audio->title }}" data-artist="{{ $audio->artist }}" data-explicit="{{ $audio->explicit }}" data-filename="{{ Storage::url($audio->filename) }}">
+                                    <td><i class="playable-link dropdown-button small material-icons blue-text" style="cursor: pointer;" data-title="{{ $audio->title }}" data-artist="{{ $audio->artist }}" data-explicit="{{ $audio->explicit }}" data-filename="{{ Storage::url($audio->filename) }}">play_circle_outline</i></td>
+                                    <td>{{ $audio->tracknumber }}</td>
+                                    <td>{{ $audio->title }} @if ($audio->explicit)<i title="This song contains strong language." class="tiny material-icons blue-text">explicit</i>@endif</td>
+                                    <td>{{ $audio->artist }}</td>
+                                    <td>{{ gmdate("i:s",$audio->length) }}</td>
+                                    <td>{{ $audio->year }}</td>
+                                    <td><a href="{{ route('profile.show',$audio->user->slug) }}">{{ $audio->user->username }}</a></td>
+                                    <td><i data-activates='dropdown-{{ $audio->id }}' style="cursor: pointer;" class="dropdown-button small material-icons">more_vert</i></td>
                                 </tr>
 
-                                <ul style="z-index: 100000" id='dropdown-{{ $song->id }}' class='dropdown-content'>
-                                    <li><a href="{{ route('myaudio.edit',$song->id) }}">Edit</a></li>
-                                    <li><a href="#modal{{ $song->id }}">Delete</a></li>
+                                <ul id='dropdown-{{ $audio->id }}' class='dropdown-content'>
+
+                                    {!! Form::open(['route'=> ['playlist.remove',$audio->pivot->id],'method' => 'DELETE']) !!}
+
+                                    <li><a><button title="Remove song from playlist" style="padding: 0px;border: 0px;height: 15px;background-color: transparent;">Delete from playlist</button></a></li>
+                                    {{ Form::close() }}
+
                                 </ul>
-
-                                <div id="modal{{ $song->id }}" class="modal">
-                                    <div class="modal-content">
-                                        <h5>Are you sure you want to delete <b>{{ $song->title}}</b> by <b>{{$song->artist}}</b>?</h5>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-                                        <a class="modal-action modal-close btn-flat">No</a>
-
-                                        {!! Form::open(['method' => 'DELETE','route' => ['myaudio.destroy', $song->id]]) !!}
-                                        {{  Form::submit('Yes', ['class' => 'modal-action btn-flat'])}}
-                                        {!! Form::close() !!}
-
-                                    </div>
-                                </div>
-
                             @endforeach
                             </tbody>
                         </table>

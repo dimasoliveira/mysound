@@ -51,8 +51,15 @@
                         <div class="col s2 m2">
                             <div class="card hoverable">
                                 <div class="card-image waves-effect waves-block waves-light">
+                                    <span style="top:0; height: 0;" class="card-title grey-text text-darken-4 dropdown-button" data-activates='dropdown-{{ $audio->id }}'><i class="material-icons">more_vert</i></span>
+
+
+                                    <!-- Dropdown Structure -->
+                                    <ul id='dropdown-{{ $audio->id }}' class='dropdown-content'>
+                                        <li><a class="addToPlaylist" href="#addToPlaylist" data-id="{{ $audio->id }}">Add to playlist..</a></li>
+                                    </ul>
                                     <p class="z-depth-2 card-title" >{{ $audio->title }}<br>{{ $audio->artist }} </p>
-                                    <span data-id="{{ $audio->id }}" data-filename="{{ Storage::url($audio->filename) }}" data-artist="{{ $audio->artist }}" data-title="{{ $audio->title }}" data-explicit="{{$audio->explicit}}" class="playable-link card-title btn-floating btn-large waves-effect waves-light blue right">
+                                    <span data-id="{{ $audio->id }}" data-filename="{{ Storage::url($audio->filename) }}" data-artist="{{ $audio->artist }}" data-title="{{ $audio->title }}" data-explicit="{{$audio->explicit}}" data-url="{{ route('log.index') }}" class="playable-link card-title btn-floating btn-large waves-effect waves-light blue right">
                                         <i class="large material-icons">play_arrow</i>
                                     </span>
                                     <img src="@if (!empty(Storage::exists($audio->coverart) )) {{ Storage::url($audio->coverart) }} @else {{ Storage::url('public/defaults/coverart.png') }}  @endif" class="circle z-depth-2 responsive-img" style="height: auto;width: 180px">

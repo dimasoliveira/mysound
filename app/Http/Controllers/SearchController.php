@@ -12,20 +12,20 @@ class SearchController extends Controller
       return view('search');
     }
 
+  /**
+   * @param \Illuminate\Http\Request $request
+   *
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+   *
+   * searchRequest zoekt naar audio en users die matchen met de ingevoerde zoekopdracht
+   */
     public function searchRequest(Request $request){
 
     $audios = Audio::where('title','LIKE','%'.$request->search.'%')->orWhere('artist','LIKE','%'.$request->search.'%')->where('published',1)->get();
     $users =  User::where('username','LIKE','%'.$request->search.'%')->orWhere('firstname','LIKE','%'.$request->search.'%')->orWhere('lastname','LIKE','%'.$request->search.'%')->get();
 
-    //dd(!$audio_results->isEmpty());
-
-    if ($audios->isEmpty()){
-      $audios = NULL;
-    }
-
-    if ($users->isEmpty()){
-        $users = NULL;
-      }
+    $audios->isEmpty() ? $audios = NULL: false;
+    $users->isEmpty() ? $users = NULL: false;
 
     return view('search',compact('audios','users','request'));
     }

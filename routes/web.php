@@ -106,7 +106,7 @@ Route::group(['middleware' => ['role:admin|superadmin']], function () {
   Route::post('/audio/{audio}','CommentController@store')->name('comment.store');
   Route::delete('/comment/{comment}','CommentController@destroy')->name('comment.destroy');
 
-  Route::post('log','ActivityLogController@index')->name('log.index');
+  Route::post('logactivity','ActivityLogController@logUserActivity')->name('log.index');
 
 
 });

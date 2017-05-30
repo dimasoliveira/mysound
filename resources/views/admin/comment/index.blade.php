@@ -63,10 +63,10 @@
                             <td>{{ $comment->id }}</td>
                             <td>{{ $comment->text }}</td>
                             <td><a href="{{ route('profile.show',$comment->user->slug)}}">{{ $comment->user->username }}</a></td>
-                            <td><a href="{{ route('audio.show',$comment->audio->id) }}">{{ $comment->audio->title }}</a></td>
+                            <td><a href="{{ route('audio.show',[$comment->user->slug, $comment->audio->id]) }}">{{ $comment->audio->title }}</a></td>
                             <td>{{ $comment->created_at }}</td>
 
-                            <td>{!! Form::open(['method' => 'DELETE','route' => ['comment.destroy', $comment->audio->id]]) !!}
+                            <td>{!! Form::open(['method' => 'DELETE','route' => ['comment.destroy', $comment->id]]) !!}
                                 {{  Form::submit('DELETE')}}
                                 {!! Form::close() !!}
                             </td>

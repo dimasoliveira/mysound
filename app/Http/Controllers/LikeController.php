@@ -3,12 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Audio;
-use App\Comment;
 use App\Like;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class LikeController extends Controller {
   public function create(Audio $audio) {

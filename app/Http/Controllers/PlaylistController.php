@@ -24,20 +24,22 @@ class PlaylistController extends Controller {
       return view('playlist.show', compact('playlist'));
     }
 
-    //$audio = Audio::findOrFail(1);
-
-    //$playlist->audio()->save($audio);
-
     return redirect(route('myaudio.album.index'))->with('message', 'Unfortunately, the playlist cannot be found');
   }
 
   public function addToPlaylist(Playlist $playlist, Audio $audio) {
 
-    $playlist->audio()->save($audio);
+    if ($audio->published == 1 || $audio->user_id == Auth::user()->id){
+      $playlist->audio()->save($audio);
+
+      return redirect()
+        ->back()
+        ->with('message', 'Added ' . $audio->title . ' to playlist ' . $playlist->name);
+    }
 
     return redirect()
       ->back()
-      ->with('message', 'Added ' . $audio->title . ' to playlist ' . $playlist->name);
+      ->with('message', 'You cannot add ' . $audio->title . ' to playlist ' . $playlist->name);
   }
 
   public function removeFromPlaylist($id) {
@@ -97,6 +99,6 @@ class PlaylistController extends Controller {
 
     return redirect()
       ->back()
-      ->with('message', 'Succesfully edited playlist name to' . $playlist->name);
+      ->with('message', 'Succesfully edited playlist ' . $playlist->name);
   }
 }

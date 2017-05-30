@@ -26,26 +26,28 @@
 
                             <div class="card-image waves-effect waves-block waves-light">
 
-                                <span style="right: 0!important; top:0; height: 0;" class="card-title grey-text text-darken-4 dropdown-button" data-activates='dropdown-{{ $audio_post->id }}'><i class="material-icons">more_vert</i></span>
+                                <span style="top:0; height: 0;" class="card-title grey-text text-darken-4 dropdown-button" data-activates='dropdown-{{ $audio_post->id }}'><i class="material-icons">more_vert</i></span>
 
-                                <span class="z-depth-2 card-title activator" style="color: white;background-color: rgba(0,0,0,0.18);width: 100%;padding-top: 0;padding-bottom: 0">{{ $audio_post->title }}<br>{{ $audio_post->artist }} </span>
-                                <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-id='{{ $audio_post->id }}' data-filename="{{ Storage::url($audio_post->filename) }}" data-artist="{{ $audio_post->artist }}" data-title="{{ $audio_post->title }}" data-explicit="{{$audio_post->explicit}}" class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
+                                <span class="z-depth-2 card-title activator" style="color: white;background-color: rgba(0,0,0,0.18);width: 100%;padding-top: 0;padding-bottom: 0">{{ $audio_post->title }} @if ($audio_post->explicit)<i title="This song contains strong language." class="tiny material-icons">explicit</i>@endif<br>{{ $audio_post->artist }} </span>
+                                <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-id='{{ $audio_post->id }}' data-filename="{{ Storage::url($audio_post->filename) }}" data-artist="{{ $audio_post->artist }}" data-title="{{ $audio_post->title }}" data-explicit="{{$audio_post->explicit}}" data-url="{{ route('log.index') }}" class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
                                 {{--<span id="play-{{ $audio_post->id }}" style="right: 0!important; bottom:0; margin: 10px; padding: 0;" class="card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>--}}
                                 <img src="@if (!empty(Storage::exists($audio_post->coverart) )) {{ Storage::url($audio_post->coverart) }} @else {{ Storage::url('public/defaults/coverart.png') }}  @endif" class="activator circle z-depth-2 responsive-img" id="img-preview" style="height: auto;width: 100%">
 
                             </div>
 
                             <!-- Dropdown Structure -->
-                            <ul style="z-index: 100000" id='dropdown-{{ $audio_post->id }}' class='dropdown-content'>
-                                <li><a href="#editAudio" class="edit-audio" data-id="{{ $audio_post->id }}" data-title="{{ $audio_post->title }}" data-artist="{{ $audio_post->artist }}" data-tracknumber="{{ $audio_post->tracknumber }}" data-album="{{ $audio_post->album->name }}" data-explicit="{{ $audio_post->explicit }}" data-published="{{ $audio_post->published }}" data-year="{{ $audio_post->year }}" data-genre="{{ $audio_post->genre->name }}">Edit</a></li>
-                                @foreach($playlists as $playlist)
-                                    <li>
-                                        {!! Form::open(['method' => 'POST','route' => ['playlist.request',$playlist,$audio_post]]) !!}
+                            <ul id='dropdown-{{ $audio_post->id }}' class='dropdown-content'>
+                                <li><a href="#editAudio" class="edit-audio" data-id="{{ $audio_post->id }}" data-title="{{ $audio_post->title }}" data-artist="{{ $audio_post->artist }}" data-tracknumber="{{ $audio_post->tracknumber }}" data-album="{{ $audio_post->album->name }}" data-explicit="{{ $audio_post->explicit }}" data-published="{{ $audio_post->published }}" data-year="{{ $audio_post->year }}" data-genre="{{ $audio_post->genre->name }} ">Edit</a></li>
+                                {{--@foreach($playlists as $playlist)--}}
+                                    {{--<li>--}}
+                                        {{--{!! Form::open(['method' => 'POST','route' => ['playlist.request',$playlist,$audio_post]]) !!}--}}
 
-                                        {{  Form::submit('Add to '.$playlist->name, ['class' => 'btn-flat'])}}
-                                        {!! Form::close() !!}
-                                    </li>
-                                @endforeach
+                                        {{--{{  Form::submit('Add to '.$playlist->name, ['class' => 'btn-flat'])}}--}}
+                                        {{--{!! Form::close() !!}--}}
+                                    {{--</li>--}}
+                                {{--@endforeach--}}
+                                <li><a class="addToPlaylist" href="#addToPlaylist" data-id="{{ $audio_post->id }}">Add to playlist..</a></li>
+
                                 <li><a href="#modal{{ $audio_post->id }}">Delete</a></li>
 
                             </ul>

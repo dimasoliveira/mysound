@@ -27,8 +27,22 @@
 
 
                         <div class="card horizontal activator">
-                            <div class="card-image waves-effect waves-block waves-light"><a class="black-text" href="{{ route('audio.show', [$audio->user->slug,$audio->id]) }}">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <span style="top:0; height: 0;" class="card-title grey-text text-darken-4 dropdown-button" data-activates='dropdown-{{ $audio->id }}'><i class="material-icons">more_vert</i></span>
 
+
+                                    <!-- Dropdown Structure -->
+                                    <ul id='dropdown-{{ $audio->id }}' class='dropdown-content'>
+                                        <li><a class="addToPlaylist" href="#addToPlaylist" data-id="{{ $audio->id }}">Add to playlist..</a></li>
+
+                                        @if ($audio->user_id == Auth::user()->id)
+                                            <li><a href="#editAudio" class="edit-audio" data-id="{{ $audio->id }}" data-title="{{ $audio->title }}" data-artist="{{ $audio->artist }}" data-tracknumber="{{ $audio->tracknumber }}" data-album="{{ $audio->album->name }}" data-explicit="{{ $audio->explicit }}" data-published="{{ $audio->published }}" data-year="{{ $audio->year }}" data-genre="{{ $audio->genre->name }} ">Edit track</a></li>
+                                            <li><a href="#modal{{ $audio->id }}">Delete track</a></li>
+
+                                        @endif
+
+
+                                    </ul>
                                     <img src="{{ Storage::url($audio->coverart) }}" class="activator" style="height: auto;width: 180px"></a>
                                 <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-url="{{ route('log.index') }}" data-id='{{ $audio->id }}' data-filename="{{ Storage::url($audio->filename) }}" data-artist="{{ $audio->artist }}" data-title="{{ $audio->title }}" data-explicit="{{$audio->explicit}}"  class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
                             </div>
@@ -40,11 +54,11 @@
                                     <h6 class="right header">uploaded {{ \Carbon\Carbon::createFromTimeStamp(strtotime($audio->created_at))->diffForHumans() .' by '}} <a class="blue-text" href="{{ route('profile.show', $audio->user->slug) }}">{{$audio->user->username }}</a>
                                     </h6>
                                         <a class="black-text" href="{{ route('audio.show', [$audio->user->slug,$audio->id]) }}">
-                                    <p class="card-title grey-text text-darken-4">{{ $audio->title }}</p>
+                                    <p class="card-title grey-text text-darken-4">{{ $audio->title }} @if ($audio->explicit)<i title="This song contains strong language." class="tiny material-icons">explicit</i> @endif </p>
                                     <p>Artist: {{ $audio->artist }}</p>  <p class="blue-text right">{{  count($audio->likes).' Like(s), '.count($audio->comments).' Comment(s)' }}</p>
                                     <p>Album: {{ $audio->album->name }}</p>
 
-                                </a>
+                                    </a>
                                 </div>
 
                                 <div class="card-action" style="padding-top: 0px;margin-top: 10px;">

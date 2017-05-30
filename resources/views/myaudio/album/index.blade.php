@@ -28,7 +28,7 @@
     <div class="container">
 
     <div class="row">
-        @if($albums)
+        @if(!$albums->isEmpty())
                 @foreach($albums as $album)
 
             <div class="col s3 m3">

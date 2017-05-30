@@ -45,7 +45,7 @@
                                 <h6 class="right header">uploaded {{ \Carbon\Carbon::createFromTimeStamp(strtotime($audio->created_at))->diffForHumans() .' by '}} <a class="blue-text" href="{{ route('profile.show', $audio->user->slug) }}">{{$audio->user->username }}</a>
                                 </h6>
 
-                                <p class="card-title grey-text text-darken-4">{{ $audio->title }}</p>
+                                <p class="card-title grey-text text-darken-4">{{ $audio->title }} @if ($audio->explicit)<i title="This song contains strong language." class="tiny material-icons">explicit</i> @endif </p>
                                 <p>Artist: {{ $audio->artist }}</p>  <p class="blue-text right">{{  count($audio->likes).' Like(s)' }}</p>
                                 <p>Album: {{ $audio->album->name }}</p>
 

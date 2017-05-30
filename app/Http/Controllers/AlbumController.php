@@ -14,26 +14,15 @@ class AlbumController extends Controller {
   /**
    * AlbumController constructor.
    *
-   * In the album constructor I'm getting all the empty albums, and delete them
-   * with their coverart
+   * In de album constructor haal ik alle lege albums op en verwijder die inclusief hun coverart
    */
 
   public function __construct() {
-    $empty_albums = Album::whereNotExists(function ($query) {
-      $query->select(DB::raw(1))
-        ->from('audio')->whereRaw('albums.id = audio.album_id');
-    })->get();
-
-    foreach ($empty_albums as $empty_album) {
-      if (Storage::exists($empty_album->coverart)) {
-        Storage::delete($empty_album->coverart);
-      }
-      $empty_album->delete();
-    }
+    $this->getEmptyAlbums();
   }
 
   /**
-   * Here I'm getting all the albums that are created by the authenticated user
+   * Hier haal ik alle albums op die gemaakt zijn door de ingelogde user
    *
    * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
    */
@@ -46,8 +35,6 @@ class AlbumController extends Controller {
   }
 
   /**
-   *
-   *
    * @param \App\Album $album
    *
    * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
@@ -82,6 +69,13 @@ class AlbumController extends Controller {
 
     return redirect(route('myaudio.albums'))->with('message', 'Unfortunately, the album cannot be found');
   }
+
+  /**
+   * @param \Illuminate\Http\Request $request
+   * @param \App\Album $album
+   *
+   * @return \Illuminate\Http\RedirectResponse
+   */
 
   public function update(Request $request, Album $album) {
 
@@ -122,6 +116,22 @@ class AlbumController extends Controller {
         $song->update(['album_id' => $duplicate_album->id]);
       }
       return redirect()->intended(route('myaudio.album.show', $duplicate_album->slug));
+    }
+  }
+
+
+  public function getEmptyAlbums() {
+
+    $empty_albums = Album::whereNotExists(function ($query) {
+      $query->select(DB::raw(1))
+        ->from('audio')->whereRaw('albums.id = audio.album_id');
+    })->get();
+
+    foreach ($empty_albums as $empty_album) {
+      if (Storage::exists($empty_album->coverart)) {
+        Storage::delete($empty_album->coverart);
+      }
+      $empty_album->delete();
     }
   }
 }

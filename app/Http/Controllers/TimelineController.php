@@ -8,18 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class TimelineController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
+  /**
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+   *
+   * Onderstaande functie haalt alle audio van users op die de gebruiker volgt
+   */
     public function index()
     {
         foreach (Auth::user()->followings as $following){
@@ -28,17 +21,12 @@ class TimelineController extends Controller
 
         $followinglist[] = Auth::user()->id;
 
-      // dd($followings = Auth::user()->followings);
         $posts = Audio::whereIn('user_id',$followinglist)->where('published', 1)->orderBy('created_at','desc')->get();
-        //Audio::orderBy('created_at','asc')->whereIn('user_id',$followinglist)->get();
-        //dd(Audio::all()->whereIn('user_id',$followinglist)->where('published', 1));
 
         return view('timeline.index',compact('posts'));
     }
 
     public function show($slug,Audio $audio){
-
-      //dd($audio);
 
       return view('timeline.show',compact('audio'));
     }

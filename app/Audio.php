@@ -41,12 +41,4 @@ class Audio extends Model
     return $this->belongsTo(Genre::class);
   }
 
-
-
-
-
-
-//  public function audio_genre(){
-//    return $this->hasMany(Audio_Genres::class);
-//  }
 }

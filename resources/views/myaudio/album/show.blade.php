@@ -119,7 +119,7 @@
                                     <tr>
                                         <td><i data-id="{{ $audio->id }}" style="cursor: pointer;" class="playable-link small material-icons">play_circle_outline</i></td>
                                         <td>{{ $audio->tracknumber }}</td>
-                                        <td>{{ $audio->title }} @if ($audio->explicit)<i class="tiny material-icons">explicit</i>@endif</td>
+                                        <td>{{ $audio->title }} @if ($audio->explicit)<i title="This song contains strong language." class="tiny material-icons">explicit</i>@endif</td>
                                         <td>{{ $audio->artist }}</td>
                                         <td>{{ gmdate("i:s",$audio->length) }}</td>
                                         <td>{{ $audio->year }}</td>
@@ -127,7 +127,7 @@
                                     </tr>
 
                                     <ul style="z-index: 100000" id='dropdown-{{ $audio->id }}' class='dropdown-content'>
-                                        <li><a href="#editAudio" class="edit-audio" data-id="{{ $audio->id }}" data-title="{{ $audio->title }}" data-artist="{{ $audio->artist }}" data-tracknumber="{{ $audio->tracknumber }}" data-album="{{ $audio->album->name }}" data-explicit="{{ $audio->explicit }}" data-published="{{ $audio->published }}" data-year="{{ $audio->year }}" data-genre="{{ $audio->genre->name }}">Edit</a></li>
+                                        <li><a href="#editAudio" class="edit-audio" data-id="{{ $audio->id }}" data-title="{{ $audio->title }}" data-artist="{{ $audio->artist }}" data-tracknumber="{{ $audio->tracknumber }}" data-album="{{ $audio->album->name }}" data-explicit="{{ $audio->explicit }}" data-published="{{ $audio->published }}" data-year="{{ $audio->year }}" data-genre="{{ $audio->genre->name }}" data-url="{{ route('log.index') }}">Edit</a></li>
                                          @foreach($playlists as $playlist)
                                             <li>
                                             {!! Form::open(['method' => 'POST','route' => ['playlist.request',$playlist,$audio]]) !!}

@@ -30,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/timeline';
+    protected $redirectTo = '/profile';
 
     /**
      * Create a new controller instance.
@@ -51,10 +51,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'username' => 'required|max:255|unique:users|allowed_username',
-            'firstname' => 'required|max:255',
+            'username' => 'required|max:255|unique:users|allowed_username|regex:/(^[A-Za-z0-9]+$)+/',
+            'firstname' => 'max:255',
             'birthdate' => 'nullable|date',
-            'lastname' => 'required|max:255',
+            'lastname' => 'max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);

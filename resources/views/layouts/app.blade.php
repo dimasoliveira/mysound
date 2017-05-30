@@ -7,6 +7,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    {{--<meta name="turbolinks-cache-control" content="no-cache">--}}
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
@@ -28,7 +29,6 @@
     <script src="{{ asset('js/bar-ui.js') }}"></script>
     {{--<script src="{{ asset('js/bar-ui.js') }}"></script>--}}
 
-
     <link href="{{ asset('css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="{{ asset('css/custom.css') }}" type="text/css" rel="stylesheet"/>
 
@@ -49,7 +49,9 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <script src="{{ asset('js/genreCombobox.js') }}"></script>
-
+    <script src="{{ asset('js/addToPlaylist.js') }}"></script>
+    <script src="{{ asset('js/playlist.js') }}"></script>
+    {{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.0.3/turbolinks.js"></script>--}}
     {{--verplaatst vanuit audio create view--}}
 
 
@@ -199,8 +201,6 @@
         <div class="modal-content" style="padding-top: 15px;padding-bottom: 15px;">
             {!!  Form::open(['route' => ['myaudio.store'],'class' => 'form-horizontal col s12', 'files' => true])  !!}
 
-
-
             <div class="row">
 
                 <div class="input-field col s2 form-group{{ $errors->has('tracknumber') ? ' has-error' : '' }}">
@@ -244,7 +244,7 @@
 
                 <div class="input-field col s12 form-group{{ $errors->has('album') ? ' has-error' : '' }}">
                     <input id="album" type="text" class="form-control" name="album" value="{{ old('album') }}" >
-                    <label for="album">Album</label>
+                    <label for="album">Album*</label>
 
                     @if ($errors->has('album'))
                         <span class="left help-block red-text">
@@ -257,7 +257,7 @@
             <div class="row">
                 <div class="input-field col s10 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
                     <input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}" >
-                    <label for="genre">Genre</label>
+                    <label for="genre">Genre*</label>
 
                     @if ($errors->has('genre'))
                         <span class="left help-block red-text">
@@ -318,7 +318,7 @@
 
                     <p class="left">
                             <input title="published" type="checkbox" id="published" class="filled-in" name="published">
-                        <label for="published">Share with others</label>
+                        <label title="Select this if you want to share it on your profile page. Other people will be able to listen to it an add it to their playlists."  for="published">Share with others</label>
                     </p>
 
 
@@ -326,7 +326,7 @@
 
                             <input title="explicit" type="checkbox" class="filled-in" id="explicit" name="explicit">
 
-                        <label for="explicit">Explicit</label>
+                        <label title="Select this if the audio contains strong language." for="explicit">Explicit</label>
                     </p>
                 </div>
             </div>
@@ -390,7 +390,7 @@
 
                 <div class="input-field col s12 form-group{{ $errors->has('album') ? ' has-error' : '' }}">
                     <input id="album" type="text" class="form-control" name="album" value="{{ old('album') }}" >
-                    <label for="album" class="active">Album</label>
+                    <label for="album" class="active">Album*</label>
 
                     @if ($errors->has('album'))
                         <span class="left help-block red-text">
@@ -408,7 +408,7 @@
                     @endforeach
                 </select>
 
-                <label for="combobox">Genre </label>
+                <label for="combobox">Genre* </label>
 
 
                 {{--<input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}" >--}}
@@ -450,15 +450,14 @@
 
                     <p class="col s5 left">
                         <input title="published" type="checkbox" id="published2" class="filled-in" name="published">
-                        <label for="published2">Share with others</label>
+                        <label title="Select this if you want to share it on your profile page. Other people will be able to listen to it an add it to their playlists." for="published2">Share with others</label>
                     </p>
 
 
                     <p class="col s3 right">
 
                         <input title="explicit" type="checkbox" class="filled-in" id="explicit2" name="explicit">
-
-                        <label for="explicit2">Explicit</label>
+                        <label title="Select this if the audio contains strong language." for="explicit2">Explicit</label>
                     </p>
                 </div>
             </div>
@@ -480,7 +479,7 @@
                 <div class="input-field col s12 form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                     <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" >
 
-                    <label for="name">Playlist name</label>
+                    <label for="name">Playlist name*</label>
 
                     @if ($errors->has('name'))
                         <span class="left help-block red-text">
@@ -514,6 +513,37 @@
         <button type="submit" class="modal-footer col s12 btn btn-large waves-effect blue">Create</button>
 
         {{ Form::close() }}
+    </div>
+    <div id="addToPlaylist" class="modal" style="width: 30%;">
+        <div class="modal-content" style="padding-top: 15px;padding-bottom: 15px;">
+
+        @if(Auth::user())
+            @if (!$currentUser->playlists->isEmpty())
+            <h6>Your playlists</h6>
+                <ul class="collection with-header">
+                    @foreach($currentUser->playlists as $playlist)
+                        {!!  Form::open(['route' => ['playlist.request',$playlist,''],'class' => 'addToPlaylistForm form-horizontal col s12','method' => 'POST','data-id' => $playlist->id])  !!}
+
+                            <li class="collection-header">
+                                <h5>{{ $playlist->name }}</h5>
+                                {{ $playlist->description }}
+                                <span class="right">{{ count($playlist->audio) }} song(s) in this playlist</span>
+                            </li>
+
+                            {{  Form::submit('Add to '.$playlist->name, ['class' => 'btn-flat'])}}
+
+                        {{ Form::close() }}
+                    @endforeach
+                </ul>
+                    @else
+                        <ul class="collection">
+
+                            <li class="collection-item">You don't have any playlists at the moment, click <a href="#addPlaylist">here</a> to ceate one</li>
+                        </ul>
+                    @endif
+                @endif
+
+        </div>
     </div>
 
 
@@ -624,39 +654,19 @@
 </main>
 
 <footer class="page-footer #0d47a1 blue darken-4">
-    <div class="container">
-        <div class="row">
-            <div class="col l6 s12">
-                <h5 class="white-text">Company Bio</h5>
-                <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
-            </div>
-            <div class="col l3 s12">
-                <h5 class="white-text">Settings</h5>
-                <ul>
-                    <li><a class="white-text" href="#!">Link 1</a></li>
-                    <li><a class="white-text" href="#!">Link 2</a></li>
-                    <li><a class="white-text" href="#!">Link 3</a></li>
-                    <li><a class="white-text" href="#!">Link 4</a></li>
-                </ul>
-            </div>
-            <div class="col l3 s12">
-                <h5 class="white-text">Connect</h5>
-                <ul>
-                    <li><a class="white-text" href="#!">Link 1</a></li>
-                    <li><a class="white-text" href="#!">Link 2</a></li>
-                    <li><a class="white-text" href="#!">Link 3</a></li>
-                    <li><a class="white-text" href="#!">Link 4</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+
     <div class="footer-copyright">
         <div class="container">
+
+                <ul class="row" style="text-align: center">
+                    <li><a class="white-text" href="#!">Privacy</a>  |  <a class="white-text" href="#!">Terms Of Use</a>  |  <a class="white-text" href="#!">Copyright</a></li>
+                </ul>
+
 
         </div>
     </div>
 </footer>
 
 </body>
-{{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.0.3/turbolinks.js"></script>--}}
+
 </html>

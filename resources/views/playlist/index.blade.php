@@ -16,16 +16,6 @@
 
 @section('content')
 
-    @if(session('message'))
-        <script>
-          $( document ).ready(function() {
-            var $toastContent = $('<span>{{ session('message') }}</span>');
-            Materialize.toast($toastContent, 5000);
-          });
-        </script>
-    @endif
-
-
     <div class="container">
 
         <div class="row">

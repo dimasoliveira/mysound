@@ -48,7 +48,6 @@
 
                                     @endif
                                     <img id="avatarUser" src="@if (!empty(Storage::exists($user->avatar) )) {{ Storage::url($user->avatar) }} @else {{ Storage::url('public/defaults/avatar.png') }}  @endif" class="circle z-depth-2 responsive-img">
-                                    {{--https://thumb9.shutterstock.com/display_pic_with_logo/1375510/221431012/stock-vector-male-avatar-profile-picture-vector-illustration-eps-221431012.jpg--}}
                                 </figure>
 
                             {!! Form::open(['route' => ['avatar.update', $user->slug],'method' => 'POST','id' => 'avatarForm','files' => 'true']) !!}
@@ -63,11 +62,15 @@
                         <div class="card-content">
                             <div class="row">
 
-                                {!!  Form::open(['route' => ['name.update', $user->slug],'id' => 'nameForm','class' => 'form-horizontal col s12 hidden', 'style' => 'display:none'])  !!}
+
+                                <div class="col s6">
+                                    {!!  Form::open(['route' => ['name.update', $user->slug],'id' => 'nameForm','class' => 'form-horizontal col s12 hidden', 'style' => 'display:none'])  !!}
 
 
-                                    <div class="input-field col s12 {{ $errors->has('firstname') ? ' has-error' : '' }}{{ $errors->has('lastname') ? ' has-error' : '' }}">
-                                        <input id="firstname" type="text" class="form-control col s2" name="firstname" value="{{ $user->firstname }}" style="font-size: 1.2rem;padding-left: 0;">
+                                    <div class="row">
+                                        <div class="input-field {{ $errors->has('firstname') ? ' has-error' : '' }}">
+
+                                        <input id="firstname" type="text" class="form-control col s4" name="firstname" placeholder="Firstname" value="{{ $user->firstname }}" style="font-size: 1.2rem;padding-left: 0;">
 
                                         @if ($errors->has('firstname'))
                                             <span class="left help-block red-text">
@@ -75,30 +78,26 @@
                                         </span>
                                         @endif
 
-                                        <input id="lastname" type="text" class="form-control col s2" name="lastname" value="{{ $user->lastname }}" style="font-size: 1.2rem;padding-left: 0;">
-                                        <button id="test" type="submit" class="right btn-floating waves-effect waves-light blue">
-                                            <i class="small material-icons">save</i>
-                                        </button>
-                                    @if ($errors->has('lastname'))
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                    <div class="input-field {{ $errors->has('lastname') ? ' has-error' : '' }}">
+
+                                        <input id="lastname" type="text" class="form-control col s4" name="lastname" placeholder="Lastname" value="{{ $user->lastname }}" style="font-size: 1.2rem;padding-left: 0;">
+
+                                        @if ($errors->has('lastname'))
                                             <span class="left help-block red-text">
                                         <strong>{{ $errors->first('lastname') }}</strong>
                                         </span>
                                         @endif
                                     </div>
-                                    <div class="input-field col s12 {{ $errors->has('username') ? ' has-error' : '' }}">
-                                        <input id="username" type="text" class="form-control col s2" name="username" value="{{ $user->username }}" style="font-size: 1.2rem;padding-left: 0;">
-
-                                    @if ($errors->has('username'))
-                                            <span class="left help-block red-text">
-                                        <strong>{{ $errors->first('username') }}</strong>
-                                        </span>
-                                        @endif
+                                        <button id="test" type="submit" class="left btn-floating waves-effect waves-light blue">
+                                            <i class="small material-icons">save</i>
+                                        </button>
                                     </div>
-
-
-                                {{ Form::close() }}
-                                <div class="col s2" id="nameBlock">
-                                    <h4 class="card-title grey-text text-darken-4">{{ $user->firstname }} {{ $user->lastname }}
+                                    {{ Form::close() }}
+                                    <h4 class="card-title grey-text text-darken-4" id="nameBlock">{{ $user->firstname }} {{ $user->lastname }}
                                         @if ($user->id == Auth::user()->id || Auth::user()->hasRole('superadmin'))
 
                                             <a id="nameEdit" class="btn-floating btn-small waves-effect waves-light left blue">
@@ -110,9 +109,9 @@
 
                                         @endif
                                     </h4>
-
                                     <p class="medium-small grey-text">{{ $user->username }}</p>
                                 </div>
+
                                 <div class="col s2 center-align right">
                                     <h4 class="card-title grey-text text-darken-4">{{ count($user->followers) }}</h4>
                                     <p class="medium-small grey-text">Followers</p>
@@ -123,7 +122,7 @@
                                 </div>
                                 <div class="col s2 center-align right">
                                     <h4 class="card-title grey-text text-darken-4">{{ count($user->audio_published) }}</h4>
-                                    <p class="medium-small grey-text">Posts</p>
+                                    <p class="medium-small grey-text">Tracks</p>
                                 </div>
 
                             </div>
@@ -137,9 +136,25 @@
                       <div class="col s12 m7">
                           @foreach($audios as $audio)
                             <div class="card horizontal hoverable activator">
+
                                 <div class="card-image waves-effect waves-block waves-light">
+                                    <span style="top:0; height: 0;" class="card-title grey-text text-darken-4 dropdown-button" data-activates='dropdown-{{ $audio->id }}'><i class="material-icons">more_vert</i></span>
+
+                                    <!-- Dropdown Structure -->
+                                    <ul id='dropdown-{{ $audio->id }}' class='dropdown-content'>
+                                        <li><a class="addToPlaylist" href="#addToPlaylist" data-id="{{ $audio->id }}">Add to playlist..</a></li>
+
+                                        @if ($audio->user_id == Auth::user()->id)
+                                        <li><a href="#editAudio" class="edit-audio" data-id="{{ $audio->id }}" data-title="{{ $audio->title }}" data-artist="{{ $audio->artist }}" data-tracknumber="{{ $audio->tracknumber }}" data-album="{{ $audio->album->name }}" data-explicit="{{ $audio->explicit }}" data-published="{{ $audio->published }}" data-year="{{ $audio->year }}" data-genre="{{ $audio->genre->name }} ">Edit</a></li>
+                                        <li><a href="#modal{{ $audio->id }}">Delete</a></li>
+
+                                        @endif
+
+
+                                    </ul>
+
                                     <img src="@if (!empty(Storage::exists($audio->coverart) )) {{ Storage::url($audio->coverart) }} @else {{ Storage::url('public/defaults/coverart.png') }}  @endif" class="circle z-depth-2 responsive-img" style="height: auto;width: 180px">
-                                    <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-id='{{ $audio->id }}' data-filename="{{ Storage::url($audio->filename) }}" data-artist="{{ $audio->artist }}" data-title="{{ $audio->title }}" data-explicit="{{$audio->explicit}}"  class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
+                                    <span style="right: 0!important; bottom:0; margin: 10px; padding: 0;" data-id='{{ $audio->id }}' data-filename="{{ Storage::url($audio->filename) }}" data-artist="{{ $audio->artist }}" data-title="{{ $audio->title }}" data-explicit="{{$audio->explicit}}" data-url="{{ route('log.index') }}" class="playable-link card-title dropdown-button btn-floating btn-large waves-effect waves-light blue right"><i class="large material-icons">play_arrow</i></span>
                                 </div>
                                 <div class="card-stacked">
                                     <div class="card-content">
@@ -172,10 +187,16 @@
                                 </div>
                         </div>
                     @endforeach
-                              @else
+                              @elseif ($user->id == Auth::user()->id)
                                   <ul class="collection">
                                       <li class="collection-item">You don't have shared any music yet, click <a href="#addAudio">here</a> to upload some music and select <i>share with others</i> to get your music published</li>
                                   </ul>
+                                  @else
+
+                                  <ul class="collection">
+                                      <li class="collection-item"><b>{{$user->username}}</b> didn't share any music yet. You can <b>follow</b> him to stay updated for upcoming uploads.</li>
+                                  </ul>
+
                               @endif
 
                       </div>

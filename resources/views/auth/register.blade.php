@@ -34,8 +34,8 @@
 
                     <div class="row">
                         <div class="input-field col s6 form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
-                            <input id="firstname" type="text" class="form-control" name="firstname" value="{{ old('firstname') }}" required>
-                            <label for="firstname">Firstname *</label>
+                            <input id="firstname" type="text" class="form-control" name="firstname" value="{{ old('firstname') }}">
+                            <label for="firstname">Firstname</label>
 
                             @if ($errors->has('firstname'))
                                 <span style="float: left; color: red" class="help-block">
@@ -48,8 +48,8 @@
 
 
                         <div class="input-field col s6 form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
-                            <input id="lastname" type="text" class="form-control" name="lastname" value="{{ old('lastname') }}" required>
-                            <label for="lastname">Lastname *</label>
+                            <input id="lastname" type="text" class="form-control" name="lastname" value="{{ old('lastname') }}">
+                            <label for="lastname">Lastname</label>
 
                             @if ($errors->has('lastname'))
                                 <span style="float: left; color: red" class="help-block">

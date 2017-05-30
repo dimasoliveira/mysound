@@ -5,14 +5,10 @@ namespace App\Http\Controllers;
 use App\Album;
 use App\Genre;
 use App\Playlist;
-use Illuminate\Support\Facades\Gate;
 use App\Audio;
 use App\MP3File;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
@@ -53,35 +49,19 @@ class AudioController extends Controller {
         ->withInput();
     }
 
-    if ($request->explicit == "on") {
-        $request->explicit = 1;
-      }
-      else {
-        $request->explicit = 0;
-      }
-
-      if ($request->published == "on") {
-        $request->published = 1;
-      }
-      else {
-        $request->published = 0;
-      }
-
-     if (Auth::user()->uploadLimitCheck(($audioData = new MP3File($request->filename))->getDuration())){
+    if ($this->uploadLimitCheck(($audioData = new MP3File($request->filename))->getDuration())){
        return redirect()->back()->with('audioAddValidationError', 'Adding audio failed')
          ->with('message', 'No enough space left, Try delete existing songs to free space')
          ->withInput();
      }
-
         if ($request->coverart !== NULL && file_exists(request()->file('coverart'))) {
           $request->coverart = request()->file('coverart')->store('public/coverarts');
         }
         else{
-          $request->coverart = "/defaults/coverart.png";
+          $request->coverart = '/defaults/coverart.png';
         }
 
         $audioData->storeAsMP3($request);
-
         $album = Album::where('name', $request->album)->where('user_id', Auth::user()->id)->first();
 
         if (empty($album)) {
@@ -100,9 +80,9 @@ class AudioController extends Controller {
             'artist' => $request->artist,
             'album_id' => $album->id,
             'tracknumber' => $request->tracknumber,
-            'published' => $request->published,
+            'published' => $request->published == 'on' ? 1 : 0,
             'genre_id' => Genre::where('name',$request->genre)->first()->id,
-            'explicit' => $request->explicit,
+            'explicit' => $request->explicit == 'on' ? 1 : 0,
             'year' => $request->year,
             'length' => $audioData->getDuration(),
             'bitrate' => $audioData->getMP3BitRate(),
@@ -136,19 +116,15 @@ class AudioController extends Controller {
       return redirect()
         ->back()
         ->withErrors($validator)
-        ->with('audioEditValidationError', "jaa".$request->id)
+        ->with('audioEditValidationError', 'Editing audio failed'.$request->id)
         ->withInput();
     }
 
-    $request->explicit = $request->explicit == 'on' ? 1 : 0;
-    $request->published = $request->published == 'on' ? 1 : 0;
-
     if ($request->coverart !== NULL && file_exists(request()->file('coverart'))) {
 
+      $audio->coverart = request()->file('coverart')->store('public/coverarts');
 
-      $request->coverart = request()->file('coverart')->store('public/coverarts');
-
-      if (Storage::exists($audio->coverart) && Storage::exists($request->coverart) && $audio->coverart !== "/defaults/coverart.png"){
+      if (Storage::exists($audio->coverart) && Storage::exists($request->coverart) && $audio->coverart !== '/defaults/coverart.png'){
         Storage::delete($audio->coverart);
       }
 
@@ -176,13 +152,11 @@ class AudioController extends Controller {
       $audio->artist = $request->artist;
       $audio->album_id = $request->album_id;
       $audio->tracknumber = $request->tracknumber;
-      $audio->explicit = $request->explicit;
-      $audio->published = $request->published;
+      $audio->explicit = $request->explicit == 'on' ? 1 : 0;
+      $audio->published = $request->published == 'on' ? 1 : 0;
       $audio->year = $request->year;
-      $audio->coverart = $request->coverart;
       $audio->genre_id = Genre::where('name',$request->genre)->first()->id;
       $audio->save();
-
 
     return redirect()
       ->back()
@@ -197,7 +171,7 @@ class AudioController extends Controller {
 
       if (Storage::exists($audio->filename) == false)
       {
-        if (Storage::exists($audio->coverart) && $audio->coverart !== "/defaults/coverart.png"){
+        if (Storage::exists($audio->coverart) && $audio->coverart !== '/defaults/coverart.png'){
           Storage::delete($audio->coverart);
         }
 
@@ -214,5 +188,12 @@ class AudioController extends Controller {
 
   }
 
+  public function uploadLimitCheck($durationCurrent) {
 
+    foreach (Auth::user()->audio as $audio){
+      $totalUploadSeconds[] = $audio->length;
+    }
+    $totalUploadSeconds[] = $durationCurrent;
+    return array_sum($totalUploadSeconds) >= Auth::user()->upload_limit;
+  }
 }

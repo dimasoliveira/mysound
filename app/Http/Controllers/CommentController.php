@@ -6,7 +6,6 @@ use App\Audio;
 use App\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller {
   public function store(Request $request, Audio $audio) {
