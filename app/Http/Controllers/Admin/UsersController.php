@@ -92,6 +92,5 @@ class UsersController extends Controller
       ->route('admin.users')
       ->with('message', $user->username.' deleted succesfully');
 
-    // User deleten
   }
 }

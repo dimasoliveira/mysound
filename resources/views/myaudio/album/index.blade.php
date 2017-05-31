@@ -38,7 +38,7 @@
                   <div class="card-image waves-effect waves-block waves-light">
                       {{--<span style="right: 0!important; top:0; height: 0;" class="card-title activator grey-text text-darken-4"><i class="material-icons">more_vert</i></span>--}}
                       <a href="{{route('myaudio.album.show', $album->slug)}}">
-                          <img src="@if (!empty(Storage::exists($album->coverart) )) {{ Storage::url($album->coverart) }} @else {{ Storage::url('public/defaults/coverart.png') }}  @endif" class="circle z-depth-2 responsive-img" id="img-preview" style="height: auto;width: 100%">
+                          <img src="@if (!empty(Storage::exists($album->coverart) )) {{ Storage::url($album->coverart) }} @else {{ Storage::url('public/defaults/coverart.png') }}  @endif" class="circle z-depth-2 responsive-img" style="height: auto;width: 100%">
                       </a>
                   </div>
 

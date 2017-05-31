@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\User;
 use App\Role;
+use Faker\Factory as Faker;
 
 class UserTableSeeder extends Seeder
 {
@@ -22,6 +23,23 @@ class UserTableSeeder extends Seeder
         'birthdate' => '1998-03-02',]);
 
       $user->attachRole(Role::where('name','admin')->first()->id);
+
+      $faker = Faker::create();
+      foreach (range(1,10) as $index) {
+
+        $user = User::create([
+
+          'username' => $faker->username,
+          'firstname' => $faker->name,
+          'lastname' => $faker->lastName,
+          'email' => $faker->email,
+          'password' => bcrypt('password'),
+          'birthdate' => '1998-03-02',
+
+        ]);
+        $user->attachRole(Role::where('name','user')->first()->id);
+
+      }
 
     }
 }

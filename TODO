@@ -4,9 +4,11 @@ F U N C T I O N A L I T E I T
 
 Genre selecteren in add en create modal
 Bepaalde audiobestanden willen niet uploaden en geven validation error terug met: audio must be mpga
-Profile edit (firstname, lastname, username, email)
+
 Liken via ajax
-Luistergedrag loggen
+
+Redirecten wanneer objecten niet bestaan
+
 Playlist verwijderen
 Album delete
 
@@ -20,7 +22,7 @@ C R E A T E ,   E D I T ,   D E L E T E
 A D M I N
 ---------------------------------------------------------------
 Admin/beheerder kant afwerken
-Aanpasbare limiet aan totale tijdsduur van audio die een user kan toevoegen
+
 
 ----------------------------------------------------------------
 U P L O A D
@@ -69,3 +71,6 @@ Popup window voor toevoegen en wijzigen en muziek automatisch openen als er vali
 Profiel view**
 Popup window voor toevoegen muziek**
 Kleine veranderingen aan album detail pagina**
+Profile edit (firstname, lastname, username, email)**
+Luistergedrag loggen**
+Aanpasbare limiet aan totale tijdsduur van audio die een user kan toevoegen**

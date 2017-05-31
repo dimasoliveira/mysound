@@ -9,10 +9,17 @@ use App\Audio;
 use App\MP3File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class AudioController extends Controller {
+  /** Index
+   *
+   * Haalt de geuploade audio op en zet deze
+   *
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+   */
 
   public function index() {
 
@@ -35,11 +42,12 @@ class AudioController extends Controller {
       'title' => 'required|max:255',
       'artist' => 'required|max:50',
       'album' => 'nullable|max:50',
-      'genre' => 'required',
+      'genre' => 'required|integer',
       'coverart' => 'nullable|dimensions:ratio=1/1',
       'filename' => 'required|mimes:mpga',
       'year' => 'nullable|digits:4',
       'tracknumber' => 'nullable|max:99',]);
+
 
     if ($validator->fails() || !file_exists(request()->file('filename'))) {
       return redirect()
@@ -48,7 +56,7 @@ class AudioController extends Controller {
         ->with('audioAddValidationError', 'Adding audio failed')
         ->withInput();
     }
-
+    //Hier wordt gechecked of de gebruiker over zijn uploadlimit heen gaat
     if ($this->uploadLimitCheck(($audioData = new MP3File($request->filename))->getDuration())){
        return redirect()->back()->with('audioAddValidationError', 'Adding audio failed')
          ->with('message', 'No enough space left, Try delete existing songs to free space')
@@ -61,6 +69,7 @@ class AudioController extends Controller {
           $request->coverart = '/defaults/coverart.png';
         }
 
+        //storeAsMP3 slaat het bestand op als MP3 (omdat Laravel dit standaard in mpga doet)
         $audioData->storeAsMP3($request);
         $album = Album::where('name', $request->album)->where('user_id', Auth::user()->id)->first();
 
@@ -81,7 +90,7 @@ class AudioController extends Controller {
             'album_id' => $album->id,
             'tracknumber' => $request->tracknumber,
             'published' => $request->published == 'on' ? 1 : 0,
-            'genre_id' => Genre::where('name',$request->genre)->first()->id,
+            'genre_id' => $request->genre,
             'explicit' => $request->explicit == 'on' ? 1 : 0,
             'year' => $request->year,
             'length' => $audioData->getDuration(),
@@ -91,7 +100,7 @@ class AudioController extends Controller {
           ]
         );
 
-        return redirect()->back()->with('message', 'File succesfully added');
+        return redirect()->back()->with('message', 'Song succesfully added');
   }
 
   public function edit(Audio $audio) {
@@ -106,7 +115,7 @@ class AudioController extends Controller {
       'title' => 'required|max:255',
       'artist' => 'required|max:50',
       'album' => 'nullable|max:50',
-      'genre' => 'required|max:50',
+      'genre' => 'required|integer',
       'coverart' => 'nullable|dimensions:ratio=1/1',
       'year' => 'nullable|digits:4',
       'tracknumber' => 'nullable|max:99',
@@ -122,9 +131,11 @@ class AudioController extends Controller {
 
     if ($request->coverart !== NULL && file_exists(request()->file('coverart'))) {
 
+      //slaat de coverart op als die in de inputform is meegegeven
       $audio->coverart = request()->file('coverart')->store('public/coverarts');
 
-      if (Storage::exists($audio->coverart) && Storage::exists($request->coverart) && $audio->coverart !== '/defaults/coverart.png'){
+      // als er een bestaande is en de nieuwe coverart bestaat dan word die opgeslagen
+      if (Storage::exists($audio->coverart) && Storage::exists($request->coverart)){
         Storage::delete($audio->coverart);
       }
 
@@ -132,12 +143,12 @@ class AudioController extends Controller {
     else {
       $request->coverart = $audio->coverart;
     }
-
+    // checkt of het album al bestaat
     $request->album_id = Album::where('name', $request->album)
       ->where('user_id', Auth::user()->id)
       ->value('id');
 
-    //if not, create the album and pass the album id
+    //zoniet, dan maakt hij een nieuwe aan en paast hij de id door
     if ($request->album_id == NULL) {
 
       $newAlbum = Album::create([
@@ -155,39 +166,55 @@ class AudioController extends Controller {
       $audio->explicit = $request->explicit == 'on' ? 1 : 0;
       $audio->published = $request->published == 'on' ? 1 : 0;
       $audio->year = $request->year;
-      $audio->genre_id = Genre::where('name',$request->genre)->first()->id;
+      $audio->genre_id = $request->genre;
       $audio->save();
 
     return redirect()
       ->back()
-      ->with('message', 'File succesfully edited');
+      ->with('message', 'Song succesfully edited');
   }
 
+  /** Destroy
+   *
+   * Verwijderen van opgevraagde audio
+   * @param \App\Audio $audio
+   *
+   * @return \Illuminate\Http\RedirectResponse
+   */
   public function destroy(Audio $audio)
   {
 
-    if (Storage::exists($audio->filename)){
-      Storage::delete($audio->filename);
+    if (!Storage::exists($audio->filename)){
+      return redirect()
+        ->back()
+        ->with('message', 'Something went wrong, try again');
+    }
 
-      if (Storage::exists($audio->filename) == false)
-      {
-        if (Storage::exists($audio->coverart) && $audio->coverart !== '/defaults/coverart.png'){
-          Storage::delete($audio->coverart);
-        }
+    //checkt of hij nog gelinkt is met afspeellijsten en verwijderd die
+    if (DB::table('audio_playlists')->where('id', $audio->id)->exists()){
+    DB::table('audio_playlists')->where('id', $audio->id)->delete();
+    }
 
-        $audio->delete();
-      }
+    Storage::delete($audio->filename);
+
+    if (Storage::exists($audio->coverart)){
+      Storage::delete($audio->coverart);
+    }
+
+    $audio->delete();
 
       return redirect()
-        ->route('index')
+        ->back()
         ->with('message', 'Succesfully delete audio');
-    }
-    return redirect()
-      ->back()
-      ->with('message', 'Something went wrong, try again');
-
   }
 
+  /** uploadLimitCheck
+   *
+   * Checkt of user aan zijn upload limit zit bij het uploaden van het bestand
+   * @param $durationCurrent
+   *
+   * @return bool
+   */
   public function uploadLimitCheck($durationCurrent) {
 
     foreach (Auth::user()->audio as $audio){

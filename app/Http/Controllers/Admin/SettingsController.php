@@ -15,6 +15,16 @@ class SettingsController extends Controller
     return view('admin.settings.index');
   }
 
+  /**
+   * updateUploadLimit
+   *
+   * Hier veranderd hij de updatelimiet voor alle bestaande users
+   * Of voor specifieke users
+   *
+   * @param \Illuminate\Http\Request $request
+   *
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+   */
   public function updateUploadLimit(Request $request){
 
     $this->validate($request, [
@@ -27,7 +37,6 @@ class SettingsController extends Controller
     }
 
     $user = User::where('id',$request->user)->first();
-
 
      if (!empty($user)){
 

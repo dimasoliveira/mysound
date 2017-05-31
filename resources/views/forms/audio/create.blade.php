@@ -146,8 +146,6 @@
                         @endif
                     </div>
 
-
-
                     <div class="file-field input-field col s6">
                         <div class="btn waves-effect blue">
                             <span>Coverart</span>

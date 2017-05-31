@@ -13,3 +13,4 @@ function readURL(input) {
   $("#coverart").change(function () {
     readURL(this);
   });
+

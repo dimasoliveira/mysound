@@ -12,12 +12,13 @@ class SearchController extends Controller
       return view('search');
     }
 
-  /**
+  /** searchRequest
+   *
+   * searchRequest zoekt naar audio en users die matchen met de ingevoerde zoekopdracht
    * @param \Illuminate\Http\Request $request
    *
    * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
    *
-   * searchRequest zoekt naar audio en users die matchen met de ingevoerde zoekopdracht
    */
     public function searchRequest(Request $request){
 

@@ -180,3 +180,8 @@ img.responsive-img, video.responsive-video {
     left: 15px!important;
     width: 0!important;
 }
+
+
+audio{
+    width:100%;
+}

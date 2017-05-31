@@ -29,7 +29,9 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
+      /**
+       * Checkt of het opgevraagde object van de user is
+       */
         Gate::define('owner', function (User $user,$object) {
 
           if(is_a($object, 'App\User')){

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AudioController extends Controller
 {
+
   public function index(){
 
     $audio = Audio::all();
@@ -102,7 +103,7 @@ class AudioController extends Controller
 
     return redirect()
       ->back()
-      ->with('message', 'File succesfully edited');
+      ->with('message', 'Song succesfully edited');
   }
 
   public function destroy(Audio $audio)

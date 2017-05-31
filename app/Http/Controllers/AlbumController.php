@@ -21,7 +21,7 @@ class AlbumController extends Controller {
     $this->getEmptyAlbums();
   }
 
-  /**
+  /** Index
    * Hier haal ik alle albums op die gemaakt zijn door de ingelogde user
    *
    * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -34,7 +34,9 @@ class AlbumController extends Controller {
     return view('myaudio.album.index', compact('albums'));
   }
 
-  /**
+  /** Show
+   *
+   * Hier haal ik het opgevraagde album op
    * @param \App\Album $album
    *
    * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
@@ -46,6 +48,7 @@ class AlbumController extends Controller {
 
     if (isset($album)) {
 
+      //Hier stuur ik alle artisten die voorkomen in het album naar de view
       if ($album->artist == NULL) {
         foreach ($album->audio as $song) {
 
@@ -84,10 +87,12 @@ class AlbumController extends Controller {
       'coverart' => 'nullable|image|file|dimensions:ratio=1/1',
     ]);
 
+    // Checkt of album al bestaat
     $duplicate_album = Album::where('name', $request->album_name)
       ->where('user_id', Auth::user()->id)
       ->first();
 
+    // Als album niet bestaat, dan maakt hij er een aan
     if (is_null($duplicate_album)) {
 
       if (!empty($request->album_name)) {
@@ -119,7 +124,11 @@ class AlbumController extends Controller {
     }
   }
 
-
+  /** getEmptyAlbums
+   *
+   * Zorgt ervoor dat albums die leeg zijn worden verwijderd
+   *
+   */
   public function getEmptyAlbums() {
 
     $empty_albums = Album::whereNotExists(function ($query) {

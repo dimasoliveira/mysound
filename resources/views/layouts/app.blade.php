@@ -51,10 +51,18 @@
     <script src="{{ asset('js/genreCombobox.js') }}"></script>
     <script src="{{ asset('js/addToPlaylist.js') }}"></script>
     <script src="{{ asset('js/playlist.js') }}"></script>
-    {{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.0.3/turbolinks.js"></script>--}}
-    {{--verplaatst vanuit audio create view--}}
 
+    <script src="https://rawgit.com/opoloo/jquery_upload_preview/master/assets/js/jquery.uploadPreview.js"></script>
 
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $.uploadPreview({
+          input_field: "#filename",
+          preview_box: "#audio-preview",
+          no_label: true
+        });
+      });
+    </script>
 
 <body>
 
@@ -155,8 +163,6 @@
             </ul>
         </div>
 
-
-
     @endif
 
     @yield('expanded-navbar')
@@ -196,9 +202,8 @@
 
 <!-- Add-Modal Structure -->
 
-
-    <div id="addAudio" class="modal modal-fixed-footer" style="width: 30%;">
-        <div class="modal-content" style="padding-top: 15px;padding-bottom: 15px;">
+    <div id="addAudio" class="modal modal-fixed-footer" style="overflow: visible; width: 30%;">
+        <div class="modal-content" style="overflow-y: visible !important; padding-top: 15px;padding-bottom: 15px;">
             {!!  Form::open(['route' => ['myaudio.store'],'class' => 'form-horizontal col s12', 'files' => true])  !!}
 
             <div class="row">
@@ -229,7 +234,7 @@
             </div>
 
             <div class="row">
-                <div class="input-field col s12 form-group{{ $errors->has('artist') ? ' has-error' : '' }}">
+                <div class="input-field col s6 form-group{{ $errors->has('artist') ? ' has-error' : '' }}">
                     <input id="artist" type="text" class="form-control" name="artist" value="{{ old('artist') }}" >
                     <label for="artist">Artist *</label>
 
@@ -239,10 +244,8 @@
                                     </span>
                     @endif
                 </div>
-            </div>
-            <div class="row">
 
-                <div class="input-field col s12 form-group{{ $errors->has('album') ? ' has-error' : '' }}">
+                <div class="input-field col s6 form-group{{ $errors->has('album') ? ' has-error' : '' }}">
                     <input id="album" type="text" class="form-control" name="album" value="{{ old('album') }}" >
                     <label for="album">Album*</label>
 
@@ -256,10 +259,29 @@
 
             <div class="row">
                 <div class="input-field col s10 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
-                    <input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}" >
-                    <label for="genre">Genre*</label>
+                    {{--<input id="genre" type="text" class="form-control" name="genre" value="{{ old('genre') }}" >--}}
+                    {{--<label for="genre">Genre*</label>--}}
 
-                    @if ($errors->has('genre'))
+                    {{--<select class="selectpicker" id="selectpicker" name="user" data-live-search="true">--}}
+                        {{--<option value="all">All users</option>--}}
+                        {{--@foreach($genres as $genre)--}}
+                            {{--<option value="{{ $genre->id }}">{{ $genre->name }}</option>--}}
+                        {{--@endforeach--}}
+                    {{--</select>--}}
+
+
+                    <select name="genre">
+                        <option value="" disabled selected>Choose genre</option>
+                        @foreach($genres as $genre)
+                            <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                        @endforeach
+
+                    </select>
+                        <label>Genre</label>
+
+
+
+                @if ($errors->has('genre'))
                         <span class="left help-block red-text">
                                     <strong>{{ $errors->first('genre') }}</strong>
                                     </span>
@@ -282,39 +304,32 @@
 
 
             <div class="row">
-
                 <div class="file-field input-field col s6">
                     <div class="btn waves-effect blue">
                         <span>Audio</span>
                         <input id="filename" name="filename" type="file">
                     </div>
-
                     @if ($errors->has('filename'))
                         <span class="left help-block red-text">
                                     <strong>{{ $errors->first('filename') }}</strong>
                                     </span>
                     @endif
                 </div>
-
                 <div class="file-field input-field col 6">
                     <div class="btn waves-effect blue">
                         <span>Coverart</span>
                         <input id="coverart" name="coverart" type="file" >
                     </div>
-
                     @if ($errors->has('coverart'))
                         <span class="left help-block red-text">
                                     <strong>{{ $errors->first('coverart') }}</strong>
                                     </span>
                     @endif
                 </div>
-
             </div>
-
 
             <div class="row">
                 <div class="file-field input-field">
-
 
                     <p class="left">
                             <input title="published" type="checkbox" id="published" class="filled-in" name="published">
@@ -331,13 +346,20 @@
                 </div>
             </div>
 
-            <br/>
+                <div class="card-image">
+
+                    <img style="width: 75px; height: auto" id="img-preview">
+
+                </div>
+
+            <div id="audio-preview" style="bottom: 0;">
+
+            </div>
 
         </div>
 
+
         <button type="submit" class="modal-footer col s12 btn btn-large waves-effect blue">Upload</button>
-
-
 
 
 
@@ -400,7 +422,8 @@
                 </div>
             </div>
             <div class="row">
-            <div class="input-field col s12 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
+            <div class="input-field col s10 form-group{{ $errors->has('genre') ? ' has-error' : '' }}">
+
 
                 <select id="combobox">
                     @foreach($genres as $genre)
@@ -421,6 +444,17 @@
                 @endif
 
             </div>
+
+                <div class="input-field col s2 form-group{{ $errors->has('year') ? ' has-error' : '' }}">
+                    <input id="year" type="text" class="form-control" name="year" value="{{ old('year') }}">
+                    <label for="year">Year </label>
+
+                    @if ($errors->has('year'))
+                        <span class="left help-block red-text">
+                                    <strong>{{ $errors->first('year') }}</strong>
+                                    </span>
+                    @endif
+                </div>
             </div>
 
 
@@ -441,6 +475,7 @@
                 </div>
 
             </div>
+
 
 
             <div class="row">
@@ -662,11 +697,10 @@
                     <li><a class="white-text" href="#!">Privacy</a>  |  <a class="white-text" href="#!">Terms Of Use</a>  |  <a class="white-text" href="#!">Copyright</a></li>
                 </ul>
 
-
         </div>
     </div>
 </footer>
 
 </body>
-
+<script src="{{ asset('js/imgPreview.js') }}"></script>
 </html>

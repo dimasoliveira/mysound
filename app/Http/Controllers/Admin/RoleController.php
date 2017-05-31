@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
 {
+  /**
+   * Haalt alle rollen op
+   *
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+   */
   public function index(){
 
     $roles = Role::all();
@@ -18,6 +23,11 @@ class RoleController extends Controller
     return view('admin.roles.index', compact('roles'));
   }
 
+  /**
+   * Haalt alle rechten op
+   *
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+   */
   public function create(){
 
     $permissions = Permission::all();
@@ -25,6 +35,15 @@ class RoleController extends Controller
     return view('admin.roles.create', compact('permissions'));
   }
 
+  /**
+   * Store
+   *
+   * Maakt een nieuwe rol
+   *
+   * @param \Illuminate\Http\Request $request
+   *
+   * @return \Illuminate\Http\RedirectResponse
+   */
   public function store(Request $request){
 
      Validator::make($request->all(), [
@@ -54,7 +73,6 @@ class RoleController extends Controller
   }
 
   public function edit(Role $role){
-
 
     foreach ($role->permissions as $role_permission){
       $role_permissions[] = $role_permission->id;

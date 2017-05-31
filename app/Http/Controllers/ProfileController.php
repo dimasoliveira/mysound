@@ -11,13 +11,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-  /**
+  /** Index
+   *
+   * Onderstaande functie checkt of de opgevraagde user bestaat, en of de user
+   * op zijn eigen pagina is of op die van een ander
    * @param $slug
    *
    * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
    *
-   * Onderstaande functie checkt of de opgevraagde user bestaat, en of de user
-   * op zijn eigen pagina is of op die van een ander
    */
     public function index($slug){
 
@@ -41,16 +42,19 @@ class ProfileController extends Controller
       return redirect(route('timeline.show'))->with('message', 'Unfortunately, user '.$slug.' cannot be found');
     }
 
-  /**
-   * @param $slug
-   *
-   * @return \Illuminate\Http\RedirectResponse
+  /** followRequest
    *
    * Onderstaande functie wordt uitgevoerd wanneer iemand op de followbutton klikt
    * Er wordt eerst voor ze zekerheid gechecked of de user zichzelf niet probeerd
    * te volgen
    * Daarna wordt er gecheckt of de user degene al volgt, zoniet dan volgt die degene
    * Als die hem al wel volgt, wordt die onvolgt
+   *
+   * @param $slug
+   *
+   * @return \Illuminate\Http\RedirectResponse
+   *
+
    */
     public function followRequest($slug){
 
@@ -63,14 +67,15 @@ class ProfileController extends Controller
       return redirect()->intended(route('profile.show',$slug));
     }
 
-  /**
+  /** avatarUpdate
+   *
+   * avatarUpdate wordt aangeroepen wanneer iemand een nieuwe avatar wilt uploaden
+   * Er wordt gechecked of de oude avatar bestaat, zoja, dan wordt die verwijderd
    * @param \Illuminate\Http\Request $request
    * @param \App\User $user
    *
    * @return \Illuminate\Http\RedirectResponse
    *
-   * avatarUpdate wordt aangeroepen wanneer iemand een nieuwe avatar wilt uploaden
-   * Er wordt gechecked of de oude avatar bestaat, zoja, dan wordt die verwijderd
    */
     public function avatarUpdate(Request $request, User $user) {
 
@@ -90,13 +95,13 @@ class ProfileController extends Controller
     }
 
   /**
+   * nameUpdate wordt aangeroepen wanneer iemand zijn voornaam
+   * of achternaam wilt wijzigen
+   *
    * @param \Illuminate\Http\Request $request
    * @param \App\User $user
    *
    * @return \Illuminate\Http\RedirectResponse
-   *
-   * nameUpdate wordt aangeroepen wanneer iemand zijn gebruikersnaam, voornaam
-   * of achternaam wilt wijzigen
    */
     public function nameUpdate(Request $request, User $user){
 

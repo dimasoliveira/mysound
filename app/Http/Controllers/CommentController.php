@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller {
+
   public function store(Request $request, Audio $audio) {
 
     $this->validate($request, [
